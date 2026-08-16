@@ -3,6 +3,7 @@
 // mesher multiplies into grass, leaves and water.
 
 import { simplex2, fbm2, NoiseCache } from '../core/noise.js';
+import { hash2f } from '../core/rng.js';
 import { B } from './blocks.js';
 
 export const Biome = {
@@ -162,7 +163,29 @@ bio(Biome.WITHERED, 'withered', 'Withered Land', {
  * temperature / humidity / erosion table. Worldgen refines this with beaches
  * once it knows the column's actual height.
  */
-function classify(x, z, seed) {
+/**
+ * Gradient noise is exactly zero at a lattice point, so every field sampled at
+ * the world origin returns 0 — which lands inside the river band on every seed
+ * and drops the player into water at spawn. Shifting the whole domain by a
+ * seed-derived, deliberately non-integer amount removes that degeneracy and
+ * decorrelates the fields from one another as a bonus.
+ */
+const _offsets = new Map();
+function domainOffset(seed) {
+  let o = _offsets.get(seed);
+  if (!o) {
+    if (_offsets.size >= 8) _offsets.clear();
+    o = [1543.137 + hash2f(seed, 0x5eed) * 8192, 2081.719 + hash2f(0x5eed, seed) * 8192];
+    _offsets.set(seed, o);
+  }
+  return o;
+}
+
+function classify(rawX, rawZ, seed) {
+  const off = domainOffset(seed);
+  const x = rawX + off[0];
+  const z = rawZ + off[1];
+
   // A domain warp keeps borders ragged instead of perfectly smooth blobs.
   const w = simplex2(x * 0.0055, z * 0.0055, seed + 9013) * 24;
   const v = simplex2(x * 0.0055, z * 0.0055, seed + 4271) * 24;

@@ -146,6 +146,47 @@ export class WorldGenerator {
     return this._biomeCache.get(Math.floor(x), Math.floor(z));
   }
 
+  /**
+   * Picks a spawn column on dry land, spiralling out from the origin the way
+   * vanilla does. Both queries here are pure functions of the seed, so this
+   * runs before any chunk is generated and we only ever build terrain around a
+   * spot worth standing on.
+   *
+   * Returns `{ x, z, y }` with `y` the first air block above the ground.
+   */
+  findSpawnPoint(maxRadius = 640) {
+    let best = null;
+    for (let r = 0; r <= maxRadius; r += 16) {
+      // Sample a ring rather than a filled disc; the ring gets denser as it grows.
+      const steps = r === 0 ? 1 : Math.max(8, Math.round((Math.PI * 2 * r) / 24));
+      for (let i = 0; i < steps; i++) {
+        const a = (i / steps) * Math.PI * 2;
+        const x = Math.round(Math.cos(a) * r);
+        const z = Math.round(Math.sin(a) * r);
+        const biome = climateBiomeAt(x, z, this.seed);
+        if (biome === Biome.OCEAN || biome === Biome.RIVER) continue;
+
+        const h = this.surfaceHeight(x, z);
+        if (h <= SEA) continue;                    // underwater or tidal
+        if (h > SEA + 48) continue;                // a mountain top is a miserable spawn
+
+        // Prefer somewhere flat: a spawn on a cliff edge looks broken.
+        const relief = Math.max(
+          Math.abs(this.surfaceHeight(x + 3, z) - h),
+          Math.abs(this.surfaceHeight(x - 3, z) - h),
+          Math.abs(this.surfaceHeight(x, z + 3) - h),
+          Math.abs(this.surfaceHeight(x, z - 3) - h),
+        );
+        const candidate = { x, z, y: h + 1, relief };
+        if (relief <= 2) return candidate;
+        if (!best || relief < best.relief) best = candidate;
+      }
+      // Settle for the flattest thing found once we have searched a fair way out.
+      if (best && r >= 128) return best;
+    }
+    return best || { x: 0, z: 0, y: SEA + 1 };
+  }
+
   _computeHeight(x, z) {
     const seed = this.seed;
     let off = 0, scale = 0, riverW = 0;

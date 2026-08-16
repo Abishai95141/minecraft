@@ -652,13 +652,24 @@ export class Game {
     loading.setProgress(0.1, 'Shaping the land');
     await nextFrame();
 
+    // Pick the spawn before building anything: both queries are pure functions
+    // of the seed, so we only generate terrain around a spot worth standing on
+    // instead of dropping the player into whatever happens to be at the origin.
+    const spawn = opts.data?.player
+      ? { x: 0, z: 0 }
+      : this.generator.findSpawnPoint();
+    this.spawnX = spawn.x;
+    this.spawnZ = spawn.z;
+    const scx = spawn.x >> 4;
+    const scz = spawn.z >> 4;
+
     // Generate the spawn area up front so the player never falls through it.
     const spawnR = 3;
     const total = (spawnR * 2 + 1) ** 2;
     let done = 0;
     for (let dz = -spawnR; dz <= spawnR; dz++) {
       for (let dx = -spawnR; dx <= spawnR; dx++) {
-        const chunk = this.world.getOrCreateChunk(dx, dz);
+        const chunk = this.world.getOrCreateChunk(scx + dx, scz + dz);
         if (!chunk.generated) { this.generator.generateChunk(chunk); chunk.generated = true; }
         done++;
         if (done % 8 === 0) {
@@ -669,7 +680,7 @@ export class Game {
     }
     for (let dz = -spawnR + 1; dz <= spawnR - 1; dz++) {
       for (let dx = -spawnR + 1; dx <= spawnR - 1; dx++) {
-        const chunk = this.world.getChunk(dx, dz);
+        const chunk = this.world.getChunk(scx + dx, scz + dz);
         if (chunk && !chunk.populated) {
           this.generator.populateChunk(chunk);
           chunk.populated = true;
@@ -692,9 +703,11 @@ export class Game {
     loading.setProgress(0.75, 'Waking up');
     await nextFrame();
 
-    const spawnY = this.world.findSpawnY(0, 0, 120);
-    this.player = new Player(this.world, 0.5, spawnY, 0.5, this);
-    this.player.spawnPoint = [0.5, spawnY, 0.5];
+    const px = this.spawnX + 0.5;
+    const pz = this.spawnZ + 0.5;
+    const spawnY = this.world.findSpawnY(this.spawnX, this.spawnZ, 120);
+    this.player = new Player(this.world, px, spawnY, pz, this);
+    this.player.spawnPoint = [px, spawnY, pz];
     this.world.addEntity(this.player);
     if (opts.data?.player) this.player.fromJSON(opts.data.player);
 
