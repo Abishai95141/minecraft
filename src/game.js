@@ -10,7 +10,7 @@ import * as storage from './core/storage.js';
 import { Random } from './core/rng.js';
 
 import { World } from './world/world.js';
-import { B, BLOCKS } from './world/blocks.js';
+import { B, BLOCKS, RenderType } from './world/blocks.js';
 import { CHUNK_SIZE } from './world/chunk.js';
 import { WorldGenerator } from './world/worldgen.js';
 import { LightEngine } from './world/lighting.js';
@@ -112,7 +112,6 @@ export class Game {
     this._fpsAccum = 0;
     this._fpsFrames = 0;
     this._lastFrameAt = 0;
-    this._pendingPopulate = [];
     this._boundFrame = (t) => this.frame(t);
 
     this._bindEvents();
@@ -491,8 +490,10 @@ export class Game {
 
     const renderDist = settings.get('renderDistance') * CHUNK_SIZE;
     let fog = hexToRgb(colors.fog);
-    let fogStart = renderDist * 0.55;
-    let fogEnd = renderDist * 0.95;
+    // Vanilla keeps terrain crisp almost to the render boundary and only hazes
+    // the last stretch. Starting at 0.55 washed out most of the visible world.
+    let fogStart = renderDist * 0.80;
+    let fogEnd = renderDist * 1.0;
     let fogDensity = 0;
 
     if (underwater) { fog = [0.05, 0.16, 0.36]; fogDensity = 0.12; }
@@ -521,6 +522,15 @@ export class Game {
     const cz = Math.floor(p.z) >> 4;
     const r = settings.get('renderDistance');
 
+    // Every stage below is budgeted, so the ORDER decides what the player sees.
+    // Chunk iteration is insertion-ordered, which stops matching distance the
+    // moment the player moves: hundreds of stale chunks then eat the budget
+    // while the chunk underfoot stays unlit and unmeshed.
+    const near = (c) => {
+      const dx = c.cx - cx, dz = c.cz - cz;
+      return dx * dx + dz * dz;
+    };
+
     // 1. Generate the nearest missing chunk, plus a one-chunk apron so that
     //    populate always has its neighbours and trees can cross a border.
     let generated = 0;
@@ -535,7 +545,6 @@ export class Game {
           if (!chunk.generated) {
             this.generator.generateChunk(chunk);
             chunk.generated = true;
-            this._pendingPopulate.push(chunk);
             if (++generated >= BUDGET.generate) break outer;
           }
         }
@@ -544,10 +553,22 @@ export class Game {
 
     // 2. Populate only chunks whose 8 neighbours exist, so structures and trees
     //    never get clipped by a chunk that has not been carved yet.
+    // Derived from the world each tick rather than from a queue. A queue only
+    // ever holds what streamChunks itself generated, so the ring that
+    // startWorld generates but does not populate was stranded forever:
+    // unpopulated, therefore never lit, therefore never meshed — a permanent
+    // hole in the ground beside spawn that you could see the caves through.
+    // Scanning cannot go stale, and 400 chunks per tick costs nothing.
     let populated = 0;
-    for (let i = 0; i < this._pendingPopulate.length && populated < BUDGET.populate;) {
-      const chunk = this._pendingPopulate[i];
-      if (chunk.populated) { this._pendingPopulate.splice(i, 1); continue; }
+    const toPopulate = [];
+    for (const chunk of world.chunks.values()) {
+      if (chunk.generated && !chunk.populated) toPopulate.push(chunk);
+    }
+    if (toPopulate.length > 1) toPopulate.sort((a, b) => near(a) - near(b));
+    for (const chunk of toPopulate) {
+      if (populated >= BUDGET.populate) break;
+      // Populate needs all 8 neighbours carved, so trees and structures are
+      // never clipped by a chunk that does not exist yet.
       let ready = true;
       for (let dz = -1; dz <= 1 && ready; dz++) {
         for (let dx = -1; dx <= 1; dx++) {
@@ -555,38 +576,46 @@ export class Game {
           if (!n || !n.generated) { ready = false; break; }
         }
       }
-      if (!ready) { i++; continue; }
+      if (!ready) continue;
       this.generator.populateChunk(chunk);
       chunk.populated = true;
       chunk.recomputeHeightMap();
       chunk.markAllDirty();
-      this._pendingPopulate.splice(i, 1);
       populated++;
     }
 
-    // 3. Light freshly populated chunks, then drain the incremental queues.
-    let lit = 0;
+    // 3. Light freshly populated chunks, nearest first.
+    const toLight = [];
     for (const chunk of world.chunks.values()) {
-      if (lit >= BUDGET.light) break;
-      if (!chunk.populated || chunk.lit) continue;
+      if (chunk.populated && !chunk.lit) toLight.push(chunk);
+    }
+    toLight.sort((a, b) => near(a) - near(b));
+    for (let i = 0; i < toLight.length && i < BUDGET.light; i++) {
+      const chunk = toLight[i];
       this.lighting.initialLight(chunk);
       chunk.lit = true;
       chunk.markAllDirty();
-      lit++;
     }
     this.lighting.process(BUDGET.lightMs);
 
     // 4. Hand dirty sections to the renderer, nearest first.
-    let marks = 0;
+    // Only clear what was actually handed over: clearing the whole set after the
+    // budget broke out of the loop drops the rest on the floor, and nothing ever
+    // marks them again, so those sections never get a mesh at all.
+    const toMesh = [];
     for (const chunk of world.chunks.values()) {
+      if (chunk.lit && chunk.dirtySections.size) toMesh.push(chunk);
+    }
+    toMesh.sort((a, b) => near(a) - near(b));
+    let marks = 0;
+    for (const chunk of toMesh) {
       if (marks >= BUDGET.meshMarks) break;
-      if (!chunk.dirtySections.size) continue;
-      if (!chunk.lit) continue;
-      for (const si of chunk.dirtySections) {
+      for (const si of [...chunk.dirtySections]) {
+        if (marks >= BUDGET.meshMarks) break;
         this.renderer.markSectionDirty(chunk, si);
-        if (++marks >= BUDGET.meshMarks) break;
+        chunk.dirtySections.delete(si);
+        marks++;
       }
-      chunk.dirtySections.clear();
     }
 
     // 5. Unload chunks that fell outside the keep radius.
@@ -705,7 +734,31 @@ export class Game {
 
     const px = this.spawnX + 0.5;
     const pz = this.spawnZ + 0.5;
-    const spawnY = this.world.findSpawnY(this.spawnX, this.spawnZ, 120);
+
+    // findSpawnPoint reports the terrain surface, which ignores whatever grew on
+    // top of it. Searching down from the sky instead would land the player on a
+    // canopy, so start from the ground and clear the sapling-height pocket the
+    // player occupies — otherwise you spawn standing on leaves or inside a trunk.
+    const groundY = this.generator.surfaceHeight(this.spawnX, this.spawnZ) + 1;
+    for (let dy = 0; dy < 2; dy++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const bx = this.spawnX + dx, by = groundY + dy, bz = this.spawnZ + dz;
+          const id = this.world.getBlock(bx, by, bz);
+          if (id === B.AIR) continue;
+          const def = BLOCKS[id];
+          // Only vegetation gets cleared; never carve into built terrain.
+          if (def.name.endsWith('_leaves') || def.name.endsWith('_log') ||
+              def.render === RenderType.CROSS || def.render === RenderType.CROP) {
+            this.world.setBlock(bx, by, bz, B.AIR);
+          }
+        }
+      }
+    }
+
+    const spawnY = this.world.canStandAt(this.spawnX, groundY, this.spawnZ)
+      ? groundY
+      : this.world.findSpawnY(this.spawnX, this.spawnZ, groundY + 4);
     this.player = new Player(this.world, px, spawnY, pz, this);
     this.player.spawnPoint = [px, spawnY, pz];
     this.world.addEntity(this.player);
@@ -795,7 +848,6 @@ export class Game {
     this.story = null;
     this.generator = null;
     this.lighting = null;
-    this._pendingPopulate.length = 0;
     this.renderer?.setWorld(null);
     this.particles?.clear();
     this.chatLog.length = 0;

@@ -164,12 +164,16 @@ function cloudValue(cx, cz, scale, seed) {
   return lerp(lerp(a, b, u), lerp(c, d, u), v);
 }
 
-/** True when a cloud cell is filled. ~45% coverage in fat, rounded banks. */
+/**
+ * True when a cloud cell is filled. The feature scales are in CELLS, so a
+ * scale of 7 spans 84 blocks — banks that big read as a solid ceiling rather
+ * than as clouds. These give distinct puffs a few cells across, like vanilla.
+ */
 function cloudy(cx, cz) {
-  const n = cloudValue(cx, cz, 7, 0x51f1) * 0.6
-          + cloudValue(cx, cz, 3, 0x9e37) * 0.28
-          + cloudValue(cx, cz, 1.5, 0x1b27) * 0.12;
-  return n > 0.52;
+  const n = cloudValue(cx, cz, 3.5, 0x51f1) * 0.6
+          + cloudValue(cx, cz, 1.6, 0x9e37) * 0.28
+          + cloudValue(cx, cz, 0.8, 0x1b27) * 0.12;
+  return n > 0.54;
 }
 
 // ---------------------------------------------------------------- renderer

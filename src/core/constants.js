@@ -275,7 +275,10 @@ export const WORLD = {
   /** Vanilla builds down to -64; a shallower floor keeps the browser honest. */
   MIN_Y: -64,
   SEA_LEVEL: 62,
-  CLOUD_HEIGHT: 128,
+  // Well clear of the 119-block terrain ceiling. Clouds are a render-only
+  // layer, so this is deliberately above the build limit: at 128 they loomed
+  // directly overhead instead of sitting high in the sky like vanilla's.
+  CLOUD_HEIGHT: 164,
   MAX_LIGHT: 15,
 
   /** A full day is 24000 ticks = 20 real minutes. */

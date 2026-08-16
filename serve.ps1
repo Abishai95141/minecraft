@@ -87,6 +87,29 @@ if ($listener) {
       $req = $ctx.Request
       $res = $ctx.Response
       try {
+        # Dev hook: the page POSTs a base64 screenshot here and it lands on disk,
+        # which is how the game gets verified visually when the browser pane
+        # cannot composite frames.
+        if ($req.HttpMethod -eq 'POST' -and $req.Url.AbsolutePath -eq '/__shot') {
+          $reader = New-Object System.IO.StreamReader($req.InputStream, $req.ContentEncoding)
+          $b64 = $reader.ReadToEnd()
+          $reader.Close()
+          $name = $req.QueryString['name']
+          if ([string]::IsNullOrWhiteSpace($name)) { $name = 'shot' }
+          $name = ($name -replace '[^a-zA-Z0-9_-]', '')
+          $shotDir = Join-Path $Root '.shots'
+          if (-not (Test-Path $shotDir)) { New-Item -ItemType Directory -Path $shotDir | Out-Null }
+          [System.IO.File]::WriteAllBytes((Join-Path $shotDir "$name.jpg"), [Convert]::FromBase64String($b64))
+          $bytes = [System.Text.Encoding]::UTF8.GetBytes('ok')
+          $res.StatusCode = 200
+          $res.ContentType = 'text/plain'
+          $res.Headers['Access-Control-Allow-Origin'] = '*'
+          $res.ContentLength64 = $bytes.Length
+          $res.OutputStream.Write($bytes, 0, $bytes.Length)
+          $res.OutputStream.Close()
+          continue
+        }
+
         $target = Resolve-Target $req.Url.AbsolutePath
         if ($null -eq $target) {
           $res.StatusCode = 404
