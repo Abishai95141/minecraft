@@ -14,10 +14,15 @@ is a folder of ES modules you can open with any static server.
 ## Running it
 
 ```bash
-python -m http.server 8000
+./serve.sh
 ```
 
-Open <http://localhost:8000>. Requires a WebGL2-capable browser.
+Or any static server — `python3 -m http.server 8000`, `npx serve`, whatever you have.
+It must be served over HTTP: browsers refuse to load ES modules from `file://`.
+
+Open <http://localhost:8000>. Needs a WebGL2-capable browser (Safari 15+, Chrome,
+Firefox, Edge). Runs the same on macOS, Windows and Linux — there is no platform
+code, no Node and nothing to install.
 
 ## What's here
 

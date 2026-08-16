@@ -110,7 +110,27 @@ it is the specification for how they get used, and it is written and syntax-clea
   `ai.js`, `mobs.js`, `itementity.js`, `ui/widgets.js`, `screen.js`, nine menu
   screens, `audio/audio.js`, `sfx.js`, `music.js`.
 
+## Regenerating modules in bulk
+
+`tools/build-workflow.js` fans out implementation agents against `ARCHITECTURE.md`,
+then audit agents that re-read every produced file. Pass the repo path — agents write
+to absolute paths and the script cannot detect it:
+
+```
+Workflow({ scriptPath: "<repo>/tools/build-workflow.js", args: "<repo>" })
+```
+
+Now that `tools/check.mjs` exists it is the better gate; use the workflow to produce
+code and the checker to verify it, not the audit agents alone.
+
 ## Environment notes
 
 - Node 22 for the checker and tests only; the game itself never imports it.
-- Python 3 for the static server. WebGL2 required.
+- Static server for the game: `./serve.sh` (finds python3/python/npx/ruby), or
+  `python3 -m http.server 8000`. ES modules will not load over `file://`.
+- WebGL2 required.
+- **Cross-platform.** The game is pure browser code: no `process`, no OS paths, no
+  backslashes in any import, no binary assets. macOS, Windows and Linux behave
+  identically; `.gitattributes` pins every file to LF.
+- Safari paths are guarded: pointer lock falls back when `unadjustedMovement` is
+  unsupported, anisotropic filtering is behind an extension check.

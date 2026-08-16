@@ -1,0 +1,11 @@
+# Normalise line endings so the repo is identical on Windows, macOS and Linux.
+# Everything here is text; there are no binary assets in this project by design.
+* text=auto eol=lf
+
+*.js    text eol=lf
+*.html  text eol=lf
+*.css   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.sh    text eol=lf
+*.ps1   text eol=crlf

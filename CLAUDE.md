@@ -26,12 +26,21 @@ half-written — every committed file is complete and internally consistent.
 
 ## Run it
 
+ES modules will not load over `file://` — the browser blocks them by CORS — so it
+must be served over HTTP even though there is no build step.
+
 ```bash
-python -m http.server 8000
+./serve.sh
 ```
 
-Then open `http://localhost:8000`. (Use the `preview_start` browser tool with that
-URL, then `read_console_messages` to catch errors.)
+macOS/Linux: `python3 -m http.server 8000`. Windows: `python -m http.server 8000`.
+
+Then open `http://localhost:8000`. Use the `preview_start` browser tool with that URL,
+then `read_console_messages` — that console is the only error checking this project
+has, so read it after every change.
+
+**Platform:** the game itself is pure browser code with no OS surface and runs
+identically on macOS, Windows and Linux. Only the tooling below is path-sensitive.
 
 ---
 
@@ -97,13 +106,18 @@ on disjoint file sets, then 10 audit agents that re-read every produced file for
 syntax and import errors. That audit pass is not optional — with no Node and no
 linter, it is the only check before the browser.
 
+**You must pass the repo's absolute path as `args`** — agents write to absolute paths
+and a workflow script cannot see the filesystem to detect it. The script throws with a
+clear message if you forget.
+
 ```
-Workflow({ scriptPath: "<abs path to>/tools/build-workflow.js" })
+Workflow({
+  scriptPath: "<abs path to repo>/tools/build-workflow.js",
+  args:       "<abs path to repo>"
+})
 ```
 
-Note it hardcodes `ROOT = C:\Users\abish\Downloads\sowmicraft`. **Update that constant
-to wherever the repo is cloned** before running, or the agents will write to the wrong
-place.
+e.g. `args: "/Users/you/code/minecraft"` on macOS.
 
 Workflow runs cost a lot of tokens. Confirm with the user before launching.
 

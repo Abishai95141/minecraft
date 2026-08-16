@@ -8,17 +8,29 @@ export const meta = {
 }
 
 // ---------------------------------------------------------------------------
-// SET THIS to the absolute path of the cloned repo before running, or pass the
-// path as the Workflow `args` value:  Workflow({ scriptPath, args: "/path/to/repo" })
-// Agents write files at absolute paths, so a wrong ROOT writes to the wrong place.
+// PASS THE REPO PATH IN:   Workflow({ scriptPath, args: "/absolute/path/to/repo" })
+//
+// Agents write to absolute paths, so a wrong ROOT silently writes the whole
+// engine into the wrong directory. There is no filesystem access from a
+// workflow script, so this cannot be auto-detected — it must be supplied.
 // ---------------------------------------------------------------------------
-const ROOT = (typeof args === 'string' && args) || 'C:\\Users\\abish\\Downloads\\sowmicraft'
+const ROOT = typeof args === 'string' && args.trim() ? args.trim() : null
+if (!ROOT) {
+  throw new Error(
+    'build-workflow: repo path not supplied.\n' +
+    'Run it as:  Workflow({ scriptPath: "<this file>", args: "/absolute/path/to/sowmicraft" })\n' +
+    'On macOS that looks like "/Users/you/code/minecraft"; on Windows "C:\\\\Users\\\\you\\\\minecraft".',
+  )
+}
+/** Path separator for the platform ROOT was given in. */
+const SEP = ROOT.includes('\\') ? '\\' : '/'
+const p = (...parts) => [ROOT, ...parts].join(SEP)
 
 const PREAMBLE = `You are implementing part of SowmiCraft — a from-scratch browser Minecraft clone
 in the repo at ${ROOT}.
 
 FIRST, before writing anything:
-1. Read ${ROOT}\\ARCHITECTURE.md IN FULL. It is the contract. Follow it exactly.
+1. Read ${p('ARCHITECTURE.md')} IN FULL. It is the contract. Follow it exactly.
 2. Read every already-written file your module imports from. Match their style,
    naming, and comment density. Do NOT rewrite or edit files outside your assignment.
 
