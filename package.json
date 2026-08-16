@@ -1,0 +1,12 @@
+{
+  "name": "sowmicraft",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A from-scratch browser voxel game. No dependencies, no build step — this file exists only so Node parses src/*.js as ES modules when running tools/check.mjs.",
+  "scripts": {
+    "check": "node tools/check.mjs",
+    "smoke": "node tools/smoke.mjs",
+    "serve": "python3 -m http.server 8000"
+  }
+}
