@@ -1,0 +1,20 @@
+# This project intentionally has no dependencies and no build output.
+node_modules/
+dist/
+build/
+
+# Editor / OS noise
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local Claude Code state (settings.local.json holds machine-specific permissions)
+.claude/settings.local.json
+
+# Scratch
+*.log
+tmp/
+scratch/

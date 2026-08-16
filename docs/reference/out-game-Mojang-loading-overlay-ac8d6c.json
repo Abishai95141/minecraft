@@ -1,0 +1,1188 @@
+﻿{
+    "topic":  "Minecraft Java Edition (~1.20) out-of-game UI: Mojang loading overlay, dirt menu background, title screen, options/controls screens, pause menu, death screen, splash texts",
+    "facts":  [
+                  {
+                      "key":  "gui.baseUnit",
+                      "value":  "all UI coordinates below are in GUI-scaled pixels (virtual px), not physical px",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "gui.autoScale.rule",
+                      "value":  "Auto GUI scale = largest integer i such that framebufferWidth/i \u003e= 320 and framebufferHeight/i \u003e= 240; guiScaledWidth = ceil(fbWidth/scale), guiScaledHeight = ceil(fbHeight/scale)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "gui.minVirtualResolution",
+                      "value":  "320 x 240 GUI px",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "font.glyphHeight",
+                      "value":  "8 px (line advance 9 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "font.shadow.offset",
+                      "value":  "+1 px x, +1 px y",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "font.shadow.colorFormula",
+                      "value":  "shadowRGB = (rgb \u0026 0xFCFCFC) \u003e\u003e 2, alpha preserved (i.e. 25% brightness)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "loading.mojang.backgroundColor",
+                      "value":  "#EF323D (ARGB 0xFFEF323D, RGB 239,50,61) â€” \"Mojang red\"",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.backgroundColor.monochrome",
+                      "value":  "#000000 (ARGB 0xFF000000) when accessibility \"Monochrome Logo\" is ON",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.logoTexture",
+                      "value":  "minecraft:textures/gui/title/mojangstudios.png, addressed as a 120 x 120 px texture",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.logo.halfSplit",
+                      "value":  "drawn as 2 blits: left half from texture (u=0,v=0,120x60), right half from (u=0,v=60,120x60)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.logo.seamOverlap",
+                      "value":  "LOGO_OVERLAP = 0.0625 px u-offset (-0.0625 left half, +0.0625 right half)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.logo.sizeFormula",
+                      "value":  "d = min(guiWidth * 0.75, guiHeight) * 0.25; logo drawn 4d wide x d tall, centered at (guiWidth/2, guiHeight/2)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.logo.blendMode",
+                      "value":  "GL_FUNC_ADD with blendFunc(GL_SRC_ALPHA=770, GL_ONE=1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.fadeInTime",
+                      "value":  "500 ms (logo alpha 0 -\u003e 1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.fadeOutTime",
+                      "value":  "1000 ms (whole overlay fades out after reload completes)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.mojang.progressSmoothing",
+                      "value":  "currentProgress = clamp(currentProgress*0.95 + actualProgress*0.05, 0, 1) per frame",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.centerY",
+                      "value":  "guiScaledHeight * 0.8325",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.height",
+                      "value":  "10 GUI px (from centerY-5 to centerY+5)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.width",
+                      "value":  "same as logo width = 4d, centered horizontally (x from guiWidth/2 - 2d to guiWidth/2 + 2d)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.borderThickness",
+                      "value":  "1 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.fillInset",
+                      "value":  "2 px on all sides",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.color",
+                      "value":  "#FFFFFF (white border and white fill), alpha = fade alpha",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "loading.progressBar.fillWidthFormula",
+                      "value":  "ceil((maxX - minX - 2) * currentProgress)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "menu.dirtTexture.path",
+                      "value":  "assets/minecraft/textures/gui/options_background.png",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "menu.dirtTexture.size",
+                      "value":  "16 x 16 px source texture (it is the dirt block texture)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "menu.dirtTexture.tileScale",
+                      "value":  "32.0 GUI px per tile (drawn at 2x source resolution, UV = pos/32)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "menu.dirtTexture.tint",
+                      "value":  "vertex color RGB(64,64,64) alpha 255 = multiply by 0.25 (screen background)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "menu.dirtTexture.tint.scrollList",
+                      "value":  "vertex color RGB(32,32,32) alpha 255 = multiply by 0.125 (inside scrollable list area)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "menu.dirt.replacedIn",
+                      "value":  "Java Edition 1.20.5 snapshot 24w09a â€” dirt replaced by blurred panorama; dirt moved to Programmer Art pack",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "menu.scrollList.geometry",
+                      "value":  "list top y=32, bottom y=height-32, item height 25 px; scrollbar 6 px wide at x = width/2 + 124",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "menu.scrollList.edgeShadow",
+                      "value":  "4 px tall vertical gradient from 0xFF000000 to 0x00000000 at list top, and reversed at list bottom",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "inGameMenu.worldDarkenGradient",
+                      "value":  "fillGradient top 0xC0101010 -\u003e bottom 0xD0101010 (ARGB)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.logo.texture",
+                      "value":  "minecraft:textures/gui/title/minecraft.png",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.logo.textureSize",
+                      "value":  "256 x 64 px (1.20+, after 23w14a); rendered region 256 x 44 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.logo.textureSize.pre1.20",
+                      "value":  "256 x 256 px, drawn as two 155 x 44 blits at (u0,v0) and (u0,v45) =\u003e 310 x 44 px on screen, x = width/2 - 137",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.logo.position",
+                      "value":  "x = screenWidth/2 - 128, y = 30 (LogoRenderer DEFAULT_HEIGHT_OFFSET = 30)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.logo.style",
+                      "value":  "pseudo-3D extruded stone-textured block letters with a thick dark outline (added 1.16) and a chiseled/etched face; the \u0027A\u0027 has a creeper face cut out as its counter",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.logo.editionSubtitle.texture",
+                      "value":  "minecraft:textures/gui/title/edition.png, 128 x 16 px texture, 98 x 14 px used region (\"JAVA EDITION\")",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.logo.editionSubtitle.position",
+                      "value":  "horizontally centered, y = logoY + 37 (i.e. logoY + 44 - 7)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "title.logo.easterEgg.texture",
+                      "value":  "minecraft:textures/gui/title/minceraft.png (separate texture since 1.20 / 23w14a)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.logo.easterEgg.probability",
+                      "value":  "1e-4 = 0.01% = 1 in 10,000 per title-screen construction",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.logo.monochrome",
+                      "value":  "Accessibility \"Monochrome Logo\" ON renders a greyscale logo variant; default OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.fadeInTime",
+                      "value":  "2000 ms total: panorama alpha 0-\u003e1 over ms 0-1000, foreground (logo/splash/buttons/text) alpha 0-\u003e1 over ms 1000-2000",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.splash.anchor",
+                      "value":  "pose translate to (screenWidth/2 + 90, 70)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.splash.rotation",
+                      "value":  "-20 degrees about Z (counter-clockwise 20 deg)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.splash.color",
+                      "value":  "#FFFF00 (RGB 255,255,0) with drop shadow #3F3F00",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.splash.pulseFormula",
+                      "value":  "s = 1.8 - abs(sin((millis mod 1000)/1000 * 2*PI) * 0.1); then s *= 100 / (fontWidth(splash) + 32)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.splash.pulsePeriod",
+                      "value":  "500 ms visual period (2 pulses/second, 120/minute) from a 1000 ms sine with abs()",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.splash.scaleRange",
+                      "value":  "pre-normalization factor oscillates 1.70 to 1.80 (amplitude 0.1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.splash.drawOffset",
+                      "value":  "drawCenteredString at local (0, -8) after translate/rotate/scale",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.splash.file",
+                      "value":  "assets/minecraft/texts/splashes.txt, one splash per line, UTF-8, never translated",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.splash.count",
+                      "value":  "277+ entries documented on the wiki; 582 lines in current (26.x) vanilla assets",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.buttons.baseY",
+                      "value":  "i = screenHeight/4 + 48",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.buttons.rowSpacing",
+                      "value":  "24 px between the three main buttons",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.singleplayer",
+                      "value":  "x = width/2 - 100, y = i, 200 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.multiplayer",
+                      "value":  "x = width/2 - 100, y = i + 24, 200 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.realms",
+                      "value":  "x = width/2 - 100, y = i + 48, 200 x 20 px (\"Minecraft Realms\")",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.options",
+                      "value":  "x = width/2 - 100, y = i + 84, 98 x 20 px (\"Options...\")",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.quit",
+                      "value":  "x = width/2 + 2, y = i + 84, 98 x 20 px (\"Quit Game\")",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.language",
+                      "value":  "x = width/2 - 124, y = i + 84, 20 x 20 px icon button (globe, from widgets.png u=0 v=106)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.button.accessibility",
+                      "value":  "x = width/2 + 104, y = i + 84, 20 x 20 px icon button (textures/gui/accessibility.png, 32x64)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.buttons.demoMode",
+                      "value":  "Singleplayer/Multiplayer/Realms replaced by \"Play Demo World\" and \"Reset Demo World\"",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.versionString.position",
+                      "value":  "x = 2, y = screenHeight - 10, left-aligned, #FFFFFF with shadow",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.versionString.text",
+                      "value":  "\"Minecraft \" + version name, e.g. \"Minecraft 1.20.1\"; appends \" Demo\" in demo, or \"/\u003cversionType\u003e\" if not a release",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.copyright.text",
+                      "value":  "\"Copyright Mojang AB. Do not distribute!\"",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.copyright.position",
+                      "value":  "x = screenWidth - textWidth - 2, y = screenHeight - 10, 10 px tall clickable PlainTextButton",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.faceCount",
+                      "value":  "6 faces",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.panorama.files",
+                      "value":  "assets/minecraft/textures/gui/title/background/panorama_0.png .. panorama_5.png",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.panorama.faceMapping",
+                      "value":  "0,1,2,3 = horizontal ring (left to right, 90 deg apart); 4 = top/up; 5 = bottom/down",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "title.panorama.resolution",
+                      "value":  "1024 x 1024 px per face in vanilla (minecraft.wiki states 1080 x 1080; any square size works)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "title.panorama.fov",
+                      "value":  "85.0 degrees vertical (perspective matrix built from 1.4835298 rad)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.nearFar",
+                      "value":  "near 0.05, far 10.0; cube faces at +/-1",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.rollFix",
+                      "value":  "model view pre-rotated 180 degrees about Z (images are stored upside down)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.spinRate",
+                      "value":  "yaw += 0.1 degrees per delta-tick unit, multiplied by the Panorama Scroll Speed option (default 1.0)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.fullRotationTime",
+                      "value":  "~180 s (3 minutes) per 360 deg at 20 delta-tick units/second",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "title.panorama.pitchBob",
+                      "value":  "pitch = 10 + cos(bob)*5 degrees (range 5-15 deg); bob += 0.001 rad per delta-tick unit =\u003e ~314 s period",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "title.panorama.blur",
+                      "value":  "cube drawn 4 times (2x2 sub-pixel jitter), NDC offsets in {-1/512, 0} on x and y; pass j alpha = round(255*alpha)/(j+1); alpha channel write disabled after pass 0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.overlay",
+                      "value":  "textures/gui/title/background/panorama_overlay.png, 16 x 128 px, stretched over the whole screen (vignette/gradient)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "title.panorama.changedPerUpdate",
+                      "value":  "panorama is replaced with every named major update to match its theme",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "widget.button.defaultSize",
+                      "value":  "200 x 20 px (full), 98 x 20 px (half; 4 px gutter on title screen, 8 px on pause menu)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "widget.button.texture.pre1.20.2",
+                      "value":  "textures/gui/widgets.png (256x256): v=46 disabled, v=66 normal, v=86 hovered; drawn as two half-width blits (u=0 and u=200-w/2)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "widget.button.textColor",
+                      "value":  "#FFFFFF active, #A0A0A0 (10526880) disabled; label centered, shadowed",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "widget.slider.handle",
+                      "value":  "8 px wide handle, x = trackX + value*(width-8); track v=46, handle v=66 (normal) / v=86 (hovered)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "optionsList.layout",
+                      "value":  "2 columns; left widget x = width/2 - 155, right x = width/2 + 5, each 150 x 20 px; full-width option 310 x 20 at x = width/2 - 155; row pitch 25 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.screenTitle",
+                      "value":  "\"Options\" centered at y = 15 (sub-screens centre their title at y = 20)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "options.subScreens",
+                      "value":  "Skin Customization..., Music \u0026 Sounds..., Video Settings..., Controls..., Language..., Chat Settings..., Resource Packs..., Accessibility Settings..., Telemetry Data..., Online...",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.doneButton",
+                      "value":  "\"Done\" 200 x 20 px at x = width/2 - 100, y = height/6 + 168",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "options.fov.range",
+                      "value":  "30 to 110 degrees (vertical FOV), step 1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.fov.default",
+                      "value":  "70 degrees",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.fov.storage",
+                      "value":  "options.txt stores fov as -1.0..1.0 where 0.0 = 70 deg; degrees = 70 + value*40",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.fov.presets",
+                      "value":  "70 displays as \"Normal\", 110 displays as \"Quake Pro\"",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.renderDistance.range",
+                      "value":  "2 to 32 chunks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.renderDistance.default",
+                      "value":  "12 chunks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.simulationDistance.range",
+                      "value":  "5 to 32 chunks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.simulationDistance.default",
+                      "value":  "12 chunks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.guiScale.range",
+                      "value":  "0 = Auto, then 1..N where N is the max integer scale for the current window",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.guiScale.default",
+                      "value":  "0 (Auto)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.brightness.range",
+                      "value":  "gamma 0.0 (\"Moody\") to 1.0 (\"Bright\"), displayed 0%-100%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.brightness.default",
+                      "value":  "0.5 (50%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mouseSensitivity.range",
+                      "value":  "0.0 (\"*yawn*\") to 1.0 (\"HYPERSPEED!!!\"), displayed as value*200 percent (0%-200%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mouseSensitivity.default",
+                      "value":  "0.5 raw = 100% displayed",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mouseLook.degreesPerPixel",
+                      "value":  "0.15 deg/pixel at default sensitivity",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.maxFramerate.range",
+                      "value":  "10 to 260 fps; 260 displays as \"Unlimited\"",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.maxFramerate.default",
+                      "value":  "120 fps",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.vsync.default",
+                      "value":  "ON",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.graphics.values",
+                      "value":  "Fast / Fancy / Fabulous!",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.graphics.default",
+                      "value":  "Fancy",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.biomeBlend.range",
+                      "value":  "radius 0..7 =\u003e OFF (1x1), 3x3, 5x5, 7x7, 9x9, 11x11, 13x13, 15x15",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.biomeBlend.default",
+                      "value":  "radius 2 = 5x5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.entityDistance.range",
+                      "value":  "50% to 500% (raw 0.5-5.0), 25% steps",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.entityDistance.default",
+                      "value":  "100%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mipmapLevels.range",
+                      "value":  "0 to 4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mipmapLevels.default",
+                      "value":  "4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.particles.values",
+                      "value":  "All / Decreased / Minimal (stored 0/1/2)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.particles.default",
+                      "value":  "All (0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.clouds.values",
+                      "value":  "OFF / Fast / Fancy",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.clouds.default",
+                      "value":  "Fancy",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.smoothLighting.default",
+                      "value":  "ON (ao = true)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.entityShadows.default",
+                      "value":  "ON",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.viewBobbing.default",
+                      "value":  "ON (bobView = true)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.attackIndicator.values",
+                      "value":  "OFF / Crosshair / Hotbar (0/1/2), default Crosshair",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.distortionEffects.default",
+                      "value":  "100% (screenEffectScale 1.0, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.fovEffects.default",
+                      "value":  "100% (fovEffectScale 1.0, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.darknessPulsing.default",
+                      "value":  "100% (darknessEffectScale 1.0, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.damageTilt.default",
+                      "value":  "100% (damageTiltStrength 1.0, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.glintSpeed.default",
+                      "value":  "50% (0.5, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.glintStrength.default",
+                      "value":  "75% (0.75, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.panoramaScrollSpeed.default",
+                      "value":  "100% (1.0, range 0-100%)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.notificationTime.default",
+                      "value":  "1.0x (range 0.5x to 5.0x)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.chunkBuilder.values",
+                      "value":  "Threaded / Semi Blocking / Fully Blocking, default Threaded",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.autosaveIndicator.default",
+                      "value":  "ON",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mouseWheelSensitivity.range",
+                      "value":  "0.01 to 10.0, default 1.00",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.discreteMouseScroll.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.rawInput.default",
+                      "value":  "ON (rawMouseInput = true)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.invertMouse.default",
+                      "value":  "OFF (invertYMouse = false)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.autoJump.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.toggleSneak.default",
+                      "value":  "Hold (toggleCrouch = false)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.toggleSprint.default",
+                      "value":  "Hold (toggleSprint = false)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatVisibility.values",
+                      "value":  "Shown / Commands Only / Hidden (0/1/2), default Shown",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatTextOpacity.default",
+                      "value":  "100% (raw 1.0; displayed = (raw*0.9 + 0.1)*100, range 10%-100%)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.textBackgroundOpacity.default",
+                      "value":  "50% (raw 0.5, range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatTextSize.default",
+                      "value":  "100% (chatScale 1.0, range 0-100%, 0 shows OFF)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatLineSpacing.default",
+                      "value":  "0% (range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatDelay.default",
+                      "value":  "0.0 s = \"None\" (range 0 to 6.0 s, step 0.1 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatWidth.default",
+                      "value":  "320 px (raw 1.0; px = raw*(320-40)+40, range 40-320 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatHeightFocused.default",
+                      "value":  "180 px (raw 1.0; px = raw*(180-20)+20, range 20-180 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.chatHeightUnfocused.default",
+                      "value":  "90 px (raw 0.4375)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.narrator.values",
+                      "value":  "OFF / All / Chat / System (0/1/2/3), default OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.commandSuggestions.default",
+                      "value":  "ON (autoSuggestions)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.hideMatchedNames.default",
+                      "value":  "ON",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.reducedDebugInfo.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.textBackground.values",
+                      "value":  "Chat / Everywhere (backgroundForChatOnly true = Chat), default Chat",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.showSubtitles.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.directionalAudio.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.highContrast.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.narratorHotkey.default",
+                      "value":  "ON",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.monochromeLogo.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.hideLightningFlashes.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.forceUnicodeFont.default",
+                      "value":  "OFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.mainHand.default",
+                      "value":  "Right",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.skinParts.defaults",
+                      "value":  "Cape, Jacket, Left Sleeve, Right Sleeve, Left Pants Leg, Right Pants Leg, Hat â€” ALL default ON (true)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.soundCategories",
+                      "value":  "Master, Music, Jukebox/Note Blocks (record), Weather, Blocks, Hostile Creatures, Friendly Creatures (neutral), Players, Ambient/Environment, Voice/Speech",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.soundVolumes.default",
+                      "value":  "1.0 = 100% for every category (range 0-100%)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.realmsNotifications.default",
+                      "value":  "ON",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "options.allowServerListings.default",
+                      "value":  "ON",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.telemetry.default",
+                      "value":  "Minimal (All / Minimal; None only when offline)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "options.pauseOnLostFocus.default",
+                      "value":  "true (no in-menu toggle; options.txt only)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "keybind.attack",
+                      "value":  "Left Mouse Button (key_key.attack = key.mouse.left)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.use",
+                      "value":  "Right Mouse Button (key.mouse.right)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.pickItem",
+                      "value":  "Middle Mouse Button (key.mouse.middle)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.forward",
+                      "value":  "W",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.left",
+                      "value":  "A",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.back",
+                      "value":  "S",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.right",
+                      "value":  "D",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.jump",
+                      "value":  "Space",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.sneak",
+                      "value":  "Left Shift",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.sprint",
+                      "value":  "Left Control",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.drop",
+                      "value":  "Q",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.inventory",
+                      "value":  "E",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.swapOffhand",
+                      "value":  "F",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.hotbar1to9",
+                      "value":  "1,2,3,4,5,6,7,8,9",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.chat",
+                      "value":  "T",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.command",
+                      "value":  "/ (slash)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.playerlist",
+                      "value":  "Tab",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.socialInteractions",
+                      "value":  "P",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.advancements",
+                      "value":  "L",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.screenshot",
+                      "value":  "F2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.toggleGui",
+                      "value":  "F1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.togglePerspective",
+                      "value":  "F5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.fullscreen",
+                      "value":  "F11",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.toggleSpectatorShaderEffects",
+                      "value":  "F4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.smoothCamera",
+                      "value":  "unbound (key.keyboard.unknown)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.spectatorOutlines",
+                      "value":  "unbound",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.spectatorHotbar",
+                      "value":  "Middle Mouse Button",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "keybind.saveToolbarActivator",
+                      "value":  "C (creative)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.loadToolbarActivator",
+                      "value":  "X (creative)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.debugOverlay",
+                      "value":  "F3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.debugModifier",
+                      "value":  "F3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "keybind.pause",
+                      "value":  "Escape (hardcoded, not rebindable)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pause.title",
+                      "value":  "\"Game Menu\" (translation key menu.game)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pause.button.backToGame",
+                      "value":  "\"Back to Game\", x = width/2 - 102, y = height/4 + 8, 204 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.advancements",
+                      "value":  "\"Advancements\", x = width/2 - 102, y = height/4 + 32, 98 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.statistics",
+                      "value":  "\"Statistics\", x = width/2 + 4, y = height/4 + 32, 98 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.feedback",
+                      "value":  "\"Give Feedback\", x = width/2 - 102, y = height/4 + 56, 98 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.reportBugs",
+                      "value":  "\"Report Bugs\", x = width/2 + 4, y = height/4 + 56, 98 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.options",
+                      "value":  "\"Options...\", x = width/2 - 102, y = height/4 + 80, 98 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.lanOrReporting",
+                      "value":  "\"Open to LAN\" (singleplayer) / \"Player Reporting\" (multiplayer), x = width/2 + 4, y = height/4 + 80, 98 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.button.quit",
+                      "value":  "\"Save and Quit to Title\" (singleplayer) / \"Disconnect\" (multiplayer), x = width/2 - 102, y = height/4 + 104, 204 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pause.titlePosition",
+                      "value":  "centered at x = width/2, y = 40",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "death.title.normal",
+                      "value":  "\"You Died!\" (deathScreen.title)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "death.title.hardcore",
+                      "value":  "\"Game over!\" (deathScreen.title.hardcore)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "death.title.scale",
+                      "value":  "2.0x font scale, centered at screen x = width/2, drawn at y = 30 inside the 2x transform (effective on-screen y = 60)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.causeMessage.position",
+                      "value":  "centered at (width/2, 85), #FFFFFF",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.scoreLine.text",
+                      "value":  "\"Score: \u003cn\u003e\" â€” label white, the number in ChatFormatting.YELLOW (#FFFF55)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.scoreLine.position",
+                      "value":  "centered at (width/2, 100)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.button.primary",
+                      "value":  "\"Respawn\" (normal) / \"Spectate World\" (hardcore), x = width/2 - 100, y = height/4 + 72, 200 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.button.secondary",
+                      "value":  "\"Title Screen\", x = width/2 - 100, y = height/4 + 96, 200 x 20 px",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.overlayGradient",
+                      "value":  "vertical fillGradient top ARGB 0x60500000 (a=96, rgb 80,0,0) -\u003e bottom ARGB 0xA0803030 (a=160, rgb 128,48,48)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.buttonDelay",
+                      "value":  "20 ticks = 1.0 s before buttons become active",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "death.cameraEffect",
+                      "value":  "view tilts as if falling, shudders and zooms slightly; render distance drops to default",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkMap.size",
+                      "value":  "35 x 35 chunk cells",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.empty",
+                      "value":  "#545454",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.biomes",
+                      "value":  "#80B252",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.surface",
+                      "value":  "#726809",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.features",
+                      "value":  "#21C600",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.light",
+                      "value":  "#FFE0A0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.spawn",
+                      "value":  "#F26060",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "levelLoad.chunkColor.full",
+                      "value":  "#FFFFFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "splash.special.christmasEve",
+                      "value":  "\"Merry X-mas!\" on December 24",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "splash.special.newYear",
+                      "value":  "\"Happy new year!\" on January 1",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "splash.special.halloween",
+                      "value":  "\"OOoooOOOoooo! Spooky!\" on October 31",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "splash.special.username",
+                      "value":  "\"\u003cUSERNAME\u003e IS YOU\" (uppercased) when a random roll lands on index 42",
+                      "confidence":  "medium"
+                  }
+              ],
+    "notes":  "## Version scope warning\nminecraft.wiki now documents 26.x. Several values it returns are NOT 1.20 (`graphicsPreset`, `cutoutLeaves`, `weatherRadius`, `cloudRange`, Friends button, Server Linksâ€¦, World Options, Quick Actions/G, Friends/O keybinds, \"Graphics API\", \"Texture Filtering\", \"Improved Transparency\", \"Sprint Window\"). Everything below is filtered to 1.20.x unless stated. Two wiki-vs-code disagreements to be aware of: panorama face resolution (wiki says 1080x1080; vanilla files are 1024x1024) and several \"default\" columns the wiki rendered wrong (skin model parts default **ON**, Smooth Lighting default **ON**, Entity Distance default **100%** not 75%). Facts tagged `medium` come from the decompiled 1.20 client (`LoadingOverlay`, `TitleScreen`, `LogoRenderer`, `CubeMap`, `PanoramaRenderer`, `PauseScreen`, `DeathScreen`, `Screen`, `AbstractSelectionList`, `OptionsList`), not from a wiki page â€” implement them, but they are not independently citable.\n\n---\n\n## 1. Mojang loading overlay (`LoadingOverlay`)\n\nPer-frame:\n```\nnow      = millis()\nif (fadeIn \u0026\u0026 reloadStartTime == -1) reloadStartTime = now\nfadeOutT = fadeOutStart \u003e -1 ? (now - fadeOutStart)/1000.0 : -1     // FADE_OUT_TIME = 1000 ms\nfadeInT  = reloadStart  \u003e -1 ? (now - reloadStartTime)/500.0 : -1   // FADE_IN_TIME  =  500 ms\n\nif      (fadeOutT \u003e= 1.0) -\u003e pop the overlay; alpha = 1 - clamp(fadeOutT - 1, 0, 1)\nelse if (fadeIn)          -\u003e fill screen with BRAND colour; alpha = clamp(fadeInT, 0, 1)\nelse                      -\u003e fill screen with BRAND at (1 - fadeOutT); alpha = 1\nBRAND = monochromeLogo ? 0xFF000000 : 0xFFEF323D\n```\n\nLogo sizing (GUI px):\n```\ncx = guiW/2 ; cy = guiH/2\nd        = min(guiW * 0.75, guiH) * 0.25     // logo HEIGHT\nhalfW    = (d * 4) * 0.5                     // = 2d\nquarterH = d * 0.5\nblit(left ) at (cx - halfW, cy - quarterH) size (halfW, d) from uv(-0.0625,  0) src 120x60 of a 120x120 sheet\nblit(right) at (cx,         cy - quarterH) size (halfW, d) from uv( 0.0625, 60) src 120x60 of a 120x120 sheet\n```\nBlend: `glBlendEquation(GL_FUNC_ADD)` + `glBlendFunc(GL_SRC_ALPHA, GL_ONE)`, shader colour `(1,1,1,alpha)`. So the logo is drawn additively over the red field â€” in a canvas clone use `globalCompositeOperation = \u0027lighter\u0027` or premultiply against the red.\n\nProgress bar:\n```\nbarCY = round(guiH * 0.8325)\nminX = cx - halfW ; maxX = cx + halfW ; minY = barCY - 5 ; maxY = barCY + 5\nprogress = clamp(progress*0.95 + target*0.05, 0, 1)          // exponential smoothing per frame\nfillW = ceil((maxX - minX - 2) * progress)\ncol   = rgba(255,255,255, round(alpha*255))\nfill(minX+2, minY+2, minX+fillW, maxY-2, col)   // inner bar\nfill(minX+1, minY,   maxX-1,     minY+1, col)   // top border\nfill(minX+1, maxY-1, maxX-1,     maxY,   col)   // bottom border\nfill(minX,   minY,   minX+1,     maxY,   col)   // left border\nfill(maxX-1, minY,   maxX,       maxY,   col)   // right border\n```\nBar is exactly **10 GUI px tall, 4d wide**, 1 px white outline, 2 px inner padding, and shows the *smoothed* value so it visibly eases into 100 %. Sequence for a clone: red fills instantly â†’ logo alpha 0â†’1 over 500 ms â†’ once assets are ready, everything cross-fades out over 1000 ms into the title screen.\n\n---\n\n## 2. Dirt menu background (1.20.0 â€“ 1.20.4)\n\n```\ntex = assets/minecraft/textures/gui/options_background.png   (16x16, the dirt block texture)\nfull-screen quad:  u = x/32.0 ,  v = y/32.0 + vOffset ,  vertexColor = rgb(64,64,64) a=255\n```\nOne tile = **32 x 32 GUI px** (16 px texture at 2x), GL_REPEAT, multiplied to 25 % brightness. CSS analogue: `background: url(dirt.png) repeat; background-size: 32px 32px;` over a `brightness(0.25)` filter, or bake a pre-darkened tile.\n\nInside scrollable lists the same texture uses vertex colour **rgb(32,32,32)** (12.5 %), so the list well is visibly darker than the screen. Above the list top and below the list bottom the 64,64,64 version is re-drawn as header/footer bands, and 4-px vertical gradients (`#FF000000 â†’ #00000000` at the list top, reversed at the bottom) act as inner shadows. `vOffset` exists so the dirt scrolls with list content.\n\nWith a level loaded, `Screen.renderBackground()` skips the dirt and draws a full-screen vertical gradient `0xC0101010 â†’ 0xD0101010` over the paused world.\n\n1.20.5 (24w09a) removed all of this: menus now show the title panorama, box-blurred (strength = \"Menu Background Blurriness\") and darkened; `menu_background.png`, `light_dirt_background.png`, `header_separator.png`, `footer_separator.png` became the resource-pack hooks.\n\n---\n\n## 3. Title screen\n\n### Fade-in\n```\nf = fading ? (now - fadeInStart)/1000.0 : 1.0          // FADE_IN_TIME constant = 2000 ms total\npanoramaAlpha   = clamp(f, 0, 1)                        // 0-\u003e1 during ms [0,1000]\nforegroundAlpha = fading ? clamp(f - 1, 0, 1) : 1.0     // 0-\u003e1 during ms [1000,2000]\nargbTint        = ceil(foregroundAlpha * 255) \u003c\u003c 24     // OR\u0027d into every text/logo colour int\n```\n\n### Logo\n`textures/gui/title/minecraft.png`. In 1.20 (since 23w14a) it is the Bedrock-style wordmark: a **256 x 64** sheet whose top **256 x 44** region is the logo, blitted 1:1 at `x = width/2 - 128, y = 30`. Pre-1.20 it was a 256x256 sheet split into two 155x44 tiles at `(0,0)` and `(0,45)` drawn side by side from `x = width/2 - 137` (310x44 on screen; the odd offset compensates for transparent padding).\n\nStyle, for hand-authoring: extruded/isometric \"stone\" block letters, 44 px tall at 1x GUI scale, each glyph carrying a 1â€“2 px near-black outline (introduced 1.16) plus a hard dark offset face on the bottom/right that produces the 3D bevel; letter faces use a chiselled stone texture (cracked stone in the pre-1.16 art, cleaner etched stone after). The **A**\u0027s counter is a creeper face. There is **no runtime drop shadow** â€” the shadow/bevel is baked into the PNG, and there is **no idle animation** (the falling-stone intro was removed in Beta 1.4); the only motion is the 1 s alpha fade-in.\n\nUnder it, `textures/gui/title/edition.png` (128x16 sheet, 98x14 used region) renders the \"JAVA EDITION\" subtitle centred beneath the wordmark.\n\nEaster egg: probability 1e-4 swaps the whole logo for `minceraft.png`. Accessibility \"Monochrome Logo\" swaps in a greyscale variant.\n\n### Splash text\n```\npush()\ntranslate(width/2 + 90, 70)\nrotateZ(-20Â°)\ns = 1.8 - abs(sin((millis % 1000) / 1000 * 2Ï€) * 0.1)      // 1.70 .. 1.80, abs() -\u003e 2 Hz\ns = s * 100 / (font.width(splash) + 32)                     // auto-fit to ~100 px wide\nscale(s, s, s)\ndrawCenteredString(font, splash, 0, -8, 0xFFFF00 | argbTint)   // yellow, shadow 0x3F3F00\npop()\n```\nConsequences: long splashes render smaller (the splash always occupies ~100 GUI px of width); the pulse is a Â±2.8 % size wobble at exactly 2 pulses/second; rotation is 20Â° counter-clockwise; the pivot is 90 px right of centre at y=70, sitting over the right end of the logo.\n\nSelection: one random line from `assets/minecraft/texts/splashes.txt`, picked once when the title screen is constructed (so it re-rolls each time you return to the menu). Date overrides are tested first (Dec 24 â†’ \"Merry X-mas!\", Jan 1 â†’ \"Happy new year!\", Oct 31 â†’ \"OOoooOOOoooo! Spooky!\"); a 1-in-N roll landing on index 42 yields `USERNAME IS YOU`. Splashes are never translated. The file deliberately contains a duplicate (\"DÃ©jÃ  vu!\") and the self-referential \"This message will never appear on the splash screen, isn\u0027t that weird?\".\n\n### Buttons (1.20)\n```\ni = height/4 + 48\nSingleplayer       (width/2 - 100, i,       200, 20)\nMultiplayer        (width/2 - 100, i +  24, 200, 20)\nMinecraft Realms   (width/2 - 100, i +  48, 200, 20)\nj = i + 84                                     // = i + 72 + 12\nLanguage  (icon)   (width/2 - 124, j,        20, 20)\nOptions...         (width/2 - 100, j,        98, 20)\nQuit Game          (width/2 +   2, j,        98, 20)\nAccessibility(icon)(width/2 + 104, j,        20, 20)\n```\nRow pitch 24 px (20 px button + 4 px gap). The bottom row is 98+4+98 = 200 px, flanked by two 20x20 icon buttons with 4 px gaps. Demo builds substitute \"Play Demo World\" / \"Reset Demo World\" for the first three.\n\n### Bottom strings\n- Version: `drawString(\"Minecraft \" + versionName, 2, height - 10, 0xFFFFFF | tint)` â€” bottom-left, 2 px inset, text row 10 px above the bottom edge. Appends `\" Demo\"` in demo mode or `\"/\" + versionType` for snapshots.\n- Copyright: `\"Copyright Mojang AB. Do not distribute!\"` right-aligned at `x = width - textWidth - 2, y = height - 10`. Since 1.19 it is a `PlainTextButton` with a 10 px tall hit box that underlines on hover and opens the attribution page.\n\n### Panorama\nSix cube faces, `textures/gui/title/background/panorama_{0..5}.png`; 0â€“3 = horizontal ring (90Â° apart, leftâ†’right), 4 = top, 5 = bottom.\n```\nproj = perspective(fovY = 1.4835298 rad = 85Â°, aspect = fbW/fbH, near = 0.05, far = 10.0)\nmodelView = identity; rotateZ(180Â°)          // source images are stored inverted\ndisableCull; depthMask(false); blend on\nfor pass j in 0..3:\n    ox = ((j % 2)/2 - 0.5)/256               // -\u003e {-1/512, 0}\n    oy = ((j / 2)/2 - 0.5)/256               // -\u003e {-1/512, 0}\n    translate(ox, oy, 0); rotateX(pitch); rotateY(yaw)\n    draw 6 unit-cube faces at Â±1, vertex colour (255,255,255, round(255*alpha)/(j+1))\n    after pass 0: colorMask(R,G,B, A=false)\n```\nThat 2x2 jittered accumulation **is** the blur â€” a 4-tap supersample with 1, 1/2, 1/3, 1/4 weights. A ~1 px gaussian approximates it; replicating the 4 passes is exact.\n\nCamera motion (`dt` = frame delta in ticks, `k` = Panorama Scroll Speed option, default 1.0):\n```\nspin = wrap(spin + dt*k*0.1,   360Â°)\nbob  = wrap(bob  + dt*k*0.001, 2Ï€)\nrender(pitch = 10Â° + cos(bob)*5Â°, yaw = -spin)\n```\nNet: constant yaw drift â‰ˆ 2 Â°/s (360Â° in ~3 min) plus a Â±5Â° pitch bob with ~314 s period. `panorama_overlay.png` (16x128) is stretched full-screen over it as a soft vignette.\n\n---\n\n## 4. Widget primitives (needed for every screen above)\n\n- **Button**: 200x20 default, 98x20 half. Pre-1.20.2 art from `textures/gui/widgets.png` (256x256), sprite rows at v=46 (disabled), v=66 (normal), v=86 (hovered), each 200x20; a width-`w` button is two blits of `w/2` from `u=0` and `u=200-w/2` so the rounded caps survive arbitrary widths. Label centred, #FFFFFF active / #A0A0A0 disabled, always shadowed. 1.20.2+ switched to 9-slice sprites (`widget/button`, `widget/button_disabled`, `widget/button_highlighted`).\n- **Slider**: same 200x20 track plus an **8 px wide** handle at `x = trackX + value*(width - 8)`.\n- **OptionsList rows**: 25 px pitch, list spans y=32 â†’ height-32; small options 150x20 at `x = width/2 - 155` (left col) and `x = width/2 + 5` (right col); \"big\" options 310x20 at `x = width/2 - 155`. Scrollbar 6 px wide at `x = width/2 + 124`.\n\n---\n\n## 5. Options screen tree (1.20.1)\n\n**Options** (title \"Options\"): FOV slider full-width at the top, then a 2-column grid of `â€¦` buttons, then **Done**. Sub-screens: *Skin Customizationâ€¦*, *Music \u0026 Soundsâ€¦*, *Video Settingsâ€¦*, *Controlsâ€¦*, *Languageâ€¦*, *Chat Settingsâ€¦*, *Resource Packsâ€¦*, *Accessibility Settingsâ€¦*, *Telemetry Dataâ€¦*, *Onlineâ€¦*. Opened from inside a world it also shows a **Difficulty** cycle (Peaceful/Easy/Normal/Hard) with a lock toggle, and *Server Resource Packs* (Prompt/Enabled/Disabled) on servers.\n\n**Video Settings** â€” Graphics (Fast/Fancy/Fabulous!, def Fancy), Render Distance (2â€“32, def 12), Simulation Distance (5â€“32, def 12), Smooth Lighting (def ON), Max Framerate (10â€“260 fps, 260 = Unlimited, def 120), VSync (def ON), Chunk Builder (Threaded/Semi Blocking/Fully Blocking, def Threaded), Biome Blend (OFF/3x3â€¦15x15, raw 0â€“7, def 5x5), View Bobbing (def ON), GUI Scale (Auto/1..N, def Auto), Attack Indicator (OFF/Crosshair/Hotbar, def Crosshair), Brightness (Moody 0 â†’ Bright 1, def 0.5), Clouds (OFF/Fast/Fancy, def Fancy), Fullscreen (def OFF), Fullscreen Resolution (def \"Current\"), Particles (All/Decreased/Minimal, def All), Mipmap Levels (0â€“4, def 4), Entity Shadows (def ON), Distortion Effects (0â€“100 %, def 100 %), Entity Distance (50â€“500 % in 25 % steps, def 100 %), FOV Effects (0â€“100 %, def 100 %), Autosave Indicator (def ON), Glint Speed (def 50 %), Glint Strength (def 75 %). 1.20.2 adds Menu Background Blurriness.\n\n**Controls** â€” buttons *Mouse Settingsâ€¦*, *Key Bindsâ€¦*, plus Auto-Jump (OFF), Sneak (Hold/Toggle, def Hold), Sprint (Hold/Toggle, def Hold), Operator Items Tab (OFF).\n**Mouse Settings** â€” Sensitivity (0â€“200 %, def 100 %), Invert Mouse (OFF), Mouse Wheel Sensitivity (0.01â€“10.0, def 1.00), Discrete Mouse Scroll (OFF), Touchscreen Mode (OFF), Raw Input (ON).\n**Key Binds** â€” scrollable list, one row per bind: label left, 75x20 key button, 50x20 \"Reset\" button; conflicting binds render the key name in red with a tooltip; \"Reset Keys\" at the bottom.\n\n**Language** â€” scrollable list of \"Native Name (English Name)\" entries, plus Force Unicode Font (OFF) and Done.\n\n**Chat Settings** â€” Chat (Shown/Commands Only/Hidden, def Shown), Colors (ON), Web Links (ON), Prompt on Links (ON), Chat Text Opacity (10â€“100 %, def 100 %), Text Background Opacity (0â€“100 %, def 50 %), Chat Text Size (0â€“100 %, def 100 %, 0 = OFF), Line Spacing (0â€“100 %, def 0 %), Chat Delay (0.0â€“6.0 s, def \"None\"), Width (40â€“320 px, def 320), Focused Height (20â€“180 px, def 180), Unfocused Height (20â€“180 px, def 90), Narrator (OFF/All/Chat/System, def OFF), Command Suggestions (ON), Hide Matched Names (ON), Reduced Debug Info (OFF), Only Show Secure Chat (OFF).\nSliderâ†’pixel formulas: `width_px = raw*(320-40)+40`, `height_px = raw*(180-20)+20`.\n\n**Skin Customization** â€” 7 toggles, **all default ON**: Cape, Jacket, Left Sleeve, Right Sleeve, Left Pants Leg, Right Pants Leg, Hat; plus Main Hand (Left/Right, def Right). Shows a live rotating player model.\n\n**Music \u0026 Sounds** â€” Master Volume plus Music, Jukebox/Note Blocks, Weather, Blocks, Hostile Creatures, Friendly Creatures, Players, Ambient/Environment, Voice/Speech â€” all 0â€“100 %, all default 100 %. Plus Show Subtitles (OFF), Directional Audio (OFF), and a Sound Device selector.\n\n**Accessibility Settings** â€” Narrator (OFF), Show Subtitles (OFF), Text Background (Chat/Everywhere, def Chat), Text Background Opacity (50 %), Chat Text Opacity (100 %), Line Spacing (0 %), Chat Delay (None), Distortion Effects (100 %), FOV Effects (100 %), Darkness Pulsing (100 %), Damage Tilt (100 %), Glint Speed (50 %), Glint Strength (75 %), Monochrome Logo (OFF), Hide Lightning Flashes (OFF), Panorama Scroll Speed (100 %), Notification Time (1.0x), High Contrast (OFF), Narrator Hotkey (ON). 1.20.2 adds Hide Splash Texts + Menu Background Blurriness; 1.21.2 adds Rotate with Minecarts.\n\n**FOV storage quirk**: `options.txt` writes `fov` as a âˆ’1.0â€¦1.0 float; `degrees = 70 + fov*40`. Other values are stored raw 0â€“1 (gamma, sensitivity, chat*, *Scale) or as int/enum ordinals.\n\n**Mouse-look math** (to make sensitivity feel right):\n```\na = sensitivity*0.6 + 0.2       // sensitivity = raw 0..1 option\nm = a*a*a * 8.0\nyawDelta   = dx * m * 0.15 degrees\npitchDelta = dy * m * 0.15 degrees   (negated if Invert Mouse)\npitch clamped to [-90, +90]\n```\nAt the default 0.5: a=0.5, m=1.0 â†’ exactly **0.15 degrees per mouse pixel**.\n\n---\n\n## 6. Pause menu (\"Game Menu\")\n\n`PauseScreen`, with `i = -16`, half width 98:\n```\nBack to Game                        (w/2 - 102, height/4 + i +  24, 204, 20)\nAdvancements                        (w/2 - 102, height/4 + i +  48,  98, 20)\nStatistics                          (w/2 +   4, height/4 + i +  48,  98, 20)\nGive Feedback                       (w/2 - 102, height/4 + i +  72,  98, 20)\nReport Bugs                         (w/2 +   4, height/4 + i +  72,  98, 20)\nOptions...                          (w/2 - 102, height/4 + i +  96,  98, 20)\nOpen to LAN | Player Reporting      (w/2 +   4, height/4 + i +  96,  98, 20)\nSave and Quit to Title | Disconnect (w/2 - 102, height/4 + i + 120, 204, 20)\n```\nWith `i = -16` those resolve to `height/4 + 8, +32, +56, +80, +104`. Half-width pairs sit at âˆ’102/+4 with width 98 â†’ an 8 px centre gutter, 204 px total row. Title \"Game Menu\" centred near y=40, over the `0xC0101010 â†’ 0xD0101010` world gradient. Esc or \"Back to Game\" resumes. (26.x reorders and expands this â€” Server Linksâ€¦, World Options, Friends List â€” do **not** use that ordering for a 1.20 clone.)\n\n---\n\n## 7. Death screen\n\n```\nfillGradient(0, 0, width, height, 0x60500000, 0xA0803030)      // top -\u003e bottom, world still rendering behind\npush(); scale(2,2,2)\n  drawCenteredString(title, (width/2)/2, 30, 0xFFFFFF)         // \"You Died!\" / \"Game over!\"\npop()\nif (causeOfDeath != null) drawCenteredString(causeOfDeath, width/2, 85, 0xFFFFFF)\ndrawCenteredString(\"Score: \" + score, width/2, 100, 0xFFFFFF)  // number rendered Â§e yellow\nRespawn | Spectate World   (width/2 - 100, height/4 + 72, 200, 20)\nTitle Screen               (width/2 - 100, height/4 + 96, 200, 20)\n```\nTitle is drawn inside a 2x scale, so its effective on-screen baseline is yâ‰ˆ60 and its centre is width/2. All buttons are `active = false` for the first **20 ticks (1 s)** so a click at the moment of death cannot skip the screen. Hovering the truncated cause-of-death line shows the full message as a tooltip. Behind the screen the world keeps rendering with a slow falling-camera tilt, a shudder and a slight zoom; render distance is forced back to the default. Hardcore: title \"Game over!\", primary button \"Spectate World\".\n\n---\n\n## 8. Real vanilla splash texts (verbatim)\n\n`As seen on TV!` Â· `Awesome!` Â· `100% pure!` Â· `May contain nuts!` Â· `More polygons!` Â· `Moderately attractive!` Â· `Limited edition!` Â· `Flashing letters!` Â· `It\u0027s here!` Â· `Best in class!` Â· `Excitement!` Â· `One of a kind!` Â· `Check it out!` Â· `Holy cow, man!` Â· `It\u0027s a game!` Â· `Made in Sweden!` Â· `Minecraft!` Â· `Yaaay!` Â· `Keyboard compatible!` Â· `Ingots!` Â· `Exploding creepers!` Â· `That\u0027s no moon!` Â· `Create!` Â· `Survive!` Â· `The bee\u0027s knees!` Â· `Pixels!` Â· `GOTY!` Â· `Indie!` Â· `Indev!` Â· `Spiders everywhere!` Â· `Herregud!` Â· `DÃ©jÃ  vu!` (present twice on purpose) Â· `Aww man!` Â· `Technoblade never dies!` Â· `This message will never appear on the splash screen, isn\u0027t that weird?`\n\n---\n\n## 9. Implementation gotchas\n\n- All layout is **integer GUI pixels** scaled by `guiScale` â€” do the math in virtual space and blit nearest-neighbour, or the 1-px features (progress-bar border, list edge shadows, button caps) turn to mush.\n- The title screen\u0027s `height/4 + 48` anchor puts the button block below centre on tall windows and lets it collide with the logo on short ones; vanilla does not clamp this, so a faithful clone shouldn\u0027t either.\n- Splash auto-scaling divides by `font.width(splash) + 32`, so you need a real advance-width table for the Minecraft font (variable width; most glyphs advance 6 px including the 1 px gap) or the splash comes out the wrong size.\n- Panorama faces must be drawn with culling disabled and depth writes off, and the whole cube pre-rotated 180Â° on Z.\n- Text colours are ARGB ints; the fade path ORs `ceil(alpha*255) \u003c\u003c 24` into the colour rather than using a separate alpha uniform, and alpha 0 is treated as opaque in some draw paths.\n- `options.txt` is a flat newline-separated `key:value` file led by `version:\u003cdataVersion\u003e` (3465 for 1.20.1); unknown keys survive round-trips and missing keys fall back to the defaults above.",
+    "sources":  [
+                    "https://minecraft.wiki/w/Title_screen",
+                    "https://minecraft.wiki/w/Title_Screen",
+                    "https://minecraft.wiki/w/Options",
+                    "https://minecraft.wiki/w/Options.txt",
+                    "https://minecraft.wiki/w/Controls",
+                    "https://minecraft.wiki/w/Splash",
+                    "https://minecraft.wiki/w/Panorama",
+                    "https://minecraft.wiki/w/Background",
+                    "https://minecraft.wiki/w/Logo",
+                    "https://minecraft.wiki/w/Menu_screen",
+                    "https://minecraft.wiki/w/Game_Menu",
+                    "https://minecraft.wiki/w/Death",
+                    "https://minecraft.wiki/w/Loading_world_screen",
+                    "https://minecraft.wiki/w/Settings",
+                    "https://minecraft.fandom.com/wiki/Background",
+                    "https://minecraft.fandom.com/wiki/Loading_world_screen",
+                    "https://maven.fabricmc.net/docs/yarn-1.20.1+build.10/net/minecraft/client/gui/screen/SplashOverlay.html",
+                    "https://raw.githubusercontent.com/misode/mcmeta/assets/assets/minecraft/texts/splashes.txt",
+                    "https://cocalc.com/github/minecraftforge/minecraftforge/blob/1.20.x/src/main/java/net/minecraftforge/client/loading/ForgeLoadingOverlay.java",
+                    "https://www.spriters-resource.com/pc_computer/minecraft/asset/267330/"
+                ]
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>SowmiCraft</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%237CB342'/><rect y='6' width='16' height='10' fill='%23795548'/></svg>">
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #000; color: #fff;
+    font-family: monospace;
+    -webkit-user-select: none; user-select: none;
+    touch-action: none;
+  }
+  #stack { position: fixed; inset: 0; }
+  canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  #gl { z-index: 0; background: #000; }
+  #ui { z-index: 1; }
+  #ui.grab { cursor: none; }
+
+  /* Pre-boot splash: mirrors the in-engine loading screen so there is never a white flash. */
+  #boot {
+    position: fixed; inset: 0; z-index: 10;
+    background: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity .25s linear;
+  }
+  #boot.hidden { opacity: 0; pointer-events: none; }
+  #bootMark {
+    width: 128px; height: 128px;
+    image-rendering: pixelated;
+  }
+  #bootBarOuter {
+    position: absolute; left: 50%; bottom: 22%;
+    transform: translateX(-50%);
+    width: 40%; max-width: 480px; height: 10px;
+    border: 2px solid #d3313f; background: #ffffff;
+    box-sizing: content-box; padding: 2px;
+  }
+  #bootBar { height: 100%; width: 0%; background: #d3313f; transition: width .12s linear; }
+  #fatal {
+    position: fixed; inset: 0; z-index: 20; display: none;
+    background: #1a0d0d; color: #ff6b6b; padding: 32px;
+    font: 13px/1.6 monospace; overflow: auto; white-space: pre-wrap;
+  }
+  #fatal h1 { color: #fff; font-size: 20px; margin: 0 0 12px; }
+  #fatal code { color: #ffd166; }
+  noscript { position: fixed; inset: 0; display: grid; place-items: center; background: #000; z-index: 99; }
+</style>
+</head>
+<body>
+<div id="stack">
+  <canvas id="gl"></canvas>
+  <canvas id="ui"></canvas>
+</div>
+
+<div id="boot">
+  <svg id="bootMark" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <rect width="16" height="16" fill="#fff"/>
+    <path fill="#d3313f" d="M2 3h2v10H2zM4 3h2v2H4zM6 5h2v2H6zM8 3h2v2H8zM10 3h2v10h-2zM2 3h10v2H2z"/>
+    <path fill="#d3313f" d="M6 7h2v6H6z"/>
+  </svg>
+  <div id="bootBarOuter"><div id="bootBar"></div></div>
+</div>
+
+<div id="fatal"><h1>SowmiCraft failed to start</h1><div id="fatalMsg"></div></div>
+
+<noscript><div>SowmiCraft requires JavaScript.</div></noscript>
+
+<script>
+  // Surface module-load and runtime errors instead of leaving a black screen.
+  window.__sowmiFatal = function (err) {
+    var el = document.getElementById('fatal');
+    var msg = document.getElementById('fatalMsg');
+    if (!el || !msg) return;
+    el.style.display = 'block';
+    var boot = document.getElementById('boot');
+    if (boot) boot.style.display = 'none';
+    msg.textContent = (err && (err.stack || err.message)) || String(err);
+  };
+  window.addEventListener('error', function (e) {
+    if (e.message && /Script error/i.test(e.message) && !e.filename) return;
+    window.__sowmiFatal(e.error || e.message);
+  });
+  window.addEventListener('unhandledrejection', function (e) { window.__sowmiFatal(e.reason); });
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

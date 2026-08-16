@@ -1,0 +1,305 @@
+﻿{
+    "topic":  "Minecraft Java Edition (1.20) font + text rendering: metrics, glyph advance table, shadow/format effects, and freely-licensed lookalike fonts",
+    "facts":  [
+                  {
+                      "key":  "font.name",
+                      "value":  "\"Mojangles\" (internal Java Edition name: \"Minecraft Seven\"); resource id minecraft:default, backed by assets/minecraft/textures/font/ascii.png",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "font.author_year",
+                      "value":  "Markus Persson, first drawn 2001 for Legend of the Chambered; maintained by Mojang Studios",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "font.license",
+                      "value":  "All rights reserved (proprietary Mojang asset); usable only under the Minecraft Usage Guidelines â€” NOT redistributable/embeddable in a clone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "atlas.ascii_png.size",
+                      "value":  "128 x 128 px (verified by direct pixel inspection)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "atlas.ascii_png.grid",
+                      "value":  "16 x 16 cells",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "glyph.cell_size",
+                      "value":  "8 x 8 px",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "provider.ascii.height",
+                      "value":  "8 px (field omitted in JSON; bitmap provider default is 8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "provider.ascii.ascent",
+                      "value":  "7 px (baseline sits 7 px below the top of the 8 px glyph box)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.cap_height",
+                      "value":  "7 px (A-Z and 0-9 occupy cell rows 0..6, verified)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.ascender_height",
+                      "value":  "7 px (b d f h k l t i occupy rows 0..6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.x_height",
+                      "value":  "5 px (a c e m n o r s u v w x z occupy rows 2..6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.descender_depth",
+                      "value":  "1 px below baseline (g j p q y , ; occupy row 7)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.total_ink_extent",
+                      "value":  "8 px (row 0 top of caps .. row 7 bottom of descenders)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.stroke_weight",
+                      "value":  "1 px, uniform, every glyph, no exceptions in ASCII",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "metrics.line_height",
+                      "value":  "9 px (FontRenderer.FONT_HEIGHT = 9); = 8 px glyph box + 1 px leading",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.formula",
+                      "value":  "advance_px = (index of right-most column with alpha \u003e 0) + 1 + 1  â†’ ink_width + 1 px inter-glyph gap",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.space",
+                      "value":  "4 px (declared explicitly by the `space` provider in minecraft:include/space, not derived from the bitmap)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.zwnj",
+                      "value":  "0 px for U+200C (space provider)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.default_ascii",
+                      "value":  "6 px for the majority of ASCII (5 px ink + 1 px gap)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.table.ascii_ink_widths_px",
+                      "value":  "space=0(n/a) !=1 \"=3 #=5 $=5 %=5 \u0026=5 \u0027=1 (=3 )=3 *=3 +=5 ,=1 -=5 .=1 /=5 0-9=5 :=1 ;=1 \u003c=4 ==5 \u003e=4 ?=5 @=6 A-H=5 I=3 J-Z=5 [=3 \\=5 ]=3 ^=5 _=5 `=2 a-e=5 f=4 g=5 h=5 i=1 j=5 k=4 l=2 m-s=5 t=3 u-z=5 {=3 |=1 }=3 ~=6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.table.ascii_advances_px",
+                      "value":  "space=4 !=2 \"=4 #=6 $=6 %=6 \u0026=6 \u0027=2 (=4 )=4 *=4 +=6 ,=2 -=6 .=2 /=6 0-9=6 :=2 ;=2 \u003c=5 ==6 \u003e=5 ?=6 @=7 A-H=6 I=4 J-Z=6 [=4 \\=6 ]=4 ^=6 _=6 `=3 a-e=6 f=5 g=6 h=6 i=2 j=6 k=5 l=3 m-s=6 t=4 u-z=6 {=4 |=2 }=4 ~=7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.1px_ink_chars",
+                      "value":  "! \u0027 , . : ; i | (ink 1 px, advance 2 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.2px_ink_chars",
+                      "value":  "` and l (ink 2 px, advance 3 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.3px_ink_chars",
+                      "value":  "\" ( ) * I [ ] t { } (ink 3 px, advance 4 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.4px_ink_chars",
+                      "value":  "\u003c \u003e f k (ink 4 px, advance 5 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "advance.6px_ink_chars",
+                      "value":  "@ and ~ (ink 6 px, advance 7 px) â€” the only ASCII glyphs wider than 5 px",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shadow.offset",
+                      "value":  "+1 px right, +1 px down (whole string re-rendered at x+1, y+1 BEFORE the main pass)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shadow.offset_relative",
+                      "value":  "12.5% of the 8 px glyph height (0.125 * 8 = 1 px)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shadow.color_formula",
+                      "value":  "shadowARGB = (fg \u0026 0xFF000000) | ((fg \u0026 0x00FCFCFC) \u003e\u003e 2)  â€” each channel masked to the top 6 bits then divided by 4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shadow.color_example_white",
+                      "value":  "#FFFFFF â†’ #3F3F3F (255 â†’ 63, not 64, because of the 0xFC mask)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shadow.legacy_unicode_offset",
+                      "value":  "0.5 px for 16 px legacy-unicode glyphs in modern per-glyph shadow code (bitmap/ascii glyphs stay at 1.0 px)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "bold.advance_delta",
+                      "value":  "+1 px added to the advance (0.5 px for the 16 px unicode font)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "bold.render",
+                      "value":  "glyph drawn twice: once at pen_x, once at pen_x + 1 px (same y)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "italic.shear",
+                      "value":  "slope 0.25 px horizontal per 1 px vertical; implemented in 1.8 as top edge x+1 px and bottom edge x-1 px â†’ 2 px total lean across the 8 px quad. Advance is unchanged.",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "strikethrough.geometry_legacy",
+                      "value":  "1 px tall bar from y+3 to y+4 (y = top of line, FONT_HEIGHT/2 = 4 with integer division), spanning pen_x .. pen_x+advance",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "strikethrough.geometry_modern",
+                      "value":  "1 px tall bar from y+3.5 to y+4.5, spanning pen_x-1 .. pen_x+advance (BakedGlyph.Effect, 1.19+)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "underline.geometry",
+                      "value":  "1 px tall bar from y+8 to y+9 (y+FONT_HEIGHT-1 .. y+FONT_HEIGHT), spanning pen_x-1 .. pen_x+advance",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "underline.left_overhang",
+                      "value":  "1 px (the underline quad starts at pen_x - 1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "obfuscated.selection_rule",
+                      "value":  "replacement glyph chosen uniformly at random from all glyphs in the font whose integer advance equals the original\u0027s (1.8: rejection sampling on (int)charWidth; modern: bucketed by Mth.ceil(advance))",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "obfuscated.refresh_rate",
+                      "value":  "re-rolled on every render call = every rendered frame (â‰ˆ60 changes/second at 60 FPS), not tied to the 20 Hz game tick",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "obfuscated.width_stability",
+                      "value":  "string width is invariant under Â§k because only same-advance glyphs substitute",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "color.foreground_shadow_pairs",
+                      "value":  "Â§0 000000/000000, Â§1 0000AA/00002A, Â§2 00AA00/002A00, Â§3 00AAAA/002A2A, Â§4 AA0000/2A0000, Â§5 AA00AA/2A002A, Â§6 FFAA00/2A2A00*, Â§7 AAAAAA/2A2A2A, Â§8 555555/151515, Â§9 5555FF/15153F, Â§a 55FF55/153F15, Â§b 55FFFF/153F3F, Â§c FF5555/3F1515, Â§d FF55FF/3F153F, Â§e FFFF55/3F3F15, Â§f FFFFFF/3F3F3F",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "color.gold_shadow_exception",
+                      "value":  "Â§6 gold shadow is #3E2A00 on the wiki table, not the /4 value #3F2A00 â€” Java Edition hardcodes 0x3E2A00 for gold",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "atlas.nonlatin_european",
+                      "value":  "128 x 536 px, 16 x 67 grid, 8 x 8 px cells, height 8, ascent 7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "atlas.accented",
+                      "value":  "144 x 900 px, 16 x 75 grid, 9 px wide x 12 px tall cells, provider height 12, ascent 10",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fallback.font",
+                      "value":  "GNU Unifont via `unihex` provider (unifont.zip / unifont_jp.zip); glyphs always 16 px tall, 8/16/24/32 px wide",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "layout.chat_width",
+                      "value":  "320 px at chat-width setting 1.0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "layout.sign_line_width",
+                      "value":  "90 px max per line",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "lookalike.monocraft",
+                      "value":  "Monocraft (IdreesInc) â€” SIL OFL 1.1 â€” monospaced Minecraft-inspired, 5x7 px design grid, 1500+ glyphs; https://github.com/IdreesInc/Monocraft",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lookalike.minecraft_font",
+                      "value":  "Minecraft-Font (IdreesInc) â€” SIL OFL 1.1 â€” proportional (non-monospace) rendition, closer to real Mojangles metrics; https://github.com/IdreesInc/Minecraft-Font",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lookalike.silkscreen",
+                      "value":  "Silkscreen (Jason Kottke, 1999) â€” SIL OFL 1.1 â€” on Google Fonts; 5x7-ish 1 px stroke pixel face, orthogonal, no antialiasing at native size",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lookalike.pixel_operator",
+                      "value":  "Pixel Operator (Jayvee Enaguas / HarvettFox96) â€” CC0 1.0 public domain â€” 15 styles incl. 8 px \"Pixel Operator 8\"; https://notabug.org/HarvettFox96/ttf-pixeloperator",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lookalike.departure_mono",
+                      "value":  "Departure Mono (Helena Zhang) â€” SIL OFL 1.1 â€” 775 glyphs, 1 px stroke, pixel-perfect at multiples of 11 px; https://departuremono.com/",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lookalike.press_start_2p",
+                      "value":  "Press Start 2P (CodeMan38) â€” SIL OFL 1.1 â€” NES-style 8x8; safe but visually further from Mojangles (blockier, monospaced, no 1 px chars)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lookalike.unifont",
+                      "value":  "GNU Unifont â€” dual GPLv2+ with font-embedding exception AND SIL OFL 1.1 (since v14) â€” the exact fallback Minecraft itself uses for CJK etc.",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "avoid.minecraftia",
+                      "value":  "Minecraftia (Andrew Tyler) â€” free for PERSONAL use only, paid commercial licence required. Do NOT ship it in a web clone.",
+                      "confidence":  "high"
+                  }
+              ],
+    "notes":  "All bitmap/metric numbers below were verified by downloading vanilla `assets/minecraft/textures/font/ascii.png` (via the misode/mcmeta assets mirror) and inspecting pixel alpha directly, plus reading the decompiled 1.8 `FontRenderer.java` for the rendering algorithm. Where modern (1.19/1.20) code differs I flag it.\n\n## 1. Glyph geometry (verified from ascii.png, 128x128, 16x16 grid of 8x8 cells)\n\nCell row/col for codepoint `cp`: `row = cp \u003e\u003e 4`, `col = cp \u0026 15`, pixel origin `(col*8, row*8)`.\n\nVertical layout inside the 8-px cell (y measured down from the cell top; `ascent = 7` â‡’ baseline is the boundary between row 6 and row 7):\n```\nrow 0  â”€â”€ cap line / ascender line\nrow 1\nrow 2  â”€â”€ x-height line\nrow 3\nrow 4\nrow 5\nrow 6  â”€â”€ last row above baseline\nâ”€â”€â”€â”€â”€â”€ baseline (y = 7 from cell top)\nrow 7  â”€â”€ descender row (1 px only)\n```\n- Caps + digits: rows 0..6 â†’ cap height **7 px**\n- Ascenders (b d f h k l t, dot of i/j): rows 0..6 â†’ **7 px**\n- x-height letters (a c e m n o r s u v w x z): rows 2..6 â†’ **5 px**\n- Descenders (g j p q y and `,` `;`): reach row 7 â†’ **1 px** below baseline\n- `j` is the only ASCII glyph spanning the full 0..7 (8 px)\n- Stroke weight is **1 px everywhere**. There are zero 2-px strokes in ASCII.\n\n## 2. Advance widths â€” exact algorithm\n\n```\ninkWidth(c)  = 1 + max{ x : column x of the 8x8 cell has any pixel with alpha \u003e 0 }   (0 if empty)\nadvance(c)   = inkWidth(c) + 1                     // the +1 IS the inter-glyph gap\nadvance(\u0027 \u0027) = 4                                   // from the `space` provider, cell is blank\nadvance(c, bold) = advance(c) + 1\nwidth(str)   = Î£ advance(c)                        // includes a trailing 1 px gap after the last glyph\n```\n1.8 used an alpha threshold of `\u003e 16`; the wiki documents modern as `\u003e 0`. For a general bitmap provider with declared `height` H and physical cell height Ph the ink width is scaled: `advance = round(inkWidth * H / Ph) + 1`. For ascii.png H = Ph = 8 so scale is 1.\n\nFull ASCII inkâ†’advance table (ink / advance, px):\n```\n\u0027 \u0027 â€“/4   ! 1/2   \" 3/4   # 5/6   $ 5/6   % 5/6   \u0026 5/6   \u0027 1/2\n(  3/4    ) 3/4   * 3/4   + 5/6   , 1/2   - 5/6   . 1/2   / 5/6\n0-9 5/6   : 1/2   ; 1/2   \u003c 4/5   = 5/6   \u003e 4/5   ? 5/6   @ 6/7\nA-H 5/6   I 3/4   J-Z 5/6\n[  3/4    \\ 5/6   ] 3/4   ^ 5/6   _ 5/6   ` 2/3\na-e 5/6   f 4/5   g 5/6   h 5/6   i 1/2   j 5/6   k 4/5   l 2/3\nm-s 5/6   t 3/4   u-z 5/6\n{  3/4    | 1/2   } 3/4   ~ 6/7\n```\nSanity checks: `width(\"a\") == 6`, `width(\"i\") == 2`, `width(\" \") == 4`, `width(\"@\") == 7`, `width(\"hello\") == 6+6+3+6+6 = 27`.\n\n## 3. Rendering pipeline (per line)\n\n```\npen_x = x; y = top-of-line\nif (dropShadow) render whole line at (x+1, y+1) with shadowColor  // drawn FIRST, behind\nrender whole line at (x, y) with fgColor\n\nper glyph:\n  draw 8x8 cell quad with top-left at (pen_x, y)      // ink lands in the cell\u0027s own coords\n  if (bold) draw the same quad again at (pen_x+1, y); adv += 1\n  if (strikethrough) fillRect(pen_x, y+3, adv, 1)     // legacy exact; modern y+3.5..y+4.5, x from pen_x-1\n  if (underline)     fillRect(pen_x-1, y+8, adv+1, 1)\n  pen_x += adv\nnext line: y += 9\n```\n\n### Shadow colour\n```js\nshadow = (fg \u0026 0xFF000000) | ((fg \u0026 0x00FCFCFC) \u003e\u003e\u003e 2);\n```\nThe `0xFC` mask before the shift is load-bearing: it prevents low bits of one channel bleeding into the next and makes 0xFF â†’ 0x3F (63), **not** 64. Confirmed in 1.8 source as `color = (color \u0026 16579836) \u003e\u003e 2 | color \u0026 -16777216;`.\n\nVanilla Â§-colour shadow pairs (fg â†’ shadow) all satisfy this except Â§6 gold, whose shadow is hardcoded #3E2A00 rather than the computed #3F2A00 (FFAA00 \u0026 FCFCFC = FCA800, \u003e\u003e2 = 3F2A00). Treat gold as a special case if you want byte-exact parity.\n\n### Italic\n1.8 quad vertices with `s = italic ? 1 : 0`:\n```\ntopLeft  = (pen_x + s,               y)\nbotLeft  = (pen_x - s,               y + 7.99)\ntopRight = (pen_x + 6.99 + s,        y)\nbotRight = (pen_x + 6.99 - s,        y + 7.99)\n```\ni.e. a shear of **Â±1 px** about the vertical centre â†’ **2 px total lean over 8 px**, slope 0.25. Modern `BakedGlyph.render` uses `0.25F * up / 0.25F * down` coefficients â€” same 0.25 slope, but anchored differently (bottom-anchored rather than centre-anchored), so a modern-faithful clone leans the top +2 px and leaves the bottom at 0. Advance is **not** changed by italic, so italic text overlaps slightly and can clip 1â€“2 px past the measured width. In CSS terms: `transform: skewX(-14deg)` â‰ˆ slope 0.25 (atan(0.25) = 14.04Â°).\n\n### Obfuscated Â§k\n1.8 exact:\n```java\nint i = index_of_original_glyph;\nint j;\ndo { j = fontRandom.nextInt(charWidth.length); } while ((int)charWidth[i] != (int)charWidth[j]);\ndraw glyph j;\n```\nUniform rejection sampling over the *whole* glyph table restricted to equal (truncated-to-int) advance. Modern buckets glyphs by `Mth.ceil(advance)` into `FontSet.glyphsByWidth` and picks with `RandomSource`. Consequences for a clone:\n- Build `Map\u003cadvance, glyph[]\u003e` once; on each frame pick `pool[floor(rand()*pool.length)]`.\n- Re-roll **per rendered frame**, not per tick â€” vanilla just calls the renderer again each frame, so at unlocked FPS it flickers as fast as you draw.\n- String width is unchanged, so layout/wrapping stays stable.\n- Selection is per-glyph-position, independent between characters.\n- Modern (1.13+) draws from all Unicode glyphs the font has, not just ASCII, so you\u0027ll see box-drawing/Greek/Cyrillic shapes.\n\n### Reset semantics\n`Â§r` clears colour AND all five style flags. A colour code (`Â§0`â€“`Â§f`) also implicitly resets bold/italic/underline/strike/obfuscated in Java Edition legacy parsing. Style flags reset at the start of every string render.\n\n## 4. Font provider JSON (1.20 `minecraft:default`)\n```\ndefault.json â†’ [ reference include/space, reference include/default {filter:{uniform:false}}, reference include/unifont ]\ninclude/space.json â†’ { \"type\":\"space\", \"advances\": { \" \": 4, \"â€Œ\": 0 } }\ninclude/default.json â†’ bitmap nonlatin_european.png (ascent 7, height default 8, 8x8 cells, 16x67)\n                     â†’ bitmap accented.png (height 12, ascent 10, 9x12 cells, 16x75)\n                     â†’ bitmap ascii.png (ascent 7, height default 8, 8x8 cells, 16x16)\n```\n`accented.png` sits 3 px higher (ascent 10 vs 7 in a 12-px box) so accents clear the cap line by 3 px and the box extends 2 px below baseline; baselines still align because the provider positions by ascent.\n\n## 5. Exact letterforms (dumped from vanilla ascii.png) â€” for hand-authoring a lookalike\n\nDesign rules the whole face obeys:\n- **Strictly 1-px stroke, no antialiasing, no curves.** \"Round\" shapes are rectangles with the 4 corner pixels omitted (`o` = 5x5 box minus corners).\n- **Diagonals are 1-px stair-steps**, used only in `k v w x y(no) z N V W X Z % / \\ 0 \u0026 $ ?` and the shoulder joins of `b h m n p r`.\n- Lowercase shoulders (`b h m n p r`) use a distinctive **1-px diagonal knee**: `#.##.` over `##..#`.\n- Terminals of `l` and `t` **kick 1 px to the right** at the baseline row â€” this is the single most Minecraft-identifying detail.\n- `g`, `y`, `j` share one **left-sweeping tail**: `....#` at row 6 then `####.` at row 7.\n\n```\nA (5x7)      a (5x5)      g (5x6)      e (5x5)      s (5x5)\n.###.        .###.        .####        .###.        .####\n#...#        ....#        #...#        #...#        #....\n#####        .####        #...#        #####        .###.\n#...#        #...#        .####        #....        ....#\n#...#        .####        ....#        .####        ####.\n#...#                     ####.\n#...#\n\nt (3x7)      y (5x6)      i (1x7)      l (2x7)      o (5x5)\n.#.          #...#        #            #            .###.\n.#.          #...#        .            #            #...#\n###          #...#        #            #            #...#\n.#.          .####        #            #            #...#\n.#.          ....#        #            #            .###.\n.#.          ####.        #            #\n..#                       #            .#\n\n0 (5x7)      k (4x7)      f (4x7)      m (5x5)      r (5x5)\n.###.        #...         ..##         ##.#.        #.##.\n#...#        #...         .#..         #.#.#        ##..#\n#..##        #..#         ####         #.#.#        #....\n#.#.#        #.#.         .#..         #...#        #....\n##..#        ##..         .#..         #...#        #....\n#...#        #.#.         .#..\n.###.        #..#         .#..\n```\nNotable identity marks: `a` is **single-storey with no left stem at the top** (top bar floats, bowl closes at the bottom); `e` has a **full-width 5-px crossbar** and a solid left wall; `s` is built from two 4-px bars offset by 1; `t`\u0027s crossbar is only 3 px and sits at the x-height line; `0` carries an **internal diagonal slash**; `M` and `W` use a **2-row-deep** middle vertex; `i` has **no serifs at all** (pure 1-px stem + 1-px dot with a 1-px gap); `,` and `;` are 1 px wide and drop into the descender row.\n\n## 6. Practical clone checklist\n1. Author a 128x128 PNG, 16x16 cells of 8x8, top-left aligned ink, alpha 0 background.\n2. Precompute `advance[cp] = inkWidth+1` at load by scanning columns right-to-left for alpha\u003e0; hardcode `advance[0x20]=4`.\n3. Render at integer GUI scale (2x/3x/4x) with `image-rendering: pixelated` and nearest-neighbour sampling; never sample at fractional texel offsets or the 1-px strokes shimmer.\n4. Word-wrap by accumulating advances and breaking at â‰¤ the container width in *font pixels*, then multiplying by GUI scale.\n5. Draw order per line: shadow pass at (+1,+1) â†’ main pass â†’ effect rects (effects also need a shadow copy if the text has a shadow; vanilla renders effects inside each pass).\n6. Bold changes measured width â€” measure with the bold flag applied or your centred text drifts.\n\n## 7. Legally-safe font options, ranked by resemblance\n1. **Minecraft-Font** (IdreesInc), OFL-1.1 â€” proportional rendition, closest metrics to Mojangles.\n2. **Monocraft** (IdreesInc), OFL-1.1 â€” same designer, monospaced, 5x7 design grid; adds tails/serifs to `i`/`l` so it reads slightly less \"Minecraft\".\n3. **Silkscreen** (Jason Kottke), OFL-1.1, on Google Fonts â€” 1-px stroke, orthogonal, similar x-height ratio; the safest \"just link it\" option.\n4. **Pixel Operator** (Jayvee Enaguas), **CC0-1.0** â€” zero attribution burden; \"Pixel Operator 8\" is an 8-px face that maps almost 1:1 onto an 8-px cell grid.\n5. **Departure Mono** (Helena Zhang), OFL-1.1 â€” 1-px stroke, 775 glyphs, pixel-perfect at multiples of 11 px; techier/wider than Mojangles.\n6. **GNU Unifont**, GPLv2+font-exception / OFL-1.1 â€” use it as your CJK fallback exactly as Minecraft does (16-px cells).\n\nAvoid **Minecraftia** (Andrew Tyler): personal-use only, commercial licence sold separately. Avoid extracting/redistributing `ascii.png` itself â€” it is an all-rights-reserved Mojang asset.\n\nGiven a hand-authored 8x8 grid, the whole face is ~95 glyphs at 1-px stroke; using the exact metrics above (cap 7 / x-height 5 / descender 1 / advance = ink+1 / line 9) gives pixel-identical layout to vanilla even with your own letterforms, which is the legally clean way to get a faithful clone.",
+    "sources":  [
+                    "https://minecraft.wiki/w/Font",
+                    "https://minecraft.wiki/w/Mojangles",
+                    "https://minecraft.wiki/w/Language",
+                    "https://minecraft.wiki/w/Formatting_codes",
+                    "https://gist.github.com/aerulion/9c5aac21c3efa5aa03b6f875dbe808de",
+                    "https://forums.papermc.io/threads/minecraft-default-bitmap-font-glyph-widths.624/",
+                    "https://raw.githubusercontent.com/misode/mcmeta/assets/assets/minecraft/font/default.json",
+                    "https://raw.githubusercontent.com/misode/mcmeta/assets/assets/minecraft/font/include/space.json",
+                    "https://raw.githubusercontent.com/misode/mcmeta/assets/assets/minecraft/font/include/default.json",
+                    "https://raw.githubusercontent.com/misode/mcmeta/assets/assets/minecraft/textures/font/ascii.png",
+                    "https://github.com/eldariamc/client/blob/master/src/main/java/net/minecraft/client/gui/FontRenderer.java",
+                    "https://github.com/IdreesInc/Monocraft",
+                    "https://github.com/IdreesInc/Minecraft-Font",
+                    "https://fonts.google.com/specimen/Silkscreen",
+                    "https://notabug.org/HarvettFox96/ttf-pixeloperator",
+                    "https://departuremono.com/",
+                    "https://www.dafont.com/minecraftia.font"
+                ]
+}

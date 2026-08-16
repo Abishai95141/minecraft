@@ -1,0 +1,1080 @@
+﻿{
+    "topic":  "Minecraft Java Edition (~1.20.x) â€” Crafting recipes, tool tiers, block-breaking formula, smelting/furnace mechanics, item stack sizes",
+    "facts":  [
+                  {
+                      "key":  "tool.durability.wood",
+                      "value":  "59 uses (all wooden tools)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.durability.stone",
+                      "value":  "131 uses",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.durability.iron",
+                      "value":  "250 uses",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.durability.gold",
+                      "value":  "32 uses",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.durability.diamond",
+                      "value":  "1561 uses",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.durability.netherite",
+                      "value":  "2031 uses",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.hand",
+                      "value":  "1.0 (dimensionless speed multiplier)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.wood",
+                      "value":  "2.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.stone",
+                      "value":  "4.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.iron",
+                      "value":  "6.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.diamond",
+                      "value":  "8.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.netherite",
+                      "value":  "9.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.gold",
+                      "value":  "12.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.miningSpeed.copper",
+                      "value":  "5.0x (copper tools exist only in 1.21.9+, NOT in 1.20)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tool.enchantability.wood",
+                      "value":  "15",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.enchantability.stone",
+                      "value":  "5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.enchantability.iron",
+                      "value":  "14",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.enchantability.gold",
+                      "value":  "22",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.enchantability.diamond",
+                      "value":  "10",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.enchantability.netherite",
+                      "value":  "15",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.harvestLevel.wood",
+                      "value":  "0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.harvestLevel.gold",
+                      "value":  "0 (same as wood â€” golden pickaxe CANNOT mine iron/gold/diamond/redstone ore despite 12x speed)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.harvestLevel.stone",
+                      "value":  "1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.harvestLevel.iron",
+                      "value":  "2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.harvestLevel.diamond",
+                      "value":  "3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tool.harvestLevel.netherite",
+                      "value":  "4 (functionally identical to 3; no block requires level 4)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackDamage.wood",
+                      "value":  "4 HP (attribute modifier +3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackDamage.stone",
+                      "value":  "5 HP (+4)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackDamage.iron",
+                      "value":  "6 HP (+5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackDamage.gold",
+                      "value":  "4 HP (+3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackDamage.diamond",
+                      "value":  "7 HP (+6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackDamage.netherite",
+                      "value":  "8 HP (+7)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.attackSpeed.all",
+                      "value":  "1.6 attacks/second (0.625 s cooldown), all tiers",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackDamage.wood",
+                      "value":  "7 HP (+6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackDamage.stone",
+                      "value":  "9 HP (+8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackDamage.iron",
+                      "value":  "9 HP (+8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackDamage.gold",
+                      "value":  "7 HP (+6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackDamage.diamond",
+                      "value":  "9 HP (+8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackDamage.netherite",
+                      "value":  "10 HP (+9)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackSpeed.wood",
+                      "value":  "0.8 attacks/second (1.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackSpeed.stone",
+                      "value":  "0.8 attacks/second (1.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackSpeed.iron",
+                      "value":  "0.9 attacks/second (1.111 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackSpeed.gold",
+                      "value":  "1.0 attacks/second (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackSpeed.diamond",
+                      "value":  "1.0 attacks/second (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "axe.attackSpeed.netherite",
+                      "value":  "1.0 attacks/second (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackDamage.wood",
+                      "value":  "2 HP (+1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackDamage.stone",
+                      "value":  "3 HP (+2)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackDamage.iron",
+                      "value":  "4 HP (+3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackDamage.gold",
+                      "value":  "2 HP (+1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackDamage.diamond",
+                      "value":  "5 HP (+4)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackDamage.netherite",
+                      "value":  "6 HP (+5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pickaxe.attackSpeed.all",
+                      "value":  "1.2 attacks/second (0.833 s), all tiers",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackDamage.wood",
+                      "value":  "2.5 HP (+1.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackDamage.stone",
+                      "value":  "3.5 HP (+2.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackDamage.iron",
+                      "value":  "4.5 HP (+3.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackDamage.gold",
+                      "value":  "2.5 HP (+1.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackDamage.diamond",
+                      "value":  "5.5 HP (+4.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackDamage.netherite",
+                      "value":  "6.5 HP (+5.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shovel.attackSpeed.all",
+                      "value":  "1.0 attacks/second (1.0 s), all tiers",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackDamage.all",
+                      "value":  "1 HP (+0 modifier) for every tier",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackSpeed.wood",
+                      "value":  "1.0 attacks/second (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackSpeed.stone",
+                      "value":  "2.0 attacks/second (0.5 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackSpeed.iron",
+                      "value":  "3.0 attacks/second (0.333 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackSpeed.gold",
+                      "value":  "1.0 attacks/second (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackSpeed.diamond",
+                      "value":  "4.0 attacks/second (0.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hoe.attackSpeed.netherite",
+                      "value":  "4.0 attacks/second (0.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shears.durability",
+                      "value":  "238 uses (Java; 239 Bedrock)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shears.miningSpeed.wool",
+                      "value":  "5.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shears.miningSpeed.leaves",
+                      "value":  "15.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shears.miningSpeed.cobweb",
+                      "value":  "15.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "shears.miningSpeed.vines",
+                      "value":  "2.0x",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sword.miningSpeed.cobweb",
+                      "value":  "15.0x",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.miningSpeed.bamboo",
+                      "value":  "instant (bamboo/bamboo sapling break instantly with any sword)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sword.miningSpeed.plantsAndLeaves",
+                      "value":  "1.5x",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "flintAndSteel.durability",
+                      "value":  "64 uses (Java; was 65 pre-1.13.1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "bow.durability",
+                      "value":  "384 uses (Java; 385 Bedrock)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "bow.enchantability",
+                      "value":  "1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.divisor.canHarvest",
+                      "value":  "30 (damage /= 30 when the drop is obtainable)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.divisor.cannotHarvest",
+                      "value":  "100 (damage /= 100 when the block will not drop)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.penalty.inWater",
+                      "value":  "x0.2 speed (5x slower) without Aqua Affinity",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.penalty.notOnGround",
+                      "value":  "speed / 5 (5x slower)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.haste",
+                      "value":  "speed *= 0.2 * hasteLevel + 1 (Haste I = 1.2x, Haste II = 1.4x)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.conduitPower",
+                      "value":  "same multiplier as Haste; use max(hasteLevel, conduitPowerLevel)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.miningFatigue",
+                      "value":  "speed *= 0.3^min(level,4): I=0.3, II=0.09, III=0.027, IV=0.0081",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "breaking.efficiency",
+                      "value":  "if speedMultiplier \u003e 1 then speedMultiplier += efficiencyLevel^2 + 1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.instantThreshold",
+                      "value":  "damage \u003e= 1.0 per tick -\u003e 0 ticks (instant)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.tickLength",
+                      "value":  "1 tick = 0.05 s (20 ticks/second)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_byHand",
+                      "value":  "150 ticks = 7.5 s (hardness 1.5, speed 1, cannot harvest)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_woodPickaxe",
+                      "value":  "23 ticks = 1.15 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_stonePickaxe",
+                      "value":  "12 ticks = 0.6 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_ironPickaxe",
+                      "value":  "8 ticks = 0.4 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_diamondPickaxe",
+                      "value":  "6 ticks = 0.3 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_netheritePickaxe",
+                      "value":  "5 ticks = 0.25 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.stone_goldPickaxe",
+                      "value":  "4 ticks = 0.2 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.dirt_byHand",
+                      "value":  "15 ticks = 0.75 s (hardness 0.5, speed 1, CAN harvest -\u003e /30)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.dirt_woodShovel",
+                      "value":  "8 ticks = 0.4 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.obsidian_diamondPickaxe",
+                      "value":  "188 ticks = 9.4 s (hardness 50)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "breaking.example.obsidian_netheritePickaxe",
+                      "value":  "167 ticks = 8.35 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.stone",
+                      "value":  "1.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.cobblestone",
+                      "value":  "2.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.dirt",
+                      "value":  "0.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.grassBlock",
+                      "value":  "0.6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.sand",
+                      "value":  "0.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.gravel",
+                      "value":  "0.6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.log_and_planks",
+                      "value":  "2.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.leaves",
+                      "value":  "0.2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.wool",
+                      "value":  "0.8",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.glass",
+                      "value":  "0.3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.obsidian",
+                      "value":  "50.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.ancientDebris",
+                      "value":  "30.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.ores_coal_iron_gold_diamond_redstone_lapis",
+                      "value":  "3.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.deepslateOreVariants",
+                      "value":  "4.5",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "hardness.ironBlock_goldBlock",
+                      "value":  "5.0 / 3.0 respectively",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "hardness.diamondBlock_coalBlock",
+                      "value":  "5.0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "hardness.cobweb",
+                      "value":  "4.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.netherrack",
+                      "value":  "0.4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.bedrock",
+                      "value":  "-1 (unbreakable)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hardness.torch_tnt",
+                      "value":  "0.0 (instant)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smelting.furnace.timePerItem",
+                      "value":  "200 ticks = 10 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smelting.blastFurnace.timePerItem",
+                      "value":  "100 ticks = 5 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smelting.smoker.timePerItem",
+                      "value":  "100 ticks = 5 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smelting.campfire.timePerItem",
+                      "value":  "600 ticks = 30 s",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.lavaBucket",
+                      "value":  "20000 ticks = 1000 s = 100 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.blockOfCoal",
+                      "value":  "16000 ticks = 800 s = 80 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.driedKelpBlock",
+                      "value":  "4000 ticks = 200 s = 20 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.blazeRod",
+                      "value":  "2400 ticks = 120 s = 12 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.coal",
+                      "value":  "1600 ticks = 80 s = 8 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.charcoal",
+                      "value":  "1600 ticks = 80 s = 8 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.boat",
+                      "value":  "1200 ticks = 60 s = 6 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.hangingSign",
+                      "value":  "800 ticks = 40 s = 4 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.log_wood_strippedVariants",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.planks",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.woodenStairs",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.woodenSlab",
+                      "value":  "150 ticks = 7.5 s = 0.75 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.woodenTrapdoor_fence_fenceGate_pressurePlate",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.craftingTable_chest_trappedChest_bookshelf_noteBlock_jukebox_barrel_lectern_composter_loom_smithingTable_fletchingTable_cartographyTable_daylightDetector",
+                      "value":  "300 ticks = 15 s = 1.5 items each",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.ladder",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.banner",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.bow_fishingRod",
+                      "value":  "300 ticks = 15 s = 1.5 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.woodenDoor",
+                      "value":  "200 ticks = 10 s = 1 item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.sign",
+                      "value":  "200 ticks = 10 s = 1 item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.bowl",
+                      "value":  "200 ticks = 10 s = 1 item",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.woodenTools_pickaxe_axe_shovel_hoe_sword",
+                      "value":  "200 ticks = 10 s = 1 item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.stick",
+                      "value":  "100 ticks = 5 s = 0.5 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.sapling",
+                      "value":  "100 ticks = 5 s = 0.5 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.wool",
+                      "value":  "100 ticks = 5 s = 0.5 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.woodenButton_deadBush_azalea",
+                      "value":  "100 ticks = 5 s = 0.5 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.carpet",
+                      "value":  "67 ticks = 3.35 s = 0.335 items",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fuel.bamboo",
+                      "value":  "50 ticks = 2.5 s = 0.25 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fuel.scaffolding",
+                      "value":  "50 ticks = 2.5 s = 0.25 items",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "smeltXP.rawIron_ironOre",
+                      "value":  "0.7 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.rawCopper_copperOre",
+                      "value":  "0.7 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.rawGold_goldOre_netherGoldOre",
+                      "value":  "1.0 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.ancientDebris",
+                      "value":  "2.0 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.coalOre",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.diamondOre",
+                      "value":  "1.0 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.emeraldOre",
+                      "value":  "1.0 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.redstoneOre",
+                      "value":  "0.7 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.lapisOre",
+                      "value":  "0.2 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.netherQuartzOre",
+                      "value":  "0.2 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.food_meat_fish_potato",
+                      "value":  "0.35 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.kelp",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.cobblestone_to_stone",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.sand_to_glass",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.clayBlock_to_terracotta",
+                      "value":  "0.35 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.clayBall_to_brick",
+                      "value":  "0.3 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.log_to_charcoal",
+                      "value":  "0.15 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.cactus_to_greenDye",
+                      "value":  "1.0 XP per item (Java); 0.2 XP (Bedrock)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.netherrack_to_netherBrick",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.wetSponge_to_sponge",
+                      "value":  "0.15 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.chorusFruit_to_popped",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.seaPickle_to_limeDye",
+                      "value":  "0.1 XP per item (Java)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smeltXP.ironGoldTools_to_nugget",
+                      "value":  "0.1 XP per item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "stackSize.default",
+                      "value":  "64 items",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "stackSize.16",
+                      "value":  "snowball, egg (all variants), ender pearl, sign, hanging sign, empty bucket, armor stand, banner, honey bottle, written book",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "stackSize.1",
+                      "value":  "any item with durability (tools, weapons, armor, shears, flint and steel, fishing rod, bow, crossbow, trident, elytra, shield, carrot on a stick), filled buckets (water/lava/milk/powder snow/fish), all potions, bed, boat, all minecarts, cake, saddle, enchanted book, all stews (mushroom/rabbit/beetroot/suspicious), music disc, totem of undying, banner pattern, bundle",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "crafting.mirroring",
+                      "value":  "Shaped recipes are matched translation-invariantly within the 3x3 grid AND against their horizontal mirror",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.planks",
+                      "value":  "1 log/wood/stripped variant -\u003e 4 planks (shapeless); bamboo block -\u003e 2 bamboo planks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.stick",
+                      "value":  "2 planks vertical -\u003e 4 sticks; 2 bamboo vertical -\u003e 1 stick",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.craftingTable",
+                      "value":  "4 planks in 2x2 -\u003e 1 crafting table",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.chest",
+                      "value":  "8 planks ring (center empty) -\u003e 1 chest",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.furnace",
+                      "value":  "8 cobblestone/blackstone/cobbled deepslate ring -\u003e 1 furnace",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.torch",
+                      "value":  "1 coal or charcoal above 1 stick -\u003e 4 torches",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.ladder",
+                      "value":  "7 sticks in H-shape -\u003e 3 ladders",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.bed",
+                      "value":  "3 matching wool above 3 planks -\u003e 1 bed",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.door",
+                      "value":  "6 matching planks in 2x3 -\u003e 3 doors",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.fence",
+                      "value":  "4 planks + 2 sticks (2x3, sticks in middle column) -\u003e 3 fences; nether brick version -\u003e 6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.stairs",
+                      "value":  "6 blocks in staircase shape -\u003e 4 stairs",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.slab",
+                      "value":  "3 blocks in a row -\u003e 6 slabs",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.bowl",
+                      "value":  "3 planks in V -\u003e 4 bowls",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.bucket",
+                      "value":  "3 iron ingots in V -\u003e 1 bucket",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.boat",
+                      "value":  "5 matching planks in U -\u003e 1 boat",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.sign",
+                      "value":  "6 matching planks + 1 stick -\u003e 3 signs",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.bookshelf",
+                      "value":  "6 planks + 3 books -\u003e 1 bookshelf",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.book",
+                      "value":  "3 paper + 1 leather (SHAPELESS) -\u003e 1 book",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.paper",
+                      "value":  "3 sugar cane in a row -\u003e 3 paper",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.tnt",
+                      "value":  "5 gunpowder + 4 sand/red sand checkerboard -\u003e 1 TNT",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.shears",
+                      "value":  "2 iron ingots diagonal -\u003e 1 shears",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.flintAndSteel",
+                      "value":  "1 iron ingot + 1 flint (SHAPELESS) -\u003e 1 flint and steel",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.bread",
+                      "value":  "3 wheat in a row -\u003e 1 bread",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.cake",
+                      "value":  "3 milk buckets + 2 sugar + 1 egg + 3 wheat -\u003e 1 cake (buckets remain in grid in Java)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.goldenApple",
+                      "value":  "8 gold ingots + 1 apple -\u003e 1 golden apple",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.arrow",
+                      "value":  "1 flint + 1 stick + 1 feather vertical -\u003e 4 arrows",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.bow",
+                      "value":  "3 sticks + 3 string -\u003e 1 bow",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "recipe.mineralBlock",
+                      "value":  "9 ingots/gems in 3x3 -\u003e 1 block; reverse SHAPELESS 1 block -\u003e 9",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.bread",
+                      "value":  "restores 5 hunger points (2.5 shanks), 6.0 saturation",
+                      "confidence":  "high"
+                  }
+              ],
+    "notes":  "## 1. BLOCK BREAKING FORMULA (Java, authoritative pseudocode from minecraft.wiki/w/Breaking)\n\n```\nfunction breakTicks(block, tool, player):\n    speed = miningSpeedOf(tool, block)      # 1.0 if tool has no rule matching this block\n\n    if speed \u003e 1:                            # i.e. tool actually applies to this block\n        speed += efficiencyLevel^2 + 1       # Efficiency only helps when the tool applies\n\n    if hasHaste or hasConduitPower:\n        speed *= 0.2 * max(hasteLevel, conduitPowerLevel) + 1\n\n    if hasMiningFatigue:\n        speed *= 0.3 ^ min(miningFatigueLevel, 4)\n\n    speed *= attribute(block_break_speed)    # normally 1.0\n\n    if inWater and not hasAquaAffinity:\n        speed *= 0.2                          # attribute(submerged_mining_speed), default 0.2\n\n    if not onGround:\n        speed /= 5\n\n    damage = speed / block.hardness           # progress added per tick, before divisor\n\n    if canHarvest(block, tool):  damage /= 30\n    else:                        damage /= 100\n\n    if damage \u003e= 1: return 0                  # instant break\n    return ceil(1 / damage)                   # ticks; seconds = ticks / 20\n```\n\n### THE #1 IMPLEMENTATION TRAP: `canHarvest` != \"tool is correct\"\nTwo INDEPENDENT booleans:\n- **`speed`** comes from the tool\u0027s mining-speed rules. A pickaxe on stone gives its tier speed; a *shovel* on stone gives 1.0. This governs how FAST.\n- **`canHarvest`** = `!block.requiresCorrectToolForDrops() || toolIsCorrectForDrops(block)`. This governs the **/30 vs /100** divisor AND whether the block drops an item.\n\nSo **dirt broken by hand uses /30** (dirt doesn\u0027t require a tool â†’ canHarvest is true even bare-handed) â†’ 15 ticks = 0.75 s, NOT 2.5 s. But **stone by hand uses /100** â†’ 150 ticks = 7.5 s. Getting this wrong is the classic bug.\n\n`toolIsCorrectForDrops` requires BOTH: (a) the tool is in the block\u0027s `mineable/\u003cpickaxe|axe|shovel|hoe\u003e` tag, and (b) the tool\u0027s tier level \u003e= the block\u0027s required level (`needs_stone_tool` = 1, `needs_iron_tool` = 2, `needs_diamond_tool` = 3).\n\n### Hardness edge cases\n- `hardness == 0` â†’ damage is +Inf â†’ instant break (torch, TNT, flowers, sapling, redstone dust).\n- `hardness \u003c 0` (i.e. -1) â†’ unbreakable in survival (bedrock, barrier, end portal frame, command block). Guard before dividing.\n- Creative mode â†’ always instant (except liquids/unbreakable).\n\n### Progress accumulation (client/server model)\nPer tick while holding the mine button, add `damage` to `destroyProgress`. When it reaches \u003e= 1.0 the block breaks. Destroy stage rendered = `floor(destroyProgress * 10)` â†’ 10 crack textures (stages 0-9). If the player releases the button or looks at a different block, progress resets to 0.\n\n### Worked examples (all verified against wiki-published times)\n| Case | hardness | speed | canHarvest | damage | ticks | seconds |\n|---|---|---|---|---|---|---|\n| Stone, bare hand | 1.5 | 1 | no â†’ /100 | 1/1.5/100 = 0.006667 | ceil(150)=150 | 7.50 |\n| Stone, wood pick | 1.5 | 2 | yes â†’ /30 | 2/1.5/30 = 0.044444 | ceil(22.5)=23 | 1.15 |\n| Stone, stone pick | 1.5 | 4 | yes | 0.088889 | ceil(11.25)=12 | 0.60 |\n| Stone, iron pick | 1.5 | 6 | yes | 0.133333 | ceil(7.5)=8 | 0.40 |\n| Stone, diamond pick | 1.5 | 8 | yes | 0.177778 | ceil(5.625)=6 | 0.30 |\n| Stone, netherite pick | 1.5 | 9 | yes | 0.200000 | ceil(5)=5 | 0.25 |\n| Stone, gold pick | 1.5 | 12 | yes | 0.266667 | ceil(3.75)=4 | 0.20 |\n| Stone, wood **shovel** | 1.5 | 1 | no â†’ /100 | 0.006667 | 150 | 7.50 |\n| Dirt, bare hand | 0.5 | 1 | yes â†’ /30 | 1/0.5/30 = 0.066667 | ceil(15)=15 | 0.75 |\n| Dirt, wood shovel | 0.5 | 2 | yes | 0.133333 | ceil(7.5)=8 | 0.40 |\n| Obsidian, diamond pick | 50 | 8 | yes | 8/50/30 = 0.005333 | ceil(187.5)=188 | 9.40 |\n| Obsidian, netherite pick | 50 | 9 | yes | 0.006 | ceil(166.67)=167 | 8.35 |\n| Obsidian, iron pick | 50 | 6 | **no** (needs diamond) â†’ /100 | 6/50/100 = 0.0012 | ceil(833.3)=834 | 41.70 |\n\nEfficiency V diamond pick on stone: speed = 8 + (25+1) = 34 â†’ 34/1.5/30 = 0.7556 â†’ ceil(1.3235)=2 ticks = 0.1 s. Efficiency V + Haste II: 34 * 1.4 = 47.6 â†’ 47.6/1.5/30 = 1.058 \u003e= 1 â†’ **instant**.\n\nMid-air + underwater stack multiplicatively: 0.2 * (1/5) = 0.04 â†’ 25x slower total.\n\n---\n\n## 2. TOOL TIER TABLE (Java 1.20)\n\n| Tier | Durability | Mining speed | Enchantability | Harvest level | Repair item |\n|---|---|---|---|---|---|\n| Wood | 59 | 2.0 | 15 | 0 | any planks |\n| Gold | 32 | 12.0 | 22 | 0 | gold ingot |\n| Stone | 131 | 4.0 | 5 | 1 | cobblestone family |\n| Iron | 250 | 6.0 | 14 | 2 | iron ingot |\n| Diamond | 1561 | 8.0 | 10 | 3 | diamond |\n| Netherite | 2031 | 9.0 | 15 | 4 | netherite ingot (smithing only, no crafting recipe) |\n\n(Copper: 190 durability, 5.0 speed, 13 enchantability, level 1 â€” added in 1.21.9, **not present in 1.20**.)\n\nHarvest-level gating (what a level unlocks the DROP for):\n- **Level 0** (wood/gold): stone family, sandstone, coal ore? NO â€” coal ore needs level 0 actually drops with wood. Concretely: wood/gold pickaxe drops stone, cobblestone, sandstone, **coal ore**, **nether quartz ore**, netherrack, nether bricks.\n- **Level 1** (stone): + iron ore, copper ore, lapis lazuli ore, and their deepslate/raw-block variants.\n- **Level 2** (iron): + gold ore, diamond ore, emerald ore, redstone ore, and their deepslate variants; block of gold/diamond/emerald/redstone/lapis.\n- **Level 3** (diamond): + obsidian, crying obsidian, ancient debris, block of netherite, respawn anchor.\n- **Level 4** (netherite): nothing exclusive.\n\nGolden pickaxe is level 0 â€” it mines *fast* but cannot harvest iron ore or anything above stone-tier. Model these as separate fields.\n\nAttack damage shown in tooltips = `1.0 (player base) + modifier`. Attack speed shown = `4.0 (player base) + modifier`; cooldown seconds = `1 / displayedSpeed`. Damage scales with the charge bar: `dealt = base * (0.2 + charge^2 * 0.8)`, charge = `min(1, ticksSinceSwing * displayedSpeed / 20)`.\n\nAxes additionally: attacking a shield-holding entity disables the shield for 5 s (100 ticks) with 25% chance per attack level... (axe crit disable is `chance = 0.25 + efficiencyLevel*0.05` in 1.20 â€” treat as low confidence).\n\nNon-tier tools: shears 238 durability, enchantability 15; flint and steel 64 durability; bow 384 durability, enchantability 1; fishing rod 64 durability.\n\n---\n\n## 3. CRAFTING RECIPES â€” 3x3 ASCII PATTERNS\n\nNotation: rows topâ†’bottom, cols leftâ†’right, `.` = empty slot. Patterns are shown as their minimal bounding box; the matcher must accept the pattern translated anywhere in the 3x3 grid **and its horizontal mirror** (Java\u0027s `ShapedRecipePattern.matches` tests both orientations). Shapeless recipes ignore position entirely.\n\n```\nPLANKS (shapeless)              STICK                  STICK from bamboo\n[ any log/wood/stripped ]       P                      B\n   -\u003e 4 planks                  P                      B\nBamboo block -\u003e 2 bamboo        -\u003e 4 sticks            -\u003e 1 stick\nplanks\n\nCRAFTING TABLE                  CHEST                  FURNACE\nPP                              PPP                    CCC\nPP                              P.P                    C.C\n-\u003e 1                            PPP                    CCC\n                                -\u003e 1                   -\u003e 1\n\nTORCH                           LADDER                 SLAB\nc                               S.S                    MMM\nS                               SSS                    -\u003e 6 slabs\n-\u003e 4 torches                    S.S\n                                -\u003e 3 ladders\n\nSTAIRS                          DOOR                   FENCE\nM..                             PP                     PSP\nMM.                             PP                     PSP\nMMM                             PP                     -\u003e 3 fences\n-\u003e 4 stairs                     -\u003e 3 doors             (nether brick ver -\u003e 6)\n\nBED                             BOWL                   BUCKET\nWWW                             P.P                    I.I\nPPP                             .P.                    .I.\n-\u003e 1 bed (wool must all         -\u003e 4 bowls             -\u003e 1 bucket\n   be same color; planks\n   may differ)\n\nBOAT                            SIGN                   BOOKSHELF\nP.P                             PPP                    PPP\nPPP                             PPP                    KKK\n-\u003e 1 boat (matching             .S.                    PPP\n   overworld planks)            -\u003e 3 signs             -\u003e 1 bookshelf\n                                                       (K = book)\n\nPAPER                           BOOK (SHAPELESS)       TNT\nGGG                             3 paper + 1 leather    GSG\n-\u003e 3 paper                      -\u003e 1 book              SGS\n(G = sugar cane)                                       GSG\n                                                       -\u003e 1 TNT\n                                                       (G=gunpowder,\n                                                        S=sand|red sand,\n                                                        mixable)\n\nSHEARS                          FLINT AND STEEL        BREAD\n.I                              (SHAPELESS)            WWW\nI.                              1 iron ingot           -\u003e 1 bread\n-\u003e 1 shears                     + 1 flint\n                                -\u003e 1\n\nCAKE                            GOLDEN APPLE           ARROW\nMMM                             GGG                    F\nSES                             GAG                    S\nWWW                             GGG                    f\n-\u003e 1 cake                       -\u003e 1 golden apple      -\u003e 4 arrows\n(M=milk bucket, S=sugar,        (G=gold ingot,         (F=flint, S=stick,\n E=egg, W=wheat;                 A=apple)               f=feather)\n buckets stay in the\n grid in Java)\n\nBOW                             MINERAL BLOCK          UNCRAFT BLOCK\n.SR                             XXX                    (SHAPELESS)\nS.R                             XXX                    1 block -\u003e 9 units\n.SR                             XXX\n-\u003e 1 bow                        -\u003e 1 block\n(S=stick, R=string)             X = iron ingot | gold ingot |\n                                    diamond | coal | emerald |\n                                    lapis | redstone | netherite ingot\n                                (Block of Coal has NO reverse recipe\n                                 in some versions â€” verify; coal block\n                                 is craftable only from coal, not charcoal)\n```\n\n### Tool recipes (M = tier material: planks | cobblestone-family | iron ingot | gold ingot | diamond; S = stick)\n```\nPICKAXE      AXE         SHOVEL     SWORD      HOE\nMMM          MM          M          M          MM\n.S.          MS          S          M          .S\n.S.          .S          S          S          .S\n-\u003e 1         -\u003e 1        -\u003e 1       -\u003e 1       -\u003e 1\n```\nAxe and hoe patterns are mirrorable (Java auto-mirrors), so the material column may be on either side. Netherite tools have **no crafting recipe** â€” smithing table only: diamond tool + netherite upgrade smithing template + 1 netherite ingot, and the result keeps the diamond tool\u0027s enchantments and current damage value.\n\nStone-tier crafting material accepts cobblestone, cobbled deepslate, and blackstone interchangeably. Furnace also accepts all three.\n\n---\n\n## 4. SMELTING / FURNACE\n\n### Timing\n- Furnace: `cookingTotalTime = 200 ticks` (10 s) per item.\n- Blast furnace / smoker: 100 ticks (5 s). Blast furnace takes ores + metal gear only; smoker takes food only.\n- Campfire: 600 ticks (30 s), no fuel, no XP, food only.\n\n### Furnace tick loop (implementable form)\n```\neach tick:\n  wasLit = litTimeRemaining \u003e 0\n  if wasLit: litTimeRemaining--\n  hasInput = input != EMPTY\n  hasFuel  = fuel != EMPTY\n  recipe   = hasInput ? findRecipe(input) : null\n\n  if litTimeRemaining == 0 and recipe != null and canPlaceOutput(recipe):\n      if hasFuel:\n          litTotalTime = litTimeRemaining = burnTime(fuel)\n          consume 1 fuel        # lava bucket leaves an empty bucket in the fuel slot\n  if litTimeRemaining \u003e 0 and recipe != null and canPlaceOutput(recipe):\n      cookingProgress++\n      if cookingProgress == cookingTotalTime:\n          cookingProgress = 0\n          input.count--\n          output.grow(recipe.resultCount)\n          recipesUsed[recipeId] += 1     # XP bookkeeping\n  else:\n      cookingProgress = max(0, cookingProgress - 2)   # decays at 2/tick\n```\nKey behaviours: fuel is only consumed when there is a smeltable input and room in the output; progress decays at **2 ticks per tick** when interrupted (so briefly removing the input costs double); a fuel item burning is not refunded if the input is removed mid-burn.\n\n### XP payout\nXP is accrued per *smelted item* and stored in the furnace (`RecipesUsed` map recipeIdâ†’count), then released when a player takes items out of the output slot (or when the furnace is broken). Payout:\n```\nvalue = count * recipe.experience     # float\ni = floor(value)\nf = value - i\nif f != 0 and random() \u003c f: i += 1\nspawn i experience as orbs (split into orbs of standard sizes)\n```\nHopper extraction does **not** release XP; it accumulates until a player manually takes output or breaks the block.\n\n### Smelting recipe list (input â†’ output, XP)\nOres/metals (blast-furnace compatible): raw ironâ†’iron ingot 0.7; iron oreâ†’iron ingot 0.7; deepslate iron oreâ†’iron ingot 0.7; raw copperâ†’copper ingot 0.7; copper oreâ†’copper ingot 0.7; raw goldâ†’gold ingot 1.0; gold oreâ†’gold ingot 1.0; nether gold oreâ†’gold ingot 1.0; ancient debrisâ†’netherite scrap 2.0; coal oreâ†’coal 0.1; diamond oreâ†’diamond 1.0; emerald oreâ†’emerald 1.0; redstone oreâ†’redstone dust 0.7; lapis oreâ†’lapis lazuli 0.2; nether quartz oreâ†’nether quartz 0.2. (Deepslate variants give the same output/XP as their stone counterparts.)\n\nGear recycling (blast furnace): any iron tool/armor/horse armor/chainmailâ†’iron nugget 0.1; any golden tool/armorâ†’gold nugget 0.1.\n\nFood (smoker/campfire compatible): raw beefâ†’steak 0.35; raw porkchopâ†’cooked porkchop 0.35; raw chickenâ†’cooked chicken 0.35; raw muttonâ†’cooked mutton 0.35; raw rabbitâ†’cooked rabbit 0.35; raw codâ†’cooked cod 0.35; raw salmonâ†’cooked salmon 0.35; potatoâ†’baked potato 0.35; kelpâ†’dried kelp 0.1; chorus fruitâ†’popped chorus fruit 0.1 (furnace only, not smoker).\n\nBlocks/misc (furnace only): cobblestoneâ†’stone 0.1; stoneâ†’smooth stone 0.1; cobbled deepslateâ†’deepslate 0.1; sand OR red sandâ†’glass 0.1; clay (block)â†’terracotta 0.35; clay ballâ†’brick 0.3; netherrackâ†’nether brick 0.1; stone bricksâ†’cracked stone bricks 0.1; deepslate bricksâ†’cracked deepslate bricks 0.1; deepslate tilesâ†’cracked deepslate tiles 0.1; nether bricksâ†’cracked nether bricks 0.1; polished blackstone bricksâ†’cracked variant 0.1; sandstoneâ†’smooth sandstone 0.1; red sandstoneâ†’smooth red sandstone 0.1; block of quartzâ†’smooth quartz 0.1; basaltâ†’smooth basalt 0.1; any stained/plain terracottaâ†’matching glazed terracotta 0.1; wet spongeâ†’sponge 0.15 (also spawns a water bucket\u0027s worth of steam sound; note the furnace fuel is still consumed); cactusâ†’green dye 1.0 (Java) ; sea pickleâ†’lime dye 0.1; any overworld log/wood/stripped variantâ†’charcoal 0.15.\n\nCharcoal is functionally identical to coal as fuel (1600 ticks) but **cannot** be crafted into a block of coal.\n\n### Fuel table (Java, ticks)\n20000 lava bucket Â· 16000 block of coal Â· 4000 dried kelp block Â· 2400 blaze rod Â· 1600 coal Â· 1600 charcoal Â· 1200 any boat (incl. chest boats) Â· 800 hanging sign Â· 300 logs/wood/stripped/bamboo block/bamboo mosaic Â· 300 planks Â· 300 wooden stairs Â· 300 wooden fence \u0026 fence gate Â· 300 wooden trapdoor Â· 300 wooden pressure plate Â· 300 ladder Â· 300 crafting table Â· 300 chest \u0026 trapped chest Â· 300 bookshelf Â· 300 note block Â· 300 jukebox Â· 300 barrel/lectern/composter/loom/smithing table/fletching table/cartography table/daylight detector Â· 300 banner Â· 300 bow Â· 300 fishing rod Â· 300 mangrove roots Â· 200 wooden door Â· 200 sign Â· 200 bowl Â· 200 wooden pickaxe/axe/shovel/hoe/sword Â· 150 wooden slab Â· 100 stick Â· 100 sapling Â· 100 wool (all colors) Â· 100 wooden button Â· 100 dead bush Â· 100 azalea/flowering azalea Â· 67 carpet Â· 50 bamboo Â· 50 scaffolding.\n\nItems smelted = burnTicks / 200. A lava bucket returns an empty bucket to the fuel slot when consumed (Java only).\n\nLow-confidence: scaffolding. minecraft.wiki states scaffolding smelts 0.25 items (â†’ 50 ticks), but craftdex.net lists 40 s (800 ticks / 4 items). The wiki value is the one I would ship; flag for in-game verification.\n\n---\n\n## 5. STACK SIZES\n\n- **64** â€” default for everything not listed below (all full blocks, ingots, gems, most food, torches, ladders, arrows, TNT, gunpowder, paper, book, bookshelf, planks, sticks, coal, wool, glass, saddle? no â€” see below).\n- **16** â€” snowball; egg (and all mob-spawn-adjacent egg items); ender pearl; sign (all wood types); hanging sign; **empty** bucket; armor stand; banner; honey bottle; written book.\n- **1** â€” anything with a durability bar (all 5 tool types Ã— 6 tiers, all armor, shears, flint and steel, fishing rod, carrot on a stick, warped fungus on a stick, bow, crossbow, trident, shield, elytra); **filled** buckets (water, lava, milk, powder snow, any fish/axolotl/tadpole bucket); all potions (drinkable, splash, lingering); bed; all boats and chest boats; all minecarts; cake; saddle; enchanted book; mushroom stew, rabbit stew, beetroot stew, suspicious stew; all music discs; totem of undying; banner pattern; bundle; end crystal? (no â€” 64); written-and-signed book is 16, book-and-quill is 1.\n\nImplementation note: `max_stack_size` and `max_damage` are mutually exclusive in modern Java â€” any item with a damage component is forced to stack size 1. Model stack size as a per-item constant with a hard rule `if (hasDurability) maxStack = 1`.\n\n---\n\n## 6. MISC EDGE CASES WORTH ENCODING\n\n- Shaped-recipe matching must strip the pattern to its bounding box, then try every (dx, dy) offset that fits in the grid, and separately try the horizontally-mirrored pattern. Shapeless recipes match on multiset of ingredients only.\n- Crafting-grid ingredients that have a \"remainder\" stay behind rather than being consumed: milk bucket â†’ empty bucket (cake), water bucket â†’ empty bucket, honey bottle â†’ glass bottle, dragon\u0027s breath â†’ glass bottle. In Java these remainders are dropped into the crafting grid slot; in Bedrock they go to inventory.\n- Tools take 1 durability per block broken **only if the block\u0027s hardness \u003e 0** (breaking a torch or flower with a pickaxe costs no durability). Weapons take 1 durability per entity hit. Hoes take 1 per till. A tool at 0 remaining durability breaks and is removed.\n- Unbreaking N: for tools, damage is ignored with probability `N/(N+1)`; for armor, probability `0.6 + 0.4/(N+1)`.\n- Hoes are the \"correct tool\" for: leaves, hay bale, target, dried kelp block, sponge/wet sponge, shroomlight, nether wart block, warped wart block, moss block, and all sculk blocks.\n- Swords are the correct tool for cobwebs (15x) and break bamboo instantly; a sword loses 2 durability when used to break a block instead of 1.\n- Shears are the correct tool for wool (5x), leaves (15x), cobwebs (15x), vines/glow lichen (2x), and guarantee 100% drops on weeping/twisting vines (normally 33%).\n- Blocks broken while flying/falling (`not onGround`) apply the /5 penalty â€” this includes standing on a boat or riding an entity in some cases; the check is the player\u0027s `onGround` flag.\n",
+    "sources":  [
+                    "https://minecraft.wiki/w/Breaking",
+                    "https://minecraft.wiki/w/Smelting",
+                    "https://minecraft.wiki/w/Template:Smelting_table",
+                    "https://minecraft.wiki/w/Furnace",
+                    "https://minecraft.wiki/w/Pickaxe",
+                    "https://minecraft.wiki/w/Sword",
+                    "https://minecraft.wiki/w/Axe",
+                    "https://minecraft.wiki/w/Shovel",
+                    "https://minecraft.wiki/w/Hoe",
+                    "https://minecraft.wiki/w/Tool",
+                    "https://minecraft.wiki/w/Shears",
+                    "https://minecraft.wiki/w/Scaffolding",
+                    "https://minecraft.wiki/w/Item",
+                    "https://minecraft.wiki/w/Crafting",
+                    "https://minecraft.wiki/w/Bed",
+                    "https://minecraft.wiki/w/Cake",
+                    "https://minecraft.wiki/w/Torch",
+                    "https://minecraft.wiki/w/Ladder",
+                    "https://minecraft.wiki/w/Boat",
+                    "https://minecraft.wiki/w/Sign",
+                    "https://minecraft.wiki/w/Bowl",
+                    "https://minecraft.wiki/w/Bucket",
+                    "https://minecraft.wiki/w/Arrow",
+                    "https://minecraft.wiki/w/Bow",
+                    "https://minecraft.wiki/w/TNT",
+                    "https://minecraft.wiki/w/Bookshelf",
+                    "https://minecraft.wiki/w/Book",
+                    "https://minecraft.wiki/w/Paper",
+                    "https://minecraft.wiki/w/Golden_Apple",
+                    "https://minecraft.wiki/w/Flint_and_Steel",
+                    "https://minecraft.wiki/w/Bread",
+                    "https://minecraft.wiki/w/Wooden_Door",
+                    "https://minecraft.wiki/w/Fence",
+                    "https://minecraft.wiki/w/Stairs",
+                    "https://minecraft.wiki/w/Slab",
+                    "https://minecraft.wiki/w/Chest",
+                    "https://minecraft.wiki/w/Crafting_Table",
+                    "https://minecraft.wiki/w/Stick",
+                    "https://minecraft.wiki/w/Planks",
+                    "https://minecraft.wiki/w/Block_of_Iron",
+                    "https://minecraft.wiki/w/Block_of_Coal",
+                    "https://craftdex.net/fuel"
+                ]
+}

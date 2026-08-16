@@ -1,0 +1,876 @@
+﻿{
+    "topic":  "Minecraft Java Edition 1.20 â€” block properties table (hardness, blast resistance, tool/tier, drops, luminance, solidity, texture palettes, biome tint)",
+    "facts":  [
+                  {
+                      "key":  "FORMULA.break_time_ticks",
+                      "value":  "ticks = ceil(1 / damagePerTick); damagePerTick = (toolSpeed / hardness) / 30 if harvestable else / 100",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "FORMULA.tool_speed_multipliers",
+                      "value":  "hand 1.0, wood 2.0, stone 4.0, iron 6.0, diamond 8.0, netherite 9.0, gold 12.0 (dimensionless); shears 5.0 on wool, 15.0 on leaves/cobweb; sword 15.0 on cobweb, 1.5 on other blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "FORMULA.tier_harvest_levels",
+                      "value":  "WOOD=0, GOLD=0, STONE=1, IRON=2, DIAMOND=3, NETHERITE=4 (integer tier index)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "FORMULA.speed_modifiers",
+                      "value":  "Efficiency: +(level^2 + 1) to speed, only if tool is correct; Haste: x(1 + 0.2*level); Mining Fatigue: x0.3^min(level,4); underwater w/o Aqua Affinity: /5; not on ground: /5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "grass_block",
+                      "value":  "hardness 0.6, blast resistance 0.6, shovel (no tier req, drops with any/no tool), drops 1 dirt (self with Silk Touch), light 0, full opaque cube, MapColor GRASS #7FB238",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "grass_block.texture",
+                      "value":  "top = GRAYSCALE, biome-tinted (raw grays ~#FFFFFF,#E8E8E8,#D4D4D4,#C0C0C0); side = dirt base #866043,#79553A,#6F4F31 + grayscale grass_block_side_overlay (tinted) covering upper rows; bottom = dirt texture",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "dirt",
+                      "value":  "hardness 0.5, blast resistance 0.5, shovel (no tier req), drops itself, light 0, full opaque cube, MapColor DIRT #976D4D",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dirt.texture",
+                      "value":  "all faces #866043, #79553A, #8C6B4E, #6F4F31, #9B7653",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "coarse_dirt",
+                      "value":  "hardness 0.5, blast resistance 0.5, shovel (no tier req), drops itself (no Silk Touch needed), light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "coarse_dirt.texture",
+                      "value":  "all faces #77553B, #6A4B33, #8A6844, #5F4128, #91765A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "podzol",
+                      "value":  "hardness 0.5, blast resistance 0.5, shovel (no tier req), drops 1 dirt (self only with Silk Touch), light 0, full opaque cube, MapColor PODZOL #815631",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "podzol.texture",
+                      "value":  "top (NOT tinted) #5C3C1E, #6E4A23, #4E3116, #7A5A2E; side = dirt lower + dark brown upper band #57381B; bottom = dirt",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "stone",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier wood(0), drops 1 cobblestone (stone with Silk Touch), light 0, full opaque cube, MapColor STONE #707070",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "stone.texture",
+                      "value":  "all faces #7F7F7F, #888888, #7A7A7A, #737373, #6E6E6E",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cobblestone",
+                      "value":  "hardness 2, blast resistance 6, pickaxe REQUIRED, min tier wood(0), drops itself, light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cobblestone.texture",
+                      "value":  "all faces #7A7A7A, #8B8B8B, #6E6E6E, #5F5F5F, #9A9A9A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "granite",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier wood(0), drops itself, light 0, full opaque cube, MapColor DIRT #976D4D",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "granite.texture",
+                      "value":  "all faces #9F6B58, #AE7B65, #90604F, #B5897A, #7E5244",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "andesite",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier wood(0), drops itself, light 0, full opaque cube, MapColor STONE #707070",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "andesite.texture",
+                      "value":  "all faces #888889, #7E7E80, #939395, #6F6F71, #9E9EA0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "diorite",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier wood(0), drops itself, light 0, full opaque cube, MapColor QUARTZ #FFFCF5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "diorite.texture",
+                      "value":  "all faces #BFBFBF, #CFCFCF, #ACACAC, #E0E0E0, #9D9D9D",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "deepslate",
+                      "value":  "hardness 3, blast resistance 6, pickaxe REQUIRED, min tier wood(0), drops 1 cobbled_deepslate (self with Silk Touch), light 0, full opaque cube, pillar-axis block, MapColor DEEPSLATE #646464",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "deepslate.texture",
+                      "value":  "side #515154, #4A4A4D, #5B5B5E, #414144; top/bottom (deepslate_top) #565659, #4E4E51, #616164",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sand",
+                      "value":  "hardness 0.5, blast resistance 0.5, shovel (no tier req), drops itself, light 0, full opaque cube, gravity-affected (falls), MapColor SAND #F7E9A3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sand.texture",
+                      "value":  "all faces #DBD3A0, #E7DEB0, #D0C68F, #C2B784, #EFE7BC",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "red_sand",
+                      "value":  "hardness 0.5, blast resistance 0.5, shovel (no tier req), drops itself, light 0, full opaque cube, gravity-affected, MapColor COLOR_ORANGE #D87F33",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "red_sand.texture",
+                      "value":  "all faces #BE6B2E, #A85821, #C97A3D, #96491A, #D18B4B",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sandstone",
+                      "value":  "hardness 0.8, blast resistance 0.8, pickaxe REQUIRED, min tier wood(0), drops itself, light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sandstone.texture",
+                      "value":  "top #E0D6A5, #D5CA97, #EAE1B4; side #DFD5A3 with darker banding #CFC292, #C1B383; bottom (sandstone_bottom) #D8CE9C, #C8BC8B",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "gravel",
+                      "value":  "hardness 0.6, blast resistance 0.6, shovel (no tier req), drops 10% flint else 1 gravel (Fortune I 14.286%, II 25%, III 100% flint; Silk Touch always gravel), light 0, full opaque cube, gravity-affected, MapColor STONE #707070",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "gravel.texture",
+                      "value":  "all faces #837E7C, #6F6B69, #98918D, #5C5856, #A9A29E",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "clay",
+                      "value":  "hardness 0.6, blast resistance 0.6, shovel (no tier req), drops exactly 4 clay_ball (NOT Fortune-affected; self with Silk Touch), light 0, full opaque cube, MapColor CLAY #A4A8B8",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "clay.texture",
+                      "value":  "all faces #A4A8B8, #9AA0B0, #B0B4C4, #8E94A4",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "oak_log",
+                      "value":  "hardness 2, blast resistance 2, axe (no tier req), drops itself, light 0, full opaque cube, axis-pillar, flammable (igniteOdds 5 / burnOdds 5), MapColor WOOD #8F7748",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "oak_log.texture",
+                      "value":  "side #6B5330, #7A6136, #56421F, #866F3E; top/bottom (oak_log_top) #B08F4F, #9C7C42, #C0A05B, #8A6A38",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "oak_planks",
+                      "value":  "hardness 2, blast resistance 3, axe (no tier req), drops itself, light 0, full opaque cube, flammable (5/20)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "oak_planks.texture",
+                      "value":  "all faces #B58C56, #A87D4E, #9C7248, #C29A63, #8F6A42",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "oak_leaves",
+                      "value":  "hardness 0.2, blast resistance 0.2, hoe fastest / shears or Silk Touch to drop the block, drops 5% oak_sapling (Fortune III 10%), 0.5% apple (Fortune III 0.833%), 2% stick (Fortune III 3.33%), light 0, full-size cube but NOT opaque (light filter 1, diffuses skylight), flammable (30/60)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "oak_leaves.texture",
+                      "value":  "GRAYSCALE texture, foliage-tinted. Raw grays ~#FFFFFF,#D0D0D0,#A8A8A8,#7C7C7C with transparent holes; plains-tinted result â‰ˆ #77AB2F, #62912A, #4E7522, #3C5C1A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "birch_log",
+                      "value":  "hardness 2, blast resistance 2, axe (no tier req), drops itself, light 0, full opaque cube, flammable (5/5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "birch_log.texture",
+                      "value":  "side #D8D5CC, #C8C5B8, #E4E2DA + dark dashes #56553F, #2B2B2B; top (birch_log_top) #C5B37B, #B4A26C, #D3C48D",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "birch_planks",
+                      "value":  "hardness 2, blast resistance 3, axe (no tier req), drops itself, light 0, full opaque cube, flammable (5/20)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "birch_planks.texture",
+                      "value":  "all faces #C8B58A, #D7C79A, #B9A57A, #E0D2A9, #A8946C",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "spruce_log",
+                      "value":  "hardness 2, blast resistance 2, axe (no tier req), drops itself, light 0, full opaque cube, flammable (5/5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spruce_log.texture",
+                      "value":  "side #3D2B14, #4A3419, #2E2010, #5A4322; top (spruce_log_top) #7A5C33, #6A4E2A, #8A6C3D",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "spruce_planks",
+                      "value":  "hardness 2, blast resistance 3, axe (no tier req), drops itself, light 0, full opaque cube, flammable (5/20)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spruce_planks.texture",
+                      "value":  "all faces #755031, #6A4826, #86603A, #5C3F21, #9C7448",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "glass",
+                      "value":  "hardness 0.3, blast resistance 0.3, no tool requirement (any tool same speed), drops NOTHING without Silk Touch, light 0, full-size cube but NOT opaque, light filter 0 (passes light unchanged), not flammable",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "glass.texture",
+                      "value":  "mostly alpha-0; visible frame/highlights #FFFFFF (a~64), #D6EDF0, #C8E7EC, #A9D3DA; render layer = cutout/translucent",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "bedrock",
+                      "value":  "hardness -1 (unbreakable in Survival), blast resistance 3600000, no tool, drops nothing, light 0, full opaque cube, MapColor STONE #707070",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "bedrock.texture",
+                      "value":  "all faces #555555, #6B6B6B, #414141, #7A7A7A, #2E2E2E",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "obsidian",
+                      "value":  "hardness 50, blast resistance 1200, pickaxe REQUIRED, min tier DIAMOND(3), drops itself, light 0, full opaque cube, MapColor COLOR_BLACK #191919",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "obsidian.texture",
+                      "value":  "all faces #15121F, #1E1B2B, #0F0D18, #292339, #3A3050",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "coal_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier WOOD(0), drops 1 coal (Fortune ore_drops), XP 0-2, light 0, full opaque cube. deepslate_coal_ore hardness 4.5, resistance 3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "coal_ore.texture",
+                      "value":  "stone base #7F7F7F,#888888,#737373 + coal blobs #141414, #262626, #333333",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "iron_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier STONE(1), drops 1 raw_iron (Fortune ore_drops), XP 0, light 0, full opaque cube. deepslate_iron_ore hardness 4.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "iron_ore.texture",
+                      "value":  "stone base + raw-iron speckles #D8AF93, #BC9980, #E5C1A5, #A98670",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "gold_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier IRON(2), drops 1 raw_gold (Fortune ore_drops), XP 0, light 0, full opaque cube. deepslate_gold_ore hardness 4.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "gold_ore.texture",
+                      "value":  "stone base + gold speckles #FCEE4B, #E5C438, #F9E17C, #C9A62C",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "diamond_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier IRON(2), drops 1 diamond (Fortune ore_drops), XP 3-7, light 0, full opaque cube. deepslate_diamond_ore hardness 4.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "diamond_ore.texture",
+                      "value":  "stone base + gems #4AEDD9, #5CDBD5, #62E8E4, #35C4C4, #2AA8A8",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "redstone_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier IRON(2), drops 4-5 redstone dust (Fortune uniform_bonus_count +0..level), XP 1-5, light 9 WHEN LIT (blockstate lit=true) / 0 when unlit, full opaque cube. deepslate_redstone_ore hardness 4.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "redstone_ore.texture",
+                      "value":  "stone base + red specks #971607, #C22B1E, #7A1105, #E24234",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lapis_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier STONE(1), drops 4-9 lapis_lazuli (Fortune ore_drops multiplier), XP 2-5, light 0, full opaque cube. deepslate_lapis_ore hardness 4.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lapis_ore.texture",
+                      "value":  "stone base + blue specks #1B4ACB, #2A64D6, #143B9E, #3E7BE0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "emerald_ore",
+                      "value":  "hardness 3, blast resistance 3, pickaxe REQUIRED, min tier IRON(2), drops 1 emerald (Fortune ore_drops), XP 3-7, light 0, full opaque cube. deepslate_emerald_ore hardness 4.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "emerald_ore.texture",
+                      "value":  "stone base + green gems #17DD62, #0FBF4E, #43E88A, #0A9E3F",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "water",
+                      "value":  "hardness 100, blast resistance 100 (both effectively irrelevant â€” unbreakable fluid), no drops, light 0, NON-SOLID fluid, light filter 1 per block + diffuses skylight, biome-water-tinted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "water.texture",
+                      "value":  "water_still.png is GRAYSCALE (animated 32 frames), multiplied by biome water color; default overworld tint #3F76E4 â†’ rendered â‰ˆ #3F76E4, #3A6ED4, #4780EC, #2F5FC0. Rendered alpha ~0.75 for the still surface",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lava",
+                      "value":  "hardness 100, blast resistance 100, no drops, light 15, NON-SOLID fluid, fully blocks light propagation (opaque to light), NOT tinted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "lava.texture",
+                      "value":  "untinted animated: #D45A12, #EA8E11, #F5AA0F, #A63C05, #FF9A00",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "snow_block",
+                      "value":  "hardness 0.2, blast resistance 0.2, shovel REQUIRED to drop, min tier WOOD(0 - any shovel), drops 4 snowball (self with Silk Touch), light 0, full opaque cube, MapColor SNOW #FFFFFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "snow_block.texture",
+                      "value":  "all faces #F0FAFA, #FFFFFF, #E5F0F0, #DCE9E9",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "snow_layer",
+                      "value":  "hardness 0.1, blast resistance 0.1, shovel REQUIRED, drops 1 snowball per layer (layers 1-8), light 0, non-full block (height = layers*2/16 blocks), no collision at layer 1",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ice",
+                      "value":  "hardness 0.5, blast resistance 0.5, pickaxe fastest (no tier req), drops NOTHING without Silk Touch â€” converts to water if a block supports it, light 0, full-size cube NOT opaque (light filter 1, diffuses skylight), friction 0.98 (default block friction 0.6), MapColor ICE #A0A0FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ice.texture",
+                      "value":  "translucent: #A5C8F0, #8CB4E8, #BBD9F5, #6E9FDE (rendered alpha ~0.7)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "packed_ice",
+                      "value":  "hardness 0.5, blast resistance 0.5, pickaxe fastest (no tier req), drops NOTHING without Silk Touch and does NOT create water, light 0, FULL OPAQUE cube, friction 0.98",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "packed_ice.texture",
+                      "value":  "all faces #8DB4E2, #A9CCEE, #7AA5D8, #C0DCF2 (fully opaque)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "blue_ice.friction",
+                      "value":  "0.989 (highest in game; ice/packed_ice/frosted_ice 0.98, slime_block 0.8, default 0.6)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cactus",
+                      "value":  "hardness 0.4, blast resistance 0.4, no tool requirement, drops itself, light 0, NON-FULL cube: render/outline 14/16 x 16/16 x 14/16, collision box (1,0,1)-(15,15,15) px, deals 1 HP (0.5 heart) contact damage with 10-tick hurt cooldown, max natural height 3 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cactus.texture",
+                      "value":  "side #0F6D28, #157F35, #0B5A1E, #1F8F42; top #7B9E3E, #5E8A2A, #8FAF4E; bottom #6D5B36, #7E6A40",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pumpkin",
+                      "value":  "hardness 1, blast resistance 1, axe fastest (no tier req), drops itself (shears on a placed pumpkin carve it â†’ 4 pumpkin_seeds + carved_pumpkin), light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pumpkin.texture",
+                      "value":  "side #C07615, #E08A1C, #9C5D10, #F0A02A; top #BE7215, #D0801A, #A46310; bottom same as side",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "hay_block",
+                      "value":  "hardness 0.5, blast resistance 0.5, hoe fastest (no tier req), drops itself, light 0, full opaque cube, axis-pillar, flammable (60/20), reduces fall damage by 80%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hay_block.texture",
+                      "value":  "side #9A8121, #B49A2C, #7E6A18, #C9AF3B; top #A78F2E with rope band #8B7420, #6E5A16",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "bookshelf",
+                      "value":  "hardness 1.5, blast resistance 1.5, axe fastest (no tier req), drops 3 book (self with Silk Touch), light 0, full opaque cube, flammable (30/20), enchanting power 1 per shelf",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "bookshelf.texture",
+                      "value":  "top/bottom = oak_planks #B58C56,#A87D4E; side = plank border #B58C56 + books #7A3E2B, #3B6ABF, #C7A25A, #4E8C3B, #8B3A5C",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "crafting_table",
+                      "value":  "hardness 2.5, blast resistance 2.5, axe fastest (no tier req), drops itself, light 0, full opaque cube, flammable (5/20)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "crafting_table.texture",
+                      "value":  "top #7B5B3C grid on #A8814F, lines #5A4128; front/side #8C6B44, #6E5230, #B08C55 with tool icons #6E6E6E, #C4C4C4; bottom = oak_planks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "furnace",
+                      "value":  "hardness 3.5, blast resistance 3.5, pickaxe REQUIRED, min tier WOOD(0), drops itself (contents spill), light 13 when lit / 0 when unlit, full opaque cube, has facing property",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "furnace.texture",
+                      "value":  "side/top #7A7A7A, #6E6E6E, #888888; front (unlit) #6E6E6E with opening #2B2B2B, #4A4A4A; front (lit) adds #F0A020, #FFD860, #C46A10",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "chest",
+                      "value":  "hardness 2.5, blast resistance 2.5, axe fastest (no tier req), drops itself + contents, light 0, NON-FULL cube: shape (1,0,1)-(15,14,15) px, does not occlude light, 27 slots (54 for double)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chest.texture",
+                      "value":  "wood #8A6A32, #A5813F, #6B4F24, #B99050; latch/lock #6E6E6E, #B8B8B8, #4A4A4A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "torch",
+                      "value":  "hardness 0 (instant break), blast resistance 0, no tool, drops itself, light 14, NON-SOLID (no collision), model is a 2x2 px stick 10px tall, wall_torch variant offset",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "torch.texture",
+                      "value":  "stick #8B6B3E, #6B4F2A; flame head #FFF0A0, #FFD800, #E8A000, #FFFFFF core",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ladder",
+                      "value":  "hardness 0.4, blast resistance 0.4, axe fastest (no tier req), drops itself, light 0, NON-FULL: 3/16 block deep against wall, climbable (climb speed 0.1175 blocks/tick up â‰ˆ 2.35 m/s), no solid collision",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ladder.texture",
+                      "value":  "#7C5F35, #8E6E3E, #63492A, #A0844F (cutout, mostly transparent)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tnt",
+                      "value":  "hardness 0 (instant), blast resistance 0, no tool, drops itself when mined, light 0, full opaque cube, flammable (15/100), fuse 80 ticks (4.0 s), explosion power 4.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tnt.texture",
+                      "value":  "side #DB2E1F, #B4241A, #E8503F + white \u0027TNT\u0027 band #E8E8E8, #FFFFFF + dark strip #4B3325; top #DB2E1F + #C4C4C4, #9E9E9E; bottom #4B3325, #6B4A33",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "oak_door",
+                      "value":  "hardness 3, blast resistance 3, axe fastest (no tier req), drops 1 oak_door item (both halves), light 0, NON-FULL: 3/16 block thick, two-block-tall (upper/lower half blockstates), flammable (5/20), openable by hand and redstone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "oak_door.texture",
+                      "value":  "upper/lower #B08C55, #9C7A48, #6B5330 panel shading, handle #8B8B8B, #C4C4C4",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "oak_fence",
+                      "value":  "hardness 2, blast resistance 3, axe fastest (no tier req), drops itself, light 0, NON-FULL: post 4x16x4 px, side bars 2px; COLLISION height 24/16 = 1.5 blocks (mobs cannot jump it), flammable (5/20)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "oak_fence.texture",
+                      "value":  "uses oak_planks texture: #B58C56, #A87D4E, #9C7248, #C29A63",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cobblestone_stairs",
+                      "value":  "hardness 2, blast resistance 6, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, NON-FULL (half+quarter voxel shape), does not fully occlude light",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cobblestone_stairs.texture",
+                      "value":  "cobblestone texture on all faces: #7A7A7A, #8B8B8B, #6E6E6E, #5F5F5F, #9A9A9A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "glowstone",
+                      "value":  "hardness 0.3, blast resistance 0.3, no tool requirement (pickaxe listed but any tool works), drops 2-4 glowstone_dust (Fortune raises average, hard cap 4; self with Silk Touch), light 15, full cube that blocks all skylight and suffocates entities; wiki infobox labels it \u0027Transparent: Yes\u0027 because it is not a redstone conductor and blocks beacon beams",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "glowstone.texture",
+                      "value":  "all faces #FFBC5E, #E8A34A, #C98A3C, #FFD48A, #9C7A3C; MapColor SAND #F7E9A3",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "netherrack",
+                      "value":  "hardness 0.4, blast resistance 0.4, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, full opaque cube, infinitely burns fire on top, MapColor NETHER #700200",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "netherrack.texture",
+                      "value":  "all faces #6F3634, #874444, #5A2A28, #9C5250, #4B2220",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "mossy_cobblestone",
+                      "value":  "hardness 2, blast resistance 6, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "mossy_cobblestone.texture",
+                      "value":  "all faces #7A7A7A, #6E6E6E + moss #6C8C4B, #5A7A3C, #7E9E5A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "stone_bricks",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "stone_bricks.texture",
+                      "value":  "all faces #7A7A7A, #888888, #6E6E6E, #5F5F5F, #969696",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cracked_stone_bricks",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, full opaque cube",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cracked_stone_bricks.texture",
+                      "value":  "all faces #767676, #848484, #6A6A6A + crack lines #4A4A4A, #3E3E3E",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "chiseled_stone_bricks",
+                      "value":  "hardness 1.5, blast resistance 6, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, full opaque cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chiseled_stone_bricks.texture",
+                      "value":  "all faces #7A7A7A, #909090, #5E5E5E, #686868 (carved pillar/creeper motif)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "bricks",
+                      "value":  "hardness 2, blast resistance 6, pickaxe REQUIRED, min tier WOOD(0), drops itself, light 0, full opaque cube, MapColor COLOR_RED #993333",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "bricks.texture",
+                      "value":  "all faces brick #97564B, #8E4B3C, #A76A5C + mortar #B0A79F, #9A918A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "white_wool",
+                      "value":  "hardness 0.8, blast resistance 0.8, shears fastest (speed 5.0, 0.25 s), drops itself with any tool, light 0, full opaque cube, flammable (30/60), MapColor SNOW #FFFFFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "white_wool.texture",
+                      "value":  "all faces #E9ECEC, #DDE0E0, #F5F7F7, #D2D5D5 (DyeColor WHITE diffuse #F9FFFE)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "red_wool",
+                      "value":  "hardness 0.8, blast resistance 0.8, shears fastest, drops itself, light 0, full opaque cube, flammable (30/60), MapColor COLOR_RED #993333",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "red_wool.texture",
+                      "value":  "all faces #B02E26, #9C2820, #C43A31, #8A231C (DyeColor RED diffuse #B02E26)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "dandelion",
+                      "value":  "hardness 0, blast resistance 0, no tool (instant), drops itself, light 0, NON-SOLID cross model, no collision, NOT biome-tinted, needs light level \u003e= 8 to survive",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dandelion.texture",
+                      "value":  "#FFEC4F, #FFF799, #D9C63A petals; stem/leaves #4C7A2E, #3A6021",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "poppy",
+                      "value":  "hardness 0, blast resistance 0, no tool (instant), drops itself, light 0, NON-SOLID cross model, no collision, NOT biome-tinted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "poppy.texture",
+                      "value":  "#C61515, #8B0F0F, #E23A2E petals; center #2E2E2E, #6B4A1E; stem #3F7A2A",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "short_grass",
+                      "value":  "hardness 0, blast resistance 0, shears fastest (drops the block itself), otherwise 12.5% chance of 1 wheat_seeds (Fortune I 1-3 / II 1-5 / III 1-7 attempts), light 0, NON-SOLID cross model, no collision, BIOME GRASS TINTED, flammable (60), renamed from \u0027grass\u0027 to \u0027short_grass\u0027 in 1.20.3-pre1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "short_grass.texture",
+                      "value":  "GRAYSCALE cross texture, grass-tinted. Plains tint result â‰ˆ #91BD59, #7BA34A, #63873A; inventory/item tint #7CBD6B",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fern",
+                      "value":  "hardness 0, blast resistance 0, shears to drop itself, else 12.5% wheat_seeds, light 0, NON-SOLID cross model, no collision, BIOME GRASS TINTED (uses grass colormap, not foliage)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fern.texture",
+                      "value":  "GRAYSCALE cross texture, grass-tinted; taiga tint result â‰ˆ #86B783, #6F9A6C, #587D55",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "dead_bush",
+                      "value":  "hardness 0, blast resistance 0, shears to drop itself, else drops 0-2 sticks (Fortune increases max), light 0, NON-SOLID cross model, no collision, NOT tinted, flammable (60)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dead_bush.texture",
+                      "value":  "#6F5230, #8A6B3F, #4E3A21, #A08050",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "red_mushroom",
+                      "value":  "hardness 0, blast resistance 0, no tool (instant), drops itself, light 0, NON-SOLID cross model, no collision, NOT tinted, needs light level \u003c= 12 to stay planted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "red_mushroom.texture",
+                      "value":  "cap #C63C31, #A62E24, #E05348 + white spots #E8E8E8, #FFFFFF; stem #C4C4BC, #A8A89E",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "brown_mushroom",
+                      "value":  "hardness 0, blast resistance 0, no tool (instant), drops itself, LIGHT EMISSION 1, NON-SOLID cross model, no collision, NOT tinted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brown_mushroom.texture",
+                      "value":  "cap #977251, #8A6647, #B08A66; stem #C7C0B4, #B0A99C",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sugar_cane",
+                      "value":  "hardness 0, blast resistance 0, no tool (instant), drops itself, light 0, NON-SOLID cross model, no collision, BIOME GRASS TINTED, max height 3 blocks (grows on age 0-15, grows at age 15), must be on sand/red_sand/dirt/grass/podzol/coarse_dirt/moss/mud adjacent to water",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sugar_cane.texture",
+                      "value":  "GRAYSCALE-ish cross texture, grass-tinted; untinted-looking render â‰ˆ #9CBE72, #86A85E, #B4D18C",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "wheat",
+                      "value":  "hardness 0, blast resistance 0, no tool (instant), light 0, NON-SOLID (no collision), 8 growth stages age=0..7 with 8 distinct textures wheat_stage0..wheat_stage7, needs light level \u003e= 9, NOT biome tinted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "wheat.drops_mature",
+                      "value":  "age=7: 1 wheat + (1 + Binomial(n=3+FortuneLevel, p=0.5714286)) wheat_seeds â†’ 1 seed 7.87%, 2 seeds 31.49%, 3 seeds 41.98%, 4 seeds 18.66% (mean 2.71 seeds)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "wheat.drops_immature",
+                      "value":  "age 0-6: 1 wheat_seeds, 0 wheat",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "wheat.texture",
+                      "value":  "stage0-2 young green #8DB360, #7A9E4E, #6A8A42; stage3-5 transitional #A8B457, #C0B75C; stage6-7 mature gold #DCBB65, #C8A040, #EFD98A, #A88430. Model = 4 crossed planes at x/z = 4/16 and 12/16",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.grass_tinted_blocks",
+                      "value":  "grass_block (top face + grass_block_side_overlay), short_grass, tall_grass (both halves), fern, large_fern, potted_fern, sugar_cane â€” all use BiomeColors.GRASS_COLOR_RESOLVER",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.foliage_tinted_blocks",
+                      "value":  "oak_leaves, jungle_leaves, acacia_leaves, dark_oak_leaves, mangrove_leaves, vine â€” use BiomeColors.FOLIAGE_COLOR_RESOLVER",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.fixed_leaf_colors",
+                      "value":  "spruce_leaves ALWAYS #619961 (6396257); birch_leaves ALWAYS #80A755 (8431445); cherry_leaves and azalea leaves untinted (#FFFFFF)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.default_item_colors",
+                      "value":  "grass/fern/grass_block item tint #7CBD6B = GrassColor.get(0.5, 1.0); default foliage color #48B518 (4764952); lily_pad block tint #208030, item tint #71C35C",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.plains",
+                      "value":  "grass #91BD59, foliage #77AB2F (temperature 0.8, downfall 0.4)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.forest",
+                      "value":  "grass #79C05A, foliage #59AE30 (temperature 0.7, downfall 0.8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.desert",
+                      "value":  "grass #BFB755, foliage #AEA42A (temperature 2.0, downfall 0.0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.savanna",
+                      "value":  "grass #BFB755, foliage #AEA42A (temperature 2.0, downfall 0.0 â€” identical to desert)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.taiga",
+                      "value":  "grass #86B783, foliage #68A464 (temperature 0.25, downfall 0.8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.snowy_plains_taiga",
+                      "value":  "grass #80B497, foliage #60A17B (temperature 0.0, downfall 0.5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.jungle",
+                      "value":  "grass #59C93C, foliage #30BB0B (temperature 0.95, downfall 0.9)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.swamp",
+                      "value":  "grass = #4C763C (5011004) or #6A7039 (6975545) selected by 2D noise; foliage override #6A7039",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.badlands",
+                      "value":  "grass override #90814D (9470285), foliage override #9E814D (10387789) â€” hardcoded, ignores colormap",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "TINT.dark_forest",
+                      "value":  "grass = ((colormapColor \u0026 0xFEFEFE) + 0x28340A) \u003e\u003e 1 â‰ˆ #507A32; foliage unmodified #59AE30",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.ocean_river_beach",
+                      "value":  "grass #8EB971, foliage #71A74D (temperature 0.5, downfall 0.5)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.birch_forest",
+                      "value":  "grass #88BB67, foliage #6BA941 (temperature 0.6, downfall 0.6) â€” but birch leaves themselves use the fixed #80A755",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.windswept_hills",
+                      "value":  "grass #8AB689, foliage #6DA36B (temperature 0.2, downfall 0.3)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.mushroom_fields",
+                      "value":  "grass #55C93F, foliage #2BBB0F (temperature 0.9, downfall 1.0)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "TINT.water_colors",
+                      "value":  "default overworld #3F76E4 (4159204); swamp #617B64; mangrove_swamp #3A7A6A; warm_ocean #43D5EE; lukewarm_ocean #45ADF2; cold_ocean #3D57D6; frozen_ocean/frozen_river #3938C9. Water color is a per-biome constant, never from a colormap",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "FORMULA.colormap_lookup",
+                      "value":  "temp = clamp(biome.temperature, 0, 1); hum = clamp(biome.downfall, 0, 1) * temp; i = (int)((1-temp)*255); j = (int)((1-hum)*255); pixelIndex = j\u003c\u003c8 | i (i.e. x=i column, y=j row in the 256x256 grass.png / foliage.png). Out-of-range â†’ 0xFF00FF magenta. NOT height-adjusted in 1.18+",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "FORMULA.biome_blend",
+                      "value":  "Rendered grass/foliage/water color is the arithmetic RGB average over a square of (2*biomeBlendRadius+1)^2 columns; default biomeBlendRadius = 2 â†’ 5x5 = 25 samples",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "LIGHT.emitters_relevant",
+                      "value":  "glowstone 15, lava 15, jack_o_lantern 15, sea_lantern 15, fire 15, torch 14, campfire 15, lit furnace/smoker/blast_furnace 13, redstone_ore(lit) 9, redstone_torch 7, brown_mushroom 1, magma_block 3; all other blocks in this table 0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "LIGHT.filtering_java",
+                      "value":  "Java 1.13+: a block either fully blocks light (opacity 15, all opaque cubes + lava) or subtracts exactly 1 (water, ice, leaves, cobweb, slime_block, honey_block, spawner, shulker_box, chorus plant) or 0 (glass, carpets, all cutout plants/flowers/torches). No per-block variable opacity in Java",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "MAPCOLOR.table",
+                      "value":  "GRASS #7FB238, SAND #F7E9A3, WOOL #C7C7C7, FIRE #FF0000, ICE #A0A0FF, METAL #A7A7A7, PLANT #007C00, SNOW #FFFFFF, CLAY #A4A8B8, DIRT #976D4D, STONE #707070, WATER #4040FF, WOOD #8F7748, QUARTZ #FFFCF5, GOLD #FAEE4D, DIAMOND #5CDBD5, LAPIS #4A80FF, EMERALD #00D93A, PODZOL #815631, NETHER #700200, DEEPSLATE #646464, RAW_IRON #D8AF93, COLOR_RED #993333, COLOR_BLACK #191919, TERRACOTTA_ORANGE #9F5224",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "DYECOLOR.diffuse_rgb",
+                      "value":  "WHITE #F9FFFE, ORANGE #F9801D, MAGENTA #C74EBD, LIGHT_BLUE #3AB3DA, YELLOW #FED83D, LIME #80C71F, PINK #F38BAA, GRAY #474F52, LIGHT_GRAY #9D9D97, CYAN #169C9C, PURPLE #8932B8, BLUE #3C44AA, BROWN #835432, GREEN #5E7C16, RED #B02E26, BLACK #1D1D21",
+                      "confidence":  "high"
+                  }
+              ],
+    "notes":  "## Mining / harvest model (implement this exactly)\n\n```\nspeed = 1.0\nif tool.isCorrectToolFor(block): speed = tool.tierSpeed   // 2/4/6/8/9/12, hand=1\nif speed \u003e 1 and efficiency \u003e 0: speed += efficiency^2 + 1\nif haste:            speed *= (1 + 0.2*hasteAmplifierPlus1)\nif miningFatigue:    speed *= 0.3^min(level,4)\nif inWater and !aquaAffinity: speed /= 5\nif !onGround:        speed /= 5\ndamagePerTick = speed / hardness\ncanHarvest = (block doesn\u0027t requireCorrectToolForDrops) OR (tool.tier \u003e= block.requiredTier AND tool is correct type)\ndamagePerTick /= canHarvest ? 30 : 100\nticks = ceil(1 / damagePerTick)   // damage accumulates each tick; \u003e=1.0 total =\u003e break\n```\n`hardness == 0` â†’ instant break (1 tick, actually 0 ticks client-side). `hardness == -1` (bedrock) â†’ unbreakable, never accumulates.\n\nTwo independent flags per block, don\u0027t conflate them:\n- **`requiresCorrectToolForDrops`** â€” if true and the tool is wrong/too low tier, block breaks but **drops nothing** (stone, all ores, obsidian, netherrack, bricks, stone bricks, cobblestone, deepslate, sandstone, furnace, stairs of those, snow_block[shovel]).\n- **\"preferred tool\"** â€” only affects speed. dirt/sand/gravel/clay/grass_block/podzol/wool/leaves/hay/glass/ice/pumpkin/cactus/torch/tnt/glowstone/plants drop with bare hands.\n\nException worth hardcoding: **snow_block and snow layers require a shovel to drop anything** even though they aren\u0027t \"stone-like\". **Glass, ice, packed_ice, leaves drop nothing** regardless of tool unless Silk Touch (leaves also need shears).\n\n## Ore XP (dropped as orbs on break, only without Silk Touch)\n`coal_ore 0-2, lapis_ore 2-5, nether_quartz 2-5, redstone_ore 1-5, diamond_ore 3-7, emerald_ore 3-7, nether_gold_ore 0-1, iron_ore/gold_ore/copper_ore 0`. Deepslate variants: hardness 4.5 (all), blast resistance 3, same drops/XP/tier as stone variant. Deepslate redstone ore also lights up (light 9).\n\n## Fortune formulas\n- `ore_drops` (coal/diamond/emerald/lapis/redstone/quartz/nether_gold): multiplier = max(1, random int in [0, level+1]) â€” i.e. Fortune I â†’ 1..2 uniform-ish, mean 1.33x; II mean 1.75x; III mean 2.2x.\n- `uniform_bonus_count` (redstone base 4-5, glowstone, melon): count += U(0, level).\n- `binomial_with_bonus_count` (wheat seeds, beetroot, potato/carrot extras): count += Binomial(n = extra + level, p).\n- Gravel flint is a `table_bonus` chance list `[0.1, 0.14286, 0.25, 1.0]` indexed by Fortune level.\n- Leaves sapling `table_bonus [0.05, 0.0625, 0.083333336, 0.1]`; oak apple `[0.005, 0.0055555557, 0.00625, 0.008333334]`; sticks `[0.02, 0.022222223, 0.025, 0.033333335]`.\n- All non-Silk-Touch drops pass through `explosion_decay` (survival chance 1/explosionRadius when destroyed by an explosion).\n\n## Solidity taxonomy for a renderer\n\n**Full opaque cube (occludes neighbors, lightOpacity 15, culls adjacent faces):** grass_block, dirt, coarse_dirt, podzol, stone, cobblestone, granite, andesite, diorite, deepslate, sand, red_sand, sandstone, gravel, clay, all logs, all planks, bedrock, obsidian, all 7 stone ores + deepslate ores, snow_block, packed_ice, pumpkin, hay_block, bookshelf, crafting_table, furnace, tnt, glowstone, netherrack, mossy_cobblestone, stone_bricks (+cracked/chiseled/mossy), bricks, all wool.\n\n**Full-size cube, non-occluding (render own faces, neighbors still render):** glass (lightOpacity 0, render layer `cutout`), oak_leaves (lightOpacity 1, `cutout_mipped`, `noOcclusion`), ice (lightOpacity 1, `translucent`). Note glass/ice DO cull faces against an identical neighbor block (`skipRendering` on `HalfTransparentBlock`) â€” two adjacent glass blocks hide the shared face.\n\n**Partial-shape solids:** cobblestone_stairs (voxel: bottom half slab + one quarter), chest (1,0,1)-(15,14,15) px, cactus (1,0,1)-(15,15,15) collision / (1,0,1)-(15,16,15) outline, oak_fence (post 6..10 px xz, arms 7..9, **collision height 24/16 blocks**), oak_door (3/16 thick, 2 blocks tall), ladder (3/16 deep, no collision, climbable), snow layer (height = layers * 2/16).\n\n**Non-solid, no collision, cross/plant models:** dandelion, poppy, short_grass, fern, dead_bush, red_mushroom, brown_mushroom, sugar_cane, wheat, torch. Render layer `cutout`. Cross model = 2 diagonal quads at 45Â°; wheat uses 4 axis-aligned quads at x=4/16, x=12/16, z=4/16, z=12/16.\n\n**Fluids:** water, lava â€” `FluidState` levels 0-8 (8 = falling), corner-height interpolation for the surface, water alpha ~0.75, lava fully opaque and emits 15.\n\n## Biome tint pipeline (this is the piece clones usually get wrong)\n\n1. Two 256Ã—256 PNGs: `colormap/grass.png`, `colormap/foliage.png`. Only the lower-left triangle is meaningful.\n2. Index: `i = (int)((1 - clamp(T,0,1)) * 255)`, `hum = clamp(D,0,1) * clamp(T,0,1)`, `j = (int)((1 - hum) * 255)`, `pixel = image[j*256 + i]`. Temperature is the **base** biome temperature â€” 1.18+ does **not** height-adjust it for color.\n3. Per-biome overrides beat the colormap: `grass_color_override`, `foliage_color_override` (badlands, swamp foliage, meadow, mangrove swamp).\n4. `grass_color_modifier` post-processes: `SWAMP` â†’ 2D noise `Biome.BIOME_INFO_NOISE.getValue(x*0.0225, z*0.0225)`, `\u003c -0.1 ? 0x4C763C : 0x6A7039`; `DARK_FOREST` â†’ `((c \u0026 0xFEFEFE) + 0x28340A) \u003e\u003e 1`.\n5. The renderer averages the resolved color over a `(2r+1)^2` column neighborhood, `r = biomeBlendRadius` (default 2). Average each channel independently as ints then recombine.\n6. Multiply the grayscale texel by the tint per channel: `out = texel * tint / 255`.\n7. **Grass block sides** need two passes: draw `dirt.png` untinted, then draw `grass_block_side_overlay.png` (grayscale + alpha) tinted, over the top. A `snowy=true` grass block instead uses `grass_block_snow` on the sides and is **not** tinted at all.\n8. Spruce and birch leaves are **not** biome-tinted â€” hardcode `#619961` and `#80A755`. Everything else in the leaves family uses the foliage colormap.\n\n## Texture-color caveat (read before trusting the hex lists)\n\nThe hardness / resistance / tool / drop / luminance numbers above come from the wiki data modules and per-block pages and are solid. The **per-face hex palettes are reconstructed from the vanilla 1.20 16Ã—16 atlas from memory, not sampled from the PNGs** â€” treat them as `medium` confidence approximations of the dominant 3-5 colors. If exact fidelity matters, sample them from `assets/minecraft/textures/block/*.png` in the client jar and take the top-N by pixel count. Note especially that several textures are **grayscale in the file** and only become colored at render time: `grass_block_top`, `grass_block_side_overlay`, `*_leaves` (except cherry/azalea), `short_grass`, `fern`, `tall_grass_*`, `large_fern_*`, `sugar_cane`, `vine`, `water_still`, `water_flow`. Sampling those files gives you grays, not greens â€” apply the tint yourself.\n\n## Misc numbers worth having\n\n- Block friction (horizontal velocity multiplier per tick): default `0.6`, ice/packed_ice/frosted_ice `0.98`, blue_ice `0.989`, slime_block `0.8`.\n- Explosion damage to blocks: a block survives if `resistance` is high enough; the ray-step formula subtracts `(resistance + 0.3) * 0.3` from the ray intensity per 0.3-block step. Blast resistance 1200 (obsidian) is immune to TNT (power 4).\n- Flammability `setFlammable(block, igniteOdds, burnOdds)`: leaves 30/60, wool 30/60, planks 5/20, logs 5/5, bookshelf 30/20, hay_block 60/20, tnt 15/100, short_grass/dead_bush 60/100, oak fence/door/stairs 5/20.\n- TNT fuse 80 ticks (4.0 s), explosion power 4.0.\n- Cactus contact damage 1 HP with a 10-tick (0.5 s) invulnerability window.\n- Hay bale reduces fall damage by 80%.\n- Ladder climb speed 0.1175 blocks/tick â‰ˆ 2.35 blocks/s upward.\n- Wheat needs light â‰¥ 9; flowers need light â‰¥ 8; mushrooms need light â‰¤ 12 (â‰¤ 13 to be placed) to survive.\n- Sugar cane and cactus both cap at 3 blocks of self-growth; growth counter is `age` 0-15, grows when age hits 15.\n\n## Known conflicts / low-confidence items\n\n- `cracked_stone_bricks` hardness: the wiki text says all four stone-brick variants share 1.5 / 6, and I report that, but some datamined dumps list cracked at 2.0. Verify against the client jar if precision matters.\n- `glowstone` transparency: the wiki infobox says \"Transparent: Yes\" while the same article says it blocks all sunlight and suffocates entities. For a renderer treat it as a **full opaque cube with lightOpacity 15 that also emits 15**; the \"transparent\" flag on the wiki refers to redstone-conductivity and beacon-beam behavior.\n- `savanna` downfall: one wiki table rendered it as 0.5, which would put it at a different colormap pixel than desert. Since both biomes resolve to the same `#BFB755` / `#AEA42A`, savanna\u0027s downfall must be 0.0. Reported as 0.0.\n- `swamp` foliage: one wiki table showed `#8db127`; the Java `foliage_color_override` for swamp is `6975545` = `#6A7039`. I report `#6A7039`; the other value is likely Bedrock or stale.\n- Diamond/emerald ore XP: one wiki summary said 3-5; the per-block page and the `UniformInt.of(3,7)` loot definition say **3-7**. Use 3-7.\n- Iron/gold ore XP on break is **0** in Java (XP comes from smelting). A summary page claimed 0-2 â€” that\u0027s wrong for Java.\n- Copper tool tier (speed 5) exists only in versions after 1.20; omit it for a 1.20-faithful clone.",
+    "sources":  [
+                    "https://minecraft.wiki/w/Breaking",
+                    "https://minecraft.wiki/w/Module:Hardness_values",
+                    "https://minecraft.wiki/w/Module:Blast_resistance_values",
+                    "https://minecraft.wiki/w/Explosion",
+                    "https://minecraft.wiki/w/Ore",
+                    "https://minecraft.wiki/w/Diamond_Ore",
+                    "https://minecraft.wiki/w/Iron_Ore",
+                    "https://minecraft.wiki/w/Gravel",
+                    "https://minecraft.wiki/w/Leaves",
+                    "https://minecraft.wiki/w/Wheat_Seeds",
+                    "https://minecraft.wiki/w/Short_Grass",
+                    "https://minecraft.wiki/w/Bookshelf",
+                    "https://minecraft.wiki/w/Cactus",
+                    "https://minecraft.wiki/w/Glowstone",
+                    "https://minecraft.wiki/w/Ice",
+                    "https://minecraft.wiki/w/Podzol",
+                    "https://minecraft.wiki/w/Stone_Bricks",
+                    "https://minecraft.wiki/w/Grass_Block",
+                    "https://minecraft.wiki/w/Biome",
+                    "https://minecraft.wiki/w/Color",
+                    "https://minecraft.wiki/w/Light",
+                    "https://minecraft.wiki/w/Opacity",
+                    "https://minecraft.wiki/w/Map_item_format"
+                ]
+}

@@ -1,0 +1,1018 @@
+﻿{
+    "topic":  "Minecraft Java Edition 1.20 world generation reference (terrain noise, biomes, trees, ores, caves, structures, render budget)",
+    "facts":  [
+                  {
+                      "key":  "world.seaLevel",
+                      "value":  "Y=63 (topmost water block at Y=62; Y=63 is first air layer)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "world.minY",
+                      "value":  "-64 (blocks)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "world.maxY",
+                      "value":  "319 (highest placeable block); build limit ceiling Y=320",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "world.totalHeight",
+                      "value":  "384 blocks (Y -64..319)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "world.bedrockFloor",
+                      "value":  "Y=-64 solid bedrock; random gradient Y=-64 to -59",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "world.deepslateBand",
+                      "value":  "deepslate below Y=0; gradient blend Y=0 to Y=8; pure stone above Y=8",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chunk.footprint",
+                      "value":  "16 x 16 blocks (X by Z)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chunk.height",
+                      "value":  "384 blocks in Overworld (full dimension height)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chunk.blockCount",
+                      "value":  "98304 blocks per Overworld chunk column (16*16*384)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chunk.sectionSize",
+                      "value":  "16 x 16 x 16 blocks per section/subchunk; 24 sections per Overworld chunk",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "nether.height",
+                      "value":  "256 blocks (Y 0..127 playable, 128-block roof)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "end.height",
+                      "value":  "256 blocks (Y 0..255)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.parameterCount",
+                      "value":  "6 climate parameters: temperature, humidity(vegetation), continentalness, erosion, weirdness, depth",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "noise.continentalness.bands",
+                      "value":  "mushroom_fields -1.2..-1.05, deep_ocean -1.05..-0.455, ocean -0.455..-0.19, coast -0.19..-0.11, near_inland -0.11..0.03, mid_inland 0.03..0.3, far_inland 0.3..1.0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.erosion.bands",
+                      "value":  "7 levels: -1.0..-0.78, -0.78..-0.375, -0.375..-0.2225, -0.2225..0.05, 0.05..0.45, 0.45..0.55, 0.55..1.0 (higher erosion = flatter)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.temperature.bands",
+                      "value":  "5 levels: -1.0..-0.45, -0.45..-0.15, -0.15..0.2, 0.2..0.55, 0.55..1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "noise.humidity.bands",
+                      "value":  "5 levels: -1.0..-0.35, -0.35..-0.1, -0.1..0.1, 0.1..0.3, 0.3..1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "noise.peaksAndValleys.formula",
+                      "value":  "PV = 1 - |(3*|weirdness|) - 2|, output range -1.0..1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "noise.peaksAndValleys.bands",
+                      "value":  "valleys \u003c -0.85, low -0.85..-0.6, mid -0.6..0.2, high 0.2..0.7, peaks \u003e 0.7",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.depth.gradient",
+                      "value":  "depth increases by 1/128 = 0.0078125 per 1 block downward",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "noise.density.rule",
+                      "value":  "3D noise \u0027density\u0027 per block; density \u003e 0 = solid, density \u003c= 0 = air/fluid",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "noise.continentalness.octaves",
+                      "value":  "firstOctave -9, amplitudes [1,1,2,2,2,1,1,1,1] (feature wavelength ~512-3000 blocks)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.erosion.octaves",
+                      "value":  "firstOctave -9, amplitudes [1,1,0,1,1]",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.weirdness.octaves",
+                      "value":  "firstOctave -7, amplitudes [1,2,1,0,0,0]",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.temperature.octaves",
+                      "value":  "firstOctave -10, amplitudes [1.5,0,1,0,0,0]",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.humidity.octaves",
+                      "value":  "firstOctave -8, amplitudes [1,1,0,0,0,0]",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.horizontalCellSize",
+                      "value":  "4 blocks (noise sampled on a 4x4x8 grid, then trilinearly interpolated)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "noise.verticalCellSize",
+                      "value":  "8 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.plains.elevation",
+                      "value":  "Y 63-80 typical surface",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.plains.surface",
+                      "value":  "grass_block over 3-4 blocks dirt, then stone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.plains.trees",
+                      "value":  "~0.05 trees/chunk (5% of chunks get one tree); mix 1/3 large(fancy) oak, 2/3 normal oak; 1/20 oaks carry a bee nest",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.plains.grassDensity",
+                      "value":  "~10-12 short grass blocks per chunk (noise-modulated patch feature)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.plains.flowerDensity",
+                      "value":  "~4 flower blocks/chunk; species: dandelion, poppy, azure bluet, red/orange/white/pink tulip, oxeye daisy, cornflower",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.plains.grassTint",
+                      "value":  "#91BD59 (foliage #77AB2F)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.plains.climate",
+                      "value":  "temperature 0.8, downfall 0.4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.forest.elevation",
+                      "value":  "Y 63-90 typical surface",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.forest.surface",
+                      "value":  "grass_block over 3-4 blocks dirt, then stone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.forest.trees",
+                      "value":  "~10 trees/chunk (feature count 10 + 10% chance of 1 extra); species mix ~20% birch, ~10% fancy oak, ~70% normal oak",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.forest.grassDensity",
+                      "value":  "~2-4 grass blocks/chunk plus lily of the valley, rose bush, peony, lilac patches",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.forest.grassTint",
+                      "value":  "#79C05A (foliage #59AE30)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.forest.climate",
+                      "value":  "temperature 0.7, downfall 0.8",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.birchForest.trees",
+                      "value":  "~10 trees/chunk (count 10 + 10% extra); 100% birch, some tall/super birch in old-growth variant",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.birchForest.grassTint",
+                      "value":  "#88BB67 (foliage #6BA941)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.birchForest.climate",
+                      "value":  "temperature 0.6, downfall 0.6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.birchForest.elevation",
+                      "value":  "Y 63-90 typical surface",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.desert.elevation",
+                      "value":  "Y 63-90 typical surface",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.desert.surface",
+                      "value":  "sand, ~3-5 blocks deep",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.desert.filler",
+                      "value":  "sandstone beneath the sand, roughly 4-10 blocks thick, then stone",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.desert.trees",
+                      "value":  "0 trees/chunk",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.desert.vegetation",
+                      "value":  "cactus ~10 attempts/chunk (1-3 tall), dead bush ~2-4/chunk; no grass",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.desert.grassTint",
+                      "value":  "#BFB755 (foliage #AEA42A) - only visible on placed grass, not natural",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.desert.climate",
+                      "value":  "temperature 2.0, downfall 0.0, no precipitation",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.savanna.elevation",
+                      "value":  "Y 65-100 typical surface (often plateau-like)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.savanna.surface",
+                      "value":  "grass_block over 3-4 blocks dirt",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.savanna.trees",
+                      "value":  "~1 tree/chunk (count 1 + 10% extra); acacia with ~1% oak",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.savanna.grassDensity",
+                      "value":  "~20 short grass + tall grass per chunk (densest grass of the listed biomes)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.savanna.grassTint",
+                      "value":  "#BFB755 (foliage #AEA42A)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.savanna.climate",
+                      "value":  "temperature 2.0, downfall 0.0, no precipitation",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.taiga.elevation",
+                      "value":  "Y 63-95 typical surface",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.taiga.surface",
+                      "value":  "grass_block with podzol and coarse dirt patches; 3-4 blocks dirt filler",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.taiga.trees",
+                      "value":  "~10 trees/chunk (count 10 + 10% extra); ~1/3 spruce, ~2/3 pine (tall narrow variant)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.taiga.vegetation",
+                      "value":  "fern + large fern patches (~7/chunk), sweet berry bushes",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.taiga.grassTint",
+                      "value":  "#86B783 (foliage #68A464)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.taiga.climate",
+                      "value":  "temperature 0.25, downfall 0.8",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.taiga.snowLine",
+                      "value":  "rain becomes snow above Y=160 +/- 8 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.snowyPlains.elevation",
+                      "value":  "Y 63-85 typical surface",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.snowyPlains.surface",
+                      "value":  "grass_block topped with 1 layer of snow; ice on water surfaces",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.snowyPlains.trees",
+                      "value":  "~0-0.1 trees/chunk (essentially treeless; rare spruce)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.snowyPlains.grassTint",
+                      "value":  "#80B497 (foliage also #80B497)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.snowyPlains.climate",
+                      "value":  "temperature 0.0, downfall 0.5, snow precipitation",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.swamp.elevation",
+                      "value":  "Y 60-66; large flat areas exactly at water level Y=62",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.swamp.surface",
+                      "value":  "grass_block over dirt; water pools at Y=62 with clay/sand/dirt bottoms",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.swamp.trees",
+                      "value":  "~2 trees/chunk (count 2 + 10% extra); swamp oak with hanging vines, can stand in shallow water",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.swamp.vegetation",
+                      "value":  "lily pads ~4 patches/chunk, sugar cane on shores, brown/red mushrooms, blue orchid",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.swamp.grassTint",
+                      "value":  "#6A7039 or #4C763C, chosen per-block by a noise threshold (grass_color_modifier: swamp)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.swamp.waterColor",
+                      "value":  "#617B64",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.swamp.climate",
+                      "value":  "temperature 0.8, downfall 0.9",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.beach.elevation",
+                      "value":  "Y 62-65 (thin strip at sea level)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.beach.surface",
+                      "value":  "sand, ~4 blocks deep, over sandstone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.beach.trees",
+                      "value":  "0 trees/chunk",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.beach.grassTint",
+                      "value":  "#91BD59 (same as plains; temp 0.8 / downfall 0.4)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.ocean.floorY",
+                      "value":  "~Y=45 for regular ocean (about 18 blocks below sea level)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.deepOcean.floorY",
+                      "value":  "~Y=30 or lower (30+ blocks below sea level)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.ocean.floorBlock",
+                      "value":  "one-block layer of gravel with clay, dirt and sand patches; stone below",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.ocean.waterColor",
+                      "value":  "#3F76E4 (default Overworld water)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.ocean.climate",
+                      "value":  "temperature 0.5, downfall 0.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.river.elevation",
+                      "value":  "water surface Y=62; riverbed Y 55-61 (typically 5-7 blocks deep)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "biome.river.floorBlock",
+                      "value":  "sand, with gravel and clay patches",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.river.waterColor",
+                      "value":  "#3F76E4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.river.climate",
+                      "value":  "temperature 0.5, downfall 0.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.stonyPeaks.elevation",
+                      "value":  "Y 160-256; can appear on hilltops as low as ~Y=110",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "biome.stonyPeaks.surface",
+                      "value":  "bare stone (no dirt/grass layer) with calcite strips and gravel patches",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.stonyPeaks.trees",
+                      "value":  "0 trees/chunk",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.stonyPeaks.grassTint",
+                      "value":  "#9ABE4B (foliage #82AC1E)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "biome.stonyPeaks.climate",
+                      "value":  "temperature 1.0, downfall 0.3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tree.oak.trunkHeight",
+                      "value":  "4-6 logs (base_height 4 + rand[0..2])",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.oak.canopy",
+                      "value":  "blob foliage, radius 2 blocks, 3 layers; 5x5 at the two lower canopy layers, 3x3 at top; corners of the 5x5 randomly omitted 50% of the time",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.oak.leafCount",
+                      "value":  "~56 leaf blocks; total tree height 5-7 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.fancyOak.height",
+                      "value":  "3 + rand[0..11] trunk base; total tree height typically 10-16 blocks, with 2-4 angled branches ending in leaf blobs of radius 2-3 blocks",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "tree.birch.trunkHeight",
+                      "value":  "5-7 logs (base_height 5 + rand[0..2])",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.birch.canopy",
+                      "value":  "same blob placer as oak: radius 2 blocks, 3 layers, ~57 leaf blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.superBirch.trunkHeight",
+                      "value":  "5-13 logs (base 5 + rand[0..2] + rand[0..6]) in old growth birch forest",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "tree.spruce.trunkHeight",
+                      "value":  "5-8 logs (base_height 5 + rand[0..2] + rand[0..1])",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.spruce.canopy",
+                      "value":  "conical/stepped: radius cycles 0,1,2,1,0... from top downward; max radius 2-3 blocks; ~97 leaf blocks; bare trunk for lowest 1-2 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.pine.trunkHeight",
+                      "value":  "6-10 logs; narrow \u0027lollipop\u0027 canopy of 3-4 layers, max radius 1-2 blocks, ~37 leaf blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "tree.megaSpruce.size",
+                      "value":  "2x2 log trunk, 13-28 blocks tall, podzol disc radius ~5 blocks at base",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "tree.leafDecayDistance",
+                      "value":  "6 blocks max (Java); leaves store distance state 1-7, decay when distance reaches 7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tree.leafDecayMetric",
+                      "value":  "taxicab distance propagated through leaf blocks, allowed to cross corners; player-placed leaves are persistent=true and never decay",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "tree.leafDrops",
+                      "value":  "5% sapling (2.5% jungle), 2% stick per leaf block",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "leafTint.birch",
+                      "value":  "hardcoded #80A755 (does not use foliage colormap)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "leafTint.spruce",
+                      "value":  "hardcoded #619961 (does not use foliage colormap)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ore.coal.batch1",
+                      "value":  "30 attempts/chunk, blobs 0-37 blocks, uniform Y=136..320, no air-exposure discard",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.coal.batch2",
+                      "value":  "20 attempts/chunk, blobs 0-37 blocks, triangle Y=0..192 peaking at Y=96, 50% discard on air exposure",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.coal.peakY",
+                      "value":  "Y=96 (also very abundant at Y=136-192 from the uniform batch)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.iron.batch1",
+                      "value":  "90 attempts/chunk, blobs 0-13 blocks, triangle Y=80..384 peaking at Y=232",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.iron.batch2",
+                      "value":  "10 attempts/chunk, blobs 0-13 blocks, triangle Y=-24..56 peaking at Y=16",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.iron.batch3",
+                      "value":  "10 attempts/chunk, blobs 0-5 blocks, uniform Y=-64..72",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.iron.peakY",
+                      "value":  "Y=232 (surface mountains) and Y=16 (underground)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.gold.batch1",
+                      "value":  "4 attempts/chunk, blobs 0-13 blocks, triangle Y=-64..32 peaking at Y=-16, 50% discard on air exposure",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.gold.batch2",
+                      "value":  "1/2 chance per chunk, blobs 0-13 blocks, uniform Y=-64..-48, 50% discard on air exposure",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.gold.badlandsExtra",
+                      "value":  "50 attempts/chunk in badlands, blobs 0-13 blocks, uniform Y=32..256, no air discard",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.gold.peakY",
+                      "value":  "Y=-16",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.redstone.batch1",
+                      "value":  "4 attempts/chunk, blobs 0-10 blocks, uniform Y=-64..15, no air-exposure discard",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.redstone.batch2",
+                      "value":  "8 attempts/chunk, blobs 0-10 blocks, Y=-63..-32, density increasing with depth",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.redstone.peakY",
+                      "value":  "Y=-59 to -63 (monotonically increases below Y=-32)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ore.diamond.batch1",
+                      "value":  "7 blobs/chunk of 1-5 ores, Y=-63..16, 50% chance to skip a block adjacent to air",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.diamond.batch2_large",
+                      "value":  "1 blob of 1-23 ores every 1/9 chunks, Y=-63..16, 70% chance to skip a block adjacent to air",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.diamond.batch3_medium",
+                      "value":  "4 blobs/chunk of 1-10 ores, Y=-63..16, never generates adjacent to air (100% discard)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.diamond.batch4_buried",
+                      "value":  "2 blobs/chunk of 1-10 ores, Y=-63..-4, 50% chance to skip a block adjacent to air",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.diamond.peakY",
+                      "value":  "Y=-59 (density rises monotonically from Y=16 down to Y=-59, then cut off by bedrock)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.lapis.batch1",
+                      "value":  "2 attempts/chunk, blobs 0-10 blocks, triangle Y=-32..32 peaking at Y=0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.lapis.batch2_buried",
+                      "value":  "4 attempts/chunk, blobs 0-10 blocks, uniform Y=-64..64, never exposed to air (100% discard)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.lapis.peakY",
+                      "value":  "Y=0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.emerald.generation",
+                      "value":  "100 attempts/chunk, blobs 0-3 blocks (usually single scattered blocks), triangle Y=-16..320 peaking at Y=232",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.emerald.biomes",
+                      "value":  "Meadow, Cherry Grove, Grove, Snowy Slopes, Jagged Peaks, Frozen Peaks, Stony Peaks, Windswept Hills, Windswept Gravelly Hills, Windswept Forest only",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.emerald.practicalPeakY",
+                      "value":  "~Y=90-120 in real worlds, because terrain rarely reaches Y=232",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ore.copper.batch1",
+                      "value":  "16 attempts/chunk, blobs 0-16 blocks, triangle Y=-16..112 peaking at Y=47-48",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.copper.batch2_dripstone",
+                      "value":  "16 attempts/chunk in dripstone caves, blobs 0-52 blocks, Y=-16..112, peak Y=47-48",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.copper.peakY",
+                      "value":  "Y=48",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.veinFeature.yRange",
+                      "value":  "large copper/iron ore veins generate Y=-60..51; 10-30% gap ratio; 98% normal ore blocks, 2% raw ore blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ore.deepslateVariants",
+                      "value":  "deepslate ore variants generate only below Y=8 (where deepslate replaces stone)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cave.noodle.width",
+                      "value":  "1-5 blocks wide tunnels",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cave.spaghetti.character",
+                      "value":  "long narrow winding tunnels, typically 2-5 blocks wide, tens to hundreds of blocks long",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cave.cheese.character",
+                      "value":  "large open caverns; largest cave type; can be 30-80 blocks across and tall enough for elytra flight; contain stone pillars spanning floor to ceiling",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cave.carver.mainRoom",
+                      "value":  "1-14 blocks in height, 5-15 blocks in diameter",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cave.carver.trunkThickness",
+                      "value":  "horizontal ~2-38 blocks, vertical ~1-36 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cave.carver.branchThickness",
+                      "value":  "horizontal ~2-7 blocks, vertical ~1-7 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cave.carver.yRange",
+                      "value":  "Y=-56 to Y=180 overall; highest probability Y=-56 to Y=47",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ravine.length",
+                      "value":  "~85-127 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ravine.width",
+                      "value":  "typically under 15 blocks (commonly 3-8 blocks at the bottom)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ravine.depth",
+                      "value":  "up to 62 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ravine.startY",
+                      "value":  "Y=10 to Y=72",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "aquifer.fluidCellSize",
+                      "value":  "16 x 40 x 16 blocks per local fluid cell; lava cells 64 x 40 x 64 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "aquifer.lavaLevel",
+                      "value":  "water/lava transition around Y=-10; lava lakes only above Y=0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.spacing",
+                      "value":  "spacing 34 chunks, separation 8 chunks (average ~1 village per 34x34 chunk region)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.variants",
+                      "value":  "5: plains, desert, savanna, taiga, snowy â€” chosen by biome at the meeting point",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.pathMaterial.plains",
+                      "value":  "dirt path blocks and grass blocks; gravel accents",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.pathMaterial.desert",
+                      "value":  "smooth sandstone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.pathMaterial.savanna",
+                      "value":  "dirt path and grass blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.pathMaterial.taigaSnowy",
+                      "value":  "dirt path and grass blocks (snow-covered in snowy)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.pathOverWater",
+                      "value":  "plank type matching the village style",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.buildingCounts",
+                      "value":  "plains/desert/savanna/snowy have 8 small-house variants; taiga has 5; plus 1-2 library, 2 farm variants, plus workstation buildings",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.buildingTypes",
+                      "value":  "small houses, medium/large houses, library, butcher shop, temple/church, armorer, weaponsmith, toolsmith, fletcher, tannery, cartographer, mason, shepherd, fisher cottage, stables, animal pen, farm, meeting point, lamps/decor",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.meetingPoint",
+                      "value":  "well plus a bell; 2-4 designs per biome variant; plains uses cobblestone well ring with village/common/well_bottom",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "village.well.plains",
+                      "value":  "cobblestone/mossy cobblestone rim with 4 corner posts and slab roof, ~3x3 block footprint plus water column",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.well.desert",
+                      "value":  "smooth sandstone / sandstone slab construction, no roof posts",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.farmPlot",
+                      "value":  "tilled farmland patches divided by water irrigation canals; plains large farm has 4 patches split by 2 canals; typical patch ~5x4 to 9x5 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.farmCrops",
+                      "value":  "wheat, carrots, potatoes, beetroot (random growth stages); desert villages also grow cactus/dead bush decor",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "village.jigsawDepth",
+                      "value":  "jigsaw generation depth 6; village footprint typically 60-120 blocks across (4-8 chunks)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "dungeon.footprint",
+                      "value":  "open area of width and length 7 or 9 blocks and height 6 blocks (interior floor 5x5 or 7x7 with 1-block walls)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.floorMaterial",
+                      "value":  "each floor block: 75% mossy cobblestone, 25% cobblestone",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.wallMaterial",
+                      "value":  "cobblestone (mossy only on floor)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "dungeon.spawner",
+                      "value":  "1 monster spawner at the center of the floor",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.spawnerMob",
+                      "value":  "zombie 50%, skeleton 25%, spider 25%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.chests",
+                      "value":  "up to 2 chests; 3 placement attempts per chest; a chest position must be empty and have a solid block on exactly one of its four sides",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.attemptsPerChunk",
+                      "value":  "14 attempts per chunk",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.yRange",
+                      "value":  "Y=0..320 (up to 10 rooms) and Y=-58..-1 (up to 4 rooms)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.loot.common",
+                      "value":  "bone 57.8% (1-8), gunpowder 57.8% (1-8), rotten flesh 57.8% (1-8), string 57.8% (1-8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.loot.mid",
+                      "value":  "wheat 34.1% (1-4), bread 34.1% (1), coal 26.6% (1-4), redstone dust 26.6% (1-4), name tag 25.3% (1), leather 25.3% (1-5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dungeon.loot.rare",
+                      "value":  "diamond horse armor 6.8% (1), enchanted golden apple 2.8% (1); enchanted books, gold/iron horse armor, music discs in the 13-25% band",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "render.chunkCount.formula",
+                      "value":  "square load area = (2R+1)^2 chunk columns, where R = render distance in chunks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "render.chunkCount.rd8",
+                      "value":  "289 chunk columns (17x17); server-tracked (2R+3)^2 = 361",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "render.chunkCount.rd12",
+                      "value":  "625 chunk columns (25x25); server-tracked 729",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "render.chunkCount.rd16",
+                      "value":  "1089 chunk columns (33x33); server-tracked 1225",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "render.cylinderCount.rd8",
+                      "value":  "~227 chunk columns actually drawn (Java 1.18+ culls to a cylinder of radius R)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "render.cylinderCount.rd12",
+                      "value":  "~491 chunk columns actually drawn",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "render.cylinderCount.rd16",
+                      "value":  "~851 chunk columns actually drawn",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "render.distance.range",
+                      "value":  "2 to 32 chunks in Java Edition; defaults 8 (Fast), 16 (Fancy), 32 (Fabulous)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "render.simulationDistance.range",
+                      "value":  "5 to 32 chunks; default 6; entity ticking area = min(2s+1, 63) chunks square, block ticking = min(2s+3, 65)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "perf.blocksLoaded.rd8",
+                      "value":  "289 columns x 98304 blocks = ~28.4 million blocks if the full Y -64..319 range is kept resident",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "perf.trianglesPerChunkColumn.naive",
+                      "value":  "~2000-8000 triangles per 16x16 column with per-face culling on a 64-block-tall surface band (surface skin alone is ~2000 tris)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "perf.trianglesPerChunkColumn.greedy",
+                      "value":  "~400-1500 triangles per column with greedy meshing (typically 4-6x reduction)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "perf.totalTriangles.rd8",
+                      "value":  "~0.6M-2.3M triangles (naive) / ~0.15M-0.4M (greedy) at 289 columns",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "perf.totalTriangles.rd12",
+                      "value":  "~1.3M-5.0M triangles (naive) / ~0.3M-0.9M (greedy) at 625 columns",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "perf.totalTriangles.rd16",
+                      "value":  "~2.2M-8.7M triangles (naive) / ~0.5M-1.6M (greedy) at 1089 columns",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "perf.drawCallBudget.webgl",
+                      "value":  "keep under ~1000-2000 draw calls/frame for 60 fps in WebGL2; one VBO per 16x16x16 section at RD 8 = 289 x 24 = 6936 sections, so merge sections vertically or use per-column meshes",
+                      "confidence":  "low"
+                  }
+              ],
+    "notes":  "## 1. Terrain noise pipeline (1.18+), and how to fake it cheaply\n\n**Real pipeline (conceptual):**\n1. Sample 5 independent 2D fBm fields at the block\u0027s XZ: `continentalness (C)`, `erosion (E)`, `weirdness (W)`, `temperature (T)`, `humidity (H)`. Each is Perlin-fBm with the octave amplitude arrays listed in facts (`firstOctave -9` â‰ˆ lowest-frequency octave has period ~512 blocks; more negative = larger features).\n2. `PV = 1 - |3*|W| - 2|` â€” this folds weirdness into a ridged signal. PV near +1 = ridge/peak, near -1 = valley/river bottom. This single trick is what produces the \"ridges and river valleys\" look.\n3. C, E, PV are fed through a **hand-authored spline hierarchy** producing three scalars per XZ column:\n   - `offset` â€” the target terrain height (converted to a Y target).\n   - `factor` â€” vertical \"squash\": how hard density snaps from solid to air across the target height. Low factor = smooth rolling; high factor = sharp flat plateaus.\n   - `jaggedness` â€” amplitude of a high-frequency ridge noise added only near peaks (this is why mountains are spiky and plains are not).\n4. `depth = offset + (sea-level-relative y term)`; `initial_density â‰ˆ depth * factor`.\n5. Final density = `initial_density + 3D_noise(x,y,z)`. `density \u003e 0` â†’ solid. The 3D term is what makes overhangs, floating arches, and cliff undercuts possible; without it you get a pure heightmap.\n6. Top/bottom slides: `y_clamped_gradient` forces density â†’ -inf near Y=320 (air) and â†’ +inf near Y=-64 (bedrock), so nothing floats above the ceiling and nothing is hollow at the floor.\n7. Caves (cheese/spaghetti/noodle density functions) are **subtracted** from the density after step 6, then carvers run as a post-pass.\n8. Biome is chosen **after** terrain by 6D nearest-neighbour lookup (kd-tree) over `(T, H, C, E, depth, W)`; each biome is a 6D box, distance = sum over params of squared distance to the box interval. Terrain shape is therefore *independent* of biome â€” the biome adapts to whatever terrain exists.\n\n**Cheap imitation that gets the feel right** (this is the practical recipe):\n\n```js\n// per XZ column\nconst C  = fbm2(x, z, 1/2048, 4);           // -1..1  continentalness\nconst E  = fbm2(x+9000, z+9000, 1/1024, 4); // -1..1  erosion\nconst W  = fbm2(x-4000, z+7000, 1/384, 4);  // -1..1  weirdness\nconst PV = 1 - Math.abs(3*Math.abs(W) - 2); // -1..1  peaks \u0026 valleys\n\n// spline: continentalness -\u003e base height (piecewise-linear is plenty)\n// C: -1.0 -\u003e Y 30 (deep ocean)\n//    -0.45-\u003e Y 45 (ocean)\n//    -0.19-\u003e Y 60 (coast)\n//    -0.11-\u003e Y 64 (shore)\n//     0.03-\u003e Y 70 (near inland)\n//     0.30-\u003e Y 80 (mid inland)\n//     1.00-\u003e Y 95 (far inland)\nconst baseY = splineC(C);\n\n// spline: erosion -\u003e vertical amplitude (INVERTED: low erosion = mountains)\n// E: -1.0 -\u003e 90 blocks   (jagged peaks)\n//    -0.375-\u003e 45\n//    -0.2225-\u003e 25\n//     0.05 -\u003e 12\n//     0.45 -\u003e 5          (plains / plateau)\n//     1.0  -\u003e 2          (flat, swamp/river-friendly)\nconst amp = splineE(E);\n\n// jaggedness only near ridges, only where erosion is low\nconst jag = Math.max(0, PV) * Math.max(0, -E) * 30\n          * ridged(x, z, 1/48, 3);\n\nlet h = baseY + amp * PV + jag;\n// river carve: |W| near 0 (i.e. PV near -1) and inland -\u003e cut down to ~Y 60\nif (PV \u003c -0.85 \u0026\u0026 C \u003e -0.19) h = Math.min(h, 60 + (PV+1)*20);\n```\n\nThen either use `h` directly as a heightmap (fast, no overhangs), or add the 3D term for cliffs:\n\n```js\nconst squash = 0.06 + 0.10 * Math.max(0, E);   // higher erosion -\u003e harder snap\nlet d = (h - y) * squash + 0.55 * fbm3(x, y, z, 1/64, 3);\nif (y \u003c -60) d += (-60 - y) * 0.5;             // bottom slide\nif (y \u003e 300) d -= (y - 300) * 0.5;             // top slide\nconst solid = d \u003e 0;\n```\n\nFill rule after solidity: `solid \u0026\u0026 y \u003c= 62 ? stone : air`, then water for `!solid \u0026\u0026 y \u003c= 62`.\n\n**Biome pick (cheap 2D version, skip the kd-tree):** decide ocean/river from C and PV first, then pick land biome from `(T, H)` with an elevation override:\n- `h \u003c 45` â†’ deep ocean; `h \u003c 60` â†’ ocean; river carve â†’ river; `60 \u003c= h \u003c= 64 \u0026\u0026 adjacent to water` â†’ beach.\n- `h \u003e 150` â†’ stony peaks (ignore T/H).\n- Otherwise: T \u003e 0.55 â†’ (H \u003c -0.1 ? desert : savanna); T 0.2..0.55 â†’ (H \u003e 0.3 \u0026\u0026 flat ? swamp : plains/forest); T -0.15..0.2 â†’ forest/birch forest; T -0.45..-0.15 â†’ taiga; T \u003c -0.45 â†’ snowy plains.\n\n**Depth/climate detail:** `depth` rises by exactly 1/128 (0.0078125) per block downward â€” it is the parameter that lets cave biomes (lush/dripstone/deep dark) displace surface biomes underground.\n\n## 2. Surface rule pattern\n\nVanilla runs an ordered rule list top-down per column. The practical version:\n- Compute `surfaceY` = topmost solid block in the column.\n- If `surfaceY \u003e= 63`: place biome top block at `surfaceY`, filler for `surfaceY-1 .. surfaceY-3` (dirt / sandstone), stone below.\n- If `surfaceY \u003c 63` (underwater): use the ocean floor rule â€” gravel for ocean, sand for river/warm ocean, over stone.\n- Desert: sand for the top ~4 blocks, sandstone for roughly the next 6-10, then stone. Sandstone depth is what stops beach erosion exposing dirt.\n- Stony peaks / jagged peaks: no top block at all â€” expose stone, then paint calcite bands via a low-frequency 3D noise threshold, and gravel patches via a second threshold.\n- Snowy plains: grass_block top, plus a `snow` layer block at `surfaceY+1`, and freeze water surfaces to `ice`.\n- Swamp: below Y=63 the column becomes water; grass/dirt banks at exactly 62-64. Swamps need `water_surface == 62` explicitly, not aquifer-driven.\n\n## 3. Grass / foliage tinting (this is the detail that makes it *look* like Minecraft)\n\nJava does not store per-biome grass colors. It samples `textures/colormap/grass.png` (256x256, only the lower-left triangle is valid):\n\n```js\nfunction grassColor(temperature, downfall) {\n  const t = clamp(temperature, 0, 1);\n  const r = clamp(downfall, 0, 1) * t;\n  const i = Math.floor((1.0 - t) * 255.0);   // column\n  const j = Math.floor((1.0 - r) * 255.0);   // row\n  return colormap[j * 256 + i];              // grass.png\n}\n```\nFoliage (leaves) uses the same lookup against `foliage.png`.\n\nHeight-adjusted temperature (why mountaintops go grey-green and snow appears):\n```js\n// applied above Y=80\nlet t = biome.temperature;\nif (y \u003e 80) t -= (noise2(x/8, z/8) * 8.0 + (y - 80)) * 0.05 / 40.0;\n```\n\n**Overrides you must hardcode:**\n- Swamp: per-block noise pick â€” `fbm2(x*0.0225, z*0.0225) \u003c -0.1 ? 0x4C763C : 0x6A7039`. Ignore the colormap entirely.\n- Dark forest: `((colormapValue \u0026 0xFEFEFE) + 0x28340A) \u003e\u003e 1`.\n- **Birch leaves: constant `#80A755`. Spruce leaves: constant `#619961`.** These never tint. Getting this wrong makes birch forests look like oak forests.\n- Water is a flat per-biome constant (`#3F76E4` default, `#617B64` swamp), not a colormap.\n\nGrass block side texture: the overlay (`grass_block_side_overlay`) is tinted; the base `dirt`-like side texture is not. Top face fully tinted. Bottom face is dirt, untinted.\n\n## 4. Tree generation algorithm (data-driven `tree` feature)\n\nEach tree = `trunk_placer` + `foliage_placer` + `size` (`two_layers_feature_size`) + optional decorators.\n\n`height = base_height + rand(0..height_rand_a) + rand(0..height_rand_b)`\n\n| tree | base | rand_a | rand_b | trunk logs | foliage placer | radius | layers |\n|---|---|---|---|---|---|---|---|\n| oak | 4 | 2 | 0 | 4-6 | blob | 2 | 3 |\n| fancy oak | 3 | 11 | 0 | 3-14 (+branches) | blob per branch | 2-3 | 3 |\n| birch | 5 | 2 | 0 | 5-7 | blob | 2 | 3 |\n| super birch | 5 | 2 | 6 | 5-13 | blob | 2 | 3 |\n| spruce | 5 | 2 | 1 | 5-8 | spruce (conical) | 2 (+0..1) | trunk_height 1-2 |\n| pine | 6 | 4 | 0 | 6-10 | pine (lollipop) | 1 (+0..1) | 3-4 |\n| mega spruce | 13 | 15 | 0 | 13-28, 2x2 trunk | mega pine | 0-2 | â€” |\n\n**Blob foliage placer (oak/birch) layer-by-layer, from the top of the trunk downward at offsets `y = 0, -1, -2, -3`:**\n- `y = +1` (cap): 3x3 minus corners â†’ a plus shape, 5 leaves.\n- `y = 0` and `y = -1`: 3x3 full, 9 leaves each. (For blob radius 2 the two lower layers are 5x5 with the 4 corners each randomly omitted at 50%.)\n- Practical simplification that looks right: for each canopy layer `L` with radius `r`, place a leaf at `(dx,dz)` if `|dx| + |dz| \u003c= r + 1` and not (`|dx| == r \u0026\u0026 |dz| == r \u0026\u0026 rand() \u003c 0.5`).\n\n**Spruce/pine conical placer:** walk downward from the top, radius cycling `0,1,1,2,2,1,1,0...` â€” simplest faithful version is `r = ((layerIndex + 1) % 2 === 0) ? ... ` â€” in practice: start `r=0` at the tip, step `r` up by 1 every 2 layers to a max, then back to 0 at the bottom of the canopy, leaving the lowest 1-2 trunk blocks bare.\n\n**Placement:** trees are placed by a `count` placement modifier + `extra_chance/extra_count`. Effective trees per chunk = `count + extra_chance * extra_count`. All tree features are `heightmap OCEAN_FLOOR`-anchored, run in the VEGETAL_DECORATION step, and abort if the sapling position is not on a valid dirt-type block or if the bounding volume is obstructed. **Trees can and do cross chunk borders**, so vegetation must run after neighbouring terrain exists (or be deferred/queued).\n\n**Leaf decay:** each leaf carries `distance âˆˆ [1,7]` and `persistent âˆˆ {true,false}`. On block update, `distance = 1 + min(distance of 6 neighbours that are leaves)`, or `1` if adjacent to a log. `distance == 7` â†’ decay (drop and remove). Effective survival radius is **6 blocks** in Java (4 in Bedrock), taxicab through leaves, corner-crossing allowed. For a clone: just run a BFS from logs to depth 6 at mesh time and mark unreachable leaves as decayed.\n\n## 5. Ore placement algorithm\n\nPer chunk, per ore config:\n```\nfor (i = 0; i \u003c count; i++) {\n  x = chunkX*16 + rand(16); z = chunkZ*16 + rand(16);\n  y = sampleHeightProvider(config);      // uniform or triangle\n  placeBlob(x, y, z, size, discardChanceOnAirExposure);\n}\n```\n- **Uniform provider:** `y = minY + rand(maxY - minY + 1)`.\n- **Trapezoid/triangle provider:** `y = minY + (rand(n) + rand(n)) / 2`-style â€” i.e. sum of two uniforms â†’ symmetric triangular PDF peaking at `(minY+maxY)/2`. This is why every \"peak Y\" in the table is the midpoint of its range (coal 0..192 â†’ 96; iron -24..56 â†’ 16; gold -64..32 â†’ -16; lapis -32..32 â†’ 0; copper -16..112 â†’ 48; emerald -16..320 â†’ 152... note emerald\u0027s stated peak is 232, so emerald uses an asymmetric/plateau trapezoid, not a pure triangle).\n- **Blob shape:** an ellipsoid swept along a random line segment. The `size` parameter is the max block count target; actual placed count is `0..size` (roughly `0..2.2*size` for large sizes â€” e.g. `size 17` for coal yields \"blobs of 0-37\").\n- **`discard_chance_on_air_exposure`:** after choosing a block position, if any of its 6 neighbours is air, skip placement with this probability. Values seen: 0.0 (coal upper, iron, redstone, lapis batch 1), 0.5 (coal lower, gold, diamond batches 1 \u0026 4), 0.7 (diamond large), 1.0 (diamond medium, lapis buried). This is what makes exposed ore in caves rarer than raw depth statistics suggest.\n- Ore only replaces blocks in the `stone_ore_replaceables` / `deepslate_ore_replaceables` tags (stone, granite, diorite, andesite, tuff, deepslate). Below Y=8 the same feature yields the deepslate variant automatically.\n\n**Practical single-formula approximation for a clone** (density in ores per block-column-layer):\n```js\nfunction oreDensity(ore, y) {\n  // triangle\n  const {lo, hi, count, size} = ore;\n  if (y \u003c lo || y \u003e hi) return 0;\n  const mid = (lo + hi) / 2, half = (hi - lo) / 2;\n  const tri = 1 - Math.abs(y - mid) / half;\n  return count * size * tri / (hi - lo + 1);\n}\n```\n\n**Peak-Y cheat sheet (what players expect to find where):**\n| ore | best Y | second band |\n|---|---|---|\n| coal | 96 | 136-192 (uniform, very dense) |\n| iron | 16 | 232 (mountains) |\n| copper | 48 | â€” |\n| gold | -16 | 32-256 in badlands |\n| redstone | -59 | â€” |\n| diamond | -59 | â€” |\n| lapis | 0 | -64..64 buried |\n| emerald | 232 nominal / ~90-120 real | mountain biomes only |\n\n## 6. Caves\n\nThree noise cave families, all subtracted from terrain density before carvers:\n- **Cheese:** low-frequency 3D noise thresholded to carve large blobs. Produces the big open caverns with floor-to-ceiling stone pillars. Imitate with `fbm3(x*0.5, y, z*0.5, 1/96, 3) \u003e 0.45` (anisotropic â€” stretch X/Z relative to Y so caverns are wider than tall).\n- **Spaghetti:** two ridged 3D noises intersected â€” carve where **both** `|noiseA| \u003c t` and `|noiseB| \u003c t`. The intersection of two thin shells is a 1D tube. This is the single most important trick: `Math.abs(ridgedA) \u003c 0.08 \u0026\u0026 Math.abs(ridgedB) \u003c 0.08` gives long winding tunnels. Width scales with `t`.\n- **Noodle:** the same intersection trick with a smaller threshold and a higher frequency, plus a \"noodle thickness\" modulation noise â†’ 1-5 block tunnels that dead-end.\n- Carvers run afterward as an imperative pass: pick a random start, walk a 3D random walk with slowly varying yaw/pitch, carve an ellipsoid of the radii listed in facts at each step, occasionally forking a branch. Main rooms 5-15 blocks diameter, 1-14 tall.\n- **Ravines/canyons** are a separate carver: a vertically-elongated ellipsoid swept along a mostly-horizontal path, 85-127 blocks long, under 15 wide, up to 62 deep, starting Y=10-72.\n- **Aquifers** decide whether a carved void is air, water, or lava, per 16x40x16 cell (lava per 64x40x64). Noise \u003c 0.4 â†’ empty (air), \u003e 0.8 â†’ flooded. Transition band starts ~64 blocks below the preliminary surface. Below ~Y=-10 the fluid becomes lava. Lava lakes only above Y=0.\n\n## 7. Village layout\n\nJigsaw system: start piece = **meeting point (well + bell)**. From there, street pieces (straight, corner, crossroad, turn) extend outward; each street piece exposes side jigsaw connectors onto which building pieces are attached. Depth limit 6, so villages are bounded to roughly 60-120 blocks across. Every piece is terrain-adapted: `RIGID` pieces keep their Y, `TERRAIN_MATCHING` street pieces follow the heightmap, and a `project_start_to_heightmap: WORLD_SURFACE_WG` snaps the whole structure to the ground. Beardifier smooths terrain under each piece so buildings don\u0027t float.\n\n**A workable simplification for a clone:**\n1. Place well at village center. Generate a road graph: 2-4 arms from the center, each 12-30 blocks long, with 0-2 branches, path 3 blocks wide.\n2. Along each road, every 6-10 blocks pick a side, offset 2-4 blocks, and drop a building footprint (5x5 to 9x9, height 4-7). Reject if it overlaps an existing footprint\u0027s AABB.\n3. Flatten the ground under each footprint to its Y, and re-path the road with the path material.\n4. Sprinkle 1-3 farm plots and 1-2 animal pens at road ends.\n\n**Per-variant materials:**\n- Plains: oak planks/logs, cobblestone, white/oak stairs, glass panes, dirt path roads, hay bales, cobblestone well.\n- Desert: sandstone, cut/smooth/chiseled sandstone, terracotta accents (orange/white/light gray), smooth sandstone roads, no glass panes (open windows), flat roofs, sandstone well.\n- Savanna: acacia planks/logs, orange + yellow terracotta, dirt path roads.\n- Taiga: spruce planks/logs, cobblestone, mossy cobblestone, campfires, dirt path roads.\n- Snowy: spruce, snow blocks, packed ice, cobblestone, snow-covered dirt path roads.\n- Any road crossing water is bridged with the variant\u0027s plank type.\n\n**Farm plots:** rectangular tilled `farmland` patches (typical inner area 5x4 to 9x5) surrounded by a 1-block log/fence frame, split by 1-wide water irrigation canals. Plains large farm = 4 patches divided by 2 canals. Crops randomized across wheat / carrots / potatoes / beetroot, with random age states 0-7.\n\n**Well:** plains-style is a 3x3 cobblestone rim with a 1x1 water column, 4 corner posts (cobble wall/fence) rising 2-3 blocks and a slab/planks roof; bell mounted adjacent. `village/common/well_bottom` extends the water shaft down. Desert well is smooth sandstone, roofless, flatter.\n\n## 8. Dungeon (monster room) algorithm\n\n```\nfor (attempt = 0; attempt \u003c 14; attempt++) {\n  pick random x,z in chunk, random y in band (0..320 or -58..-1)\n  halfX = 2 + rand(2)   // -\u003e 5 or 7 interior width  (outer 7 or 9)\n  halfZ = 2 + rand(2)\n  // validity: count wall openings; require 1..5 openings into air,\n  //           and require the floor 1 below and ceiling 4 above to be solid\n  if (!valid) continue;\n  carve interior 3 blocks tall (floor y, air y+1..y+3, ceiling y+4)\n  walls  = cobblestone\n  floor  = 75% mossy_cobblestone, 25% cobblestone\n  place spawner at center of floor with mob: 50% zombie, 25% skeleton, 25% spider\n  for (chestIndex = 0; chestIndex \u003c 2; chestIndex++)\n    for (tries = 0; tries \u003c 3; tries++) {\n      pick a random floor-level cell; require it empty and to have\n      solid blocks on exactly one of its 4 horizontal sides;\n      place chest, roll loot table, break;\n    }\n}\n```\nUp to 10 rooms per chunk in the Y=0..320 band, up to 4 in the Y=-58..-1 band.\n\n**Loot roll:** 1-3 stacks drawn from a weighted pool (the percentages in the facts are per-chest probability of containing at least one of that item, already folded across rolls). Money items to include for feel: saddle, golden apple, enchanted golden apple, gold/iron/diamond horse armor, name tag, enchanted book, music discs (13/cat), plus the bulk junk (bone, gunpowder, rotten flesh, string, wheat, bread, coal, redstone, leather).\n\n## 9. Performance sanity for a browser clone\n\n**Chunk counts.** Java loads a square `(2R+1)^2` and the server tracks `(2R+3)^2`. Since 1.18 the *renderer* culls to a cylinder of radius R, so drawn columns â‰ˆ `Ï€(R+0.5)Â²`.\n\n| R | square loaded | server tracked | ~cylinder drawn |\n|---|---|---|---|\n| 8 | 289 | 361 | ~227 |\n| 12 | 625 | 729 | ~491 |\n| 16 | 1089 | 1225 | ~851 |\n\n**Triangle math.** Derived, not from the wiki â€” treat as engineering guidance:\n- Pure surface skin of a 16x16 column: 256 top quads + side quads from height deltas. With mean neighbour height delta ~1.5 blocks: `2 * 16 * 16 * 1.5 â‰ˆ 768` side quads â†’ ~1024 quads â†’ **~2048 triangles minimum**.\n- Add cave interiors, undersides, and a 64-block-deep visible band and it lands at **2000-8000 triangles per column** with naive per-face culling.\n- Greedy meshing (merge coplanar same-texture faces into rectangles) reliably gives 4-6x reduction â†’ **400-1500 triangles per column**.\n\nAt 4000 tris/column: RD 8 â‰ˆ 1.2M, RD 12 â‰ˆ 2.5M, RD 16 â‰ˆ 4.4M triangles. WebGL2 on mid-range hardware handles ~2-4M triangles/frame at 60 fps *if* draw calls stay low, so:\n- **RD 8 is comfortable naive. RD 12 needs greedy meshing. RD 16 needs greedy meshing + aggressive frustum culling + probably a reduced world height.**\n\n**The dominant cost is memory and draw calls, not triangles.** 289 columns x 98,304 blocks = 28.4M block entries. At 1 byte/block that\u0027s 28 MB of raw IDs â€” acceptable â€” but 1 mesh per 16Â³ section gives `289 x 24 = 6936` draw calls at RD 8, which will not hit 60 fps. Mitigations, in order of payoff:\n1. **Shrink the world height.** You do not need Y -64..319. A band of Y 0..128 (or even 40..120) cuts everything by 3x and loses nothing visually for a clone.\n2. **One mesh per chunk column**, not per section â€” 289 draw calls at RD 8.\n3. **Two meshes per column** (opaque + transparent/water) so alpha sorting works: 578 draw calls.\n4. Frustum-cull columns (a 90Â° FOV sees roughly 1/4 of the loaded ring) â†’ ~150 draw calls at RD 8.\n5. Greedy meshing + per-face AO baked into vertex colors.\n6. Mesh generation off the main thread (Web Worker + transferable `ArrayBuffer`), budgeted to 1-2 columns per frame or you get hitching.\n\n**Vertex format budget:** at 8 bytes/vertex (packed position in chunk-local u8, normal+AO in u8, UV in u16) and 4 vertices/quad, 2000 quads/column = 64 KB/column. RD 8 = ~18 MB of GPU buffers. RD 16 = ~70 MB. Stay under ~256 MB total GPU allocation for reliability on integrated GPUs.\n\n## 10. Edge cases and gotchas\n\n- **Sea level 63 means the topmost water block is at Y=62.** Beach sand sits at Y=62-64. Off-by-one here produces beaches that are permanently one block underwater.\n- **Terrain is not a heightmap.** If you only use a heightmap you lose overhangs, cliffs and floating arches â€” the 3D density term is what sells 1.18-era terrain. If you must use a heightmap for speed, compensate by increasing erosion-driven amplitude contrast.\n- **Biome is decided after terrain**, so a \"plains\" biome can legitimately sit at Y=200 on a mountainside. Do not clamp biome by elevation except for stony peaks / ocean.\n- **Vegetation and structures cross chunk boundaries.** Generate terrain for a 3x3 neighbourhood before running the decoration pass on the center chunk, or you get sheared trees at chunk seams.\n- **Aquifers mean caves can be water-filled well above or below sea level.** If you skip aquifers entirely, all caves are dry â€” acceptable, and much simpler.\n- **Deepslate ore variants** must swap in below Y=8 or the palette looks wrong in the diamond band.\n- **Emerald\u0027s 100 attempts/chunk sounds enormous** but blob size is 0-3 and it\u0027s restricted to mountain biomes with a peak at Y=232 that terrain rarely reaches, so the realized rate is a few blocks per chunk at most.\n- **Diamond\u0027s four overlapping batches with different air-exposure discards** are the whole reason \"strip mining beats cave mining for diamonds\": batch 3 (4 blobs/chunk) never generates next to air, so it is invisible from caves.\n- **Coal\u0027s uniform Y=136-320 batch at 30 attempts/chunk** is why mountainsides are covered in exposed coal. Don\u0027t forget it or mountains look bare.\n- **Grass color must be computed from (temperature, downfall), not stored per biome**, or biome blending at borders will band badly. Blend the *color* over a 5-10 block radius, not the biome ID.\n- Render distance in Java is 2-32 chunks; simulation distance minimum was raised to 5 in 1.18. Chunk render radius in blocks = `R * 16` (R=8 â†’ 128 blocks, R=16 â†’ 256 blocks) â€” noticeably short, which is why fog at the far plane reads as authentic rather than as a cheat.",
+    "sources":  [
+                    "https://minecraft.wiki/w/World_generation",
+                    "https://minecraft.wiki/w/Chunk",
+                    "https://minecraft.wiki/w/Ore",
+                    "https://minecraft.wiki/w/Coal_Ore",
+                    "https://minecraft.wiki/w/Iron_Ore",
+                    "https://minecraft.wiki/w/Gold_Ore",
+                    "https://minecraft.wiki/w/Redstone_Ore",
+                    "https://minecraft.wiki/w/Diamond_Ore",
+                    "https://minecraft.wiki/w/Lapis_Lazuli_Ore",
+                    "https://minecraft.wiki/w/Emerald_Ore",
+                    "https://minecraft.wiki/w/Copper_Ore",
+                    "https://minecraft.wiki/w/Cave",
+                    "https://minecraft.wiki/w/Canyon",
+                    "https://minecraft.wiki/w/Biome",
+                    "https://minecraft.wiki/w/Plains",
+                    "https://minecraft.wiki/w/Forest",
+                    "https://minecraft.wiki/w/Desert",
+                    "https://minecraft.wiki/w/Swamp",
+                    "https://minecraft.wiki/w/Taiga",
+                    "https://minecraft.wiki/w/Ocean",
+                    "https://minecraft.wiki/w/Stony_Peaks",
+                    "https://minecraft.wiki/w/Tree",
+                    "https://minecraft.wiki/w/Tree/Structure",
+                    "https://minecraft.wiki/w/Leaves",
+                    "https://minecraft.wiki/w/Village",
+                    "https://minecraft.wiki/w/Village/Structure",
+                    "https://minecraft.wiki/w/Monster_Room",
+                    "https://minecraft.wiki/w/Monster_Spawner",
+                    "https://minecraft.wiki/w/Options",
+                    "https://minecraft.wiki/w/Java_Edition_1.18"
+                ]
+}

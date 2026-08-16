@@ -1,0 +1,1003 @@
+﻿{
+    "topic":  "Minecraft Java Edition (~1.20) sound design \u0026 audio â€” synthesis-grade parameters, engine mixing/attenuation rules, and C418 musical-style analysis for an original homage",
+    "facts":  [
+                  {
+                      "key":  "engine.attenuation.model",
+                      "value":  "OpenAL AL_LINEAR_DISTANCE with AL_ROLLOFF_FACTOR = 1, AL_REFERENCE_DISTANCE = 0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "engine.attenuation.defaultDistance",
+                      "value":  "16 blocks (sounds.json \"attenuation_distance\", default 16)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.attenuation.maxDistanceFormula",
+                      "value":  "maxDistance = max(soundVolume, 1.0) Ã— attenuation_distance  â†’  16 blocks at volume â‰¤ 1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.attenuation.gainFormula",
+                      "value":  "gain(d) = clamp(1 âˆ’ d / maxDistance, 0, 1) Ã— volume Ã— categorySlider Ã— masterSlider  (linear, reaches exactly 0 at maxDistance)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "engine.hearingRadius.volume1",
+                      "value":  "16 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.hearingRadius.formula",
+                      "value":  "R = 16 blocks Ã— max(volume, 1.0); volume \u003e 1.0 extends radius but does NOT raise loudness at the source",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.pitch.clamp",
+                      "value":  "[0.5, 2.0] Ã— (values \u003c 0.5 clamp to 0.5, \u003e 2.0 clamp to 2.0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.volume.clamp",
+                      "value":  "[0.0, 1.0] after category and master multiplication",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.pitch.mechanism",
+                      "value":  "AL_PITCH = playback-rate scaling; duration scales by 1/pitch (pitch 0.5 doubles length, pitch 2.0 halves it)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.maxSimultaneousSounds.java",
+                      "value":  "255 channels (247 general + 8 reserved)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "engine.maxSimultaneousSounds.streamed",
+                      "value":  "4 concurrent instances when sounds.json \"stream\": true",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.stereoFiles",
+                      "value":  "Stereo/multichannel .ogg files bypass attenuation entirely and play 2D at constant volume",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.sampleVariantSelection",
+                      "value":  "Weighted random pick among N files listed per sound event; \"weight\" default 1 (weight 2 = listed twice)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "engine.variantCount.footsteps",
+                      "value":  "6 .ogg variants per material (typical)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "engine.variantCount.blockBreak",
+                      "value":  "4 .ogg variants per material (typical)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "engine.directionalAudio",
+                      "value":  "Option toggle: stereo panning (OFF) vs HRTF binaural (ON)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "category.count.java",
+                      "value":  "11 sliders: Master, Music, Jukebox/Note Blocks, Weather, Blocks, Hostile Mobs, Friendly Mobs, Players, Ambient/Environment, Voice/Speech, UI",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "category.ids.java",
+                      "value":  "master, music, record, weather, block, hostile, neutral, player, ambient, voice, ui",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "category.defaults.java",
+                      "value":  "100 % for all sliders",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "range.noteBlock",
+                      "value":  "48 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "range.jukebox",
+                      "value":  "64 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "range.tntExplosion",
+                      "value":  "64 blocks (volume 4.0 Ã— 16)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "range.goatHorn",
+                      "value":  "256 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "range.lightningBolt",
+                      "value":  "160000 blocks (effectively global)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pitchRule.mobVoice",
+                      "value":  "(rand()âˆ’rand())Ã—0.2 + 1.0  â†’  triangular over [0.8, 1.2] Ã—, mode 1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pitchRule.mobVoice.baby",
+                      "value":  "(rand()âˆ’rand())Ã—0.2 + 1.5  â†’  triangular over [1.3, 1.7] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pitchRule.woodenMechanism",
+                      "value":  "rand()Ã—0.1 + 0.9  â†’  uniform [0.9, 1.0] Ã— (doors, trapdoors, fence gates, chests, burp)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pitchRule.splashSwim",
+                      "value":  "1.0 + (rand()âˆ’rand())Ã—0.4  â†’  triangular over [0.6, 1.4] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pitchRule.itemBreak",
+                      "value":  "0.8 + rand()Ã—0.4  â†’  uniform [0.8, 1.2] Ã—, volume 0.8",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pitchRule.globalAutoRandomization",
+                      "value":  "None â€” the engine applies no automatic pitch jitter; every call site supplies its own pitch expression",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockSoundType.volume.default",
+                      "value":  "1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockSoundType.pitch.default",
+                      "value":  "1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockSoundType.metal.pitch",
+                      "value":  "1.5 Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockSoundType.anvil.volume",
+                      "value":  "0.3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockBreak.playbackParams",
+                      "value":  "volume = (soundType.volume + 1.0)/2 = 1.0; pitch = soundType.pitch Ã— 0.8 = 0.8 Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockPlace.playbackParams",
+                      "value":  "volume = (soundType.volume + 1.0)/2 = 1.0; pitch = soundType.pitch Ã— 0.8 = 0.8 Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockStep.playbackParams",
+                      "value":  "volume = soundType.volume Ã— 0.15 = 0.15; pitch = soundType.pitch = 1.0 Ã— (no extra randomization)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "blockHit.miningParams",
+                      "value":  "volume = (soundType.volume + 1.0)/8 = 0.25; pitch = soundType.pitch Ã— 0.5 = 0.5 Ã—; fires every 4 ticks (200 ms) while mining",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "blockFall.playbackParams",
+                      "value":  "volume = soundType.volume Ã— 0.5 = 0.5; pitch = soundType.pitch Ã— 0.75 = 0.75 Ã—",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "footstep.trigger",
+                      "value":  "moveDist accumulates distance Ã— 0.6 per move; a step fires each time moveDist crosses an integer â†’ one step per 1.667 blocks travelled",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "footstep.interval.walking",
+                      "value":  "â‰ˆ386 ms (4.317 blocks/s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "footstep.interval.sprinting",
+                      "value":  "â‰ˆ297 ms (5.612 blocks/s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "footstep.interval.sneaking",
+                      "value":  "â‰ˆ1287 ms (1.295 blocks/s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.stone.duration",
+                      "value":  "250â€“350 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.stone.freqRange",
+                      "value":  "80â€“6000 Hz; energy centred 300â€“2500 Hz; bandpass 1200 Hz Qâ‰ˆ1.2 + 90 Hz sine thump",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.dirt.soundType",
+                      "value":  "Dirt uses SoundType.GRAVEL â†’ block.gravel.break/step/place",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.gravel.duration",
+                      "value":  "280â€“350 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.gravel.freqRange",
+                      "value":  "150â€“7000 Hz granular; grain bandpass 1600â€“2200 Hz Qâ‰ˆ0.8; body thump 120 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.grass.duration",
+                      "value":  "250â€“320 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.grass.freqRange",
+                      "value":  "300â€“4000 Hz pink noise, lowpass 2500 Hz + highpass 300 Hz, no tonal component",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.wood.duration",
+                      "value":  "200â€“280 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.wood.freqRange",
+                      "value":  "Inharmonic partials â‰ˆ180 Hz and â‰ˆ430 Hz (ratio 2.4), decay 60â€“90 ms; 5 ms noise transient at 2 kHz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.sand.duration",
+                      "value":  "300â€“400 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.sand.freqRange",
+                      "value":  "700â€“5000 Hz bandpassed white noise, no transient, soft 15 ms attack",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.glass.duration",
+                      "value":  "600â€“900 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.glass.freqRange",
+                      "value":  "2000â€“7000 Hz shard partials + highpass-3 kHz noise burst; 6â€“12 grains over 300 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.blockBreak.glass.soundTypeQuirk",
+                      "value":  "SoundType.GLASS uses GLASS break/place but STONE step/hit/fall events",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.footstep.stone.duration",
+                      "value":  "80â€“110 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.stone.freqRange",
+                      "value":  "200â€“3000 Hz, bandpass 1500 Hz Qâ‰ˆ1.5, decay 70 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.grass.duration",
+                      "value":  "110â€“150 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.grass.freqRange",
+                      "value":  "300â€“4000 Hz pink-noise rustle, lowpass 3000 Hz, decay 110 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.gravel.duration",
+                      "value":  "100â€“140 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.gravel.freqRange",
+                      "value":  "200â€“3500 Hz, 3â€“5 noise grains of 6â€“15 ms each",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.wood.duration",
+                      "value":  "90â€“130 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.wood.freqRange",
+                      "value":  "150â€“2500 Hz; resonant peaks â‰ˆ250 Hz (Q 8) and â‰ˆ700 Hz (Q 6), decay 80 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.sand.duration",
+                      "value":  "130â€“170 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.sand.freqRange",
+                      "value":  "800â€“6000 Hz, soft 12 ms attack, no transient click",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.snow.duration",
+                      "value":  "120â€“160 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.snow.freqRange",
+                      "value":  "1500â€“8000 Hz squeaky granular crunch, highpass 1500 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.wool.duration",
+                      "value":  "100â€“140 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.wool.freqRange",
+                      "value":  "80â€“1500 Hz muffled, lowpass 900 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.metal.duration",
+                      "value":  "150â€“200 ms (played at pitch 1.5 â†’ â‰ˆ100â€“130 ms effective)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.footstep.metal.freqRange",
+                      "value":  "Inharmonic partials â‰ˆ900 / 1450 / 2600 Hz, decay 120 ms + noise transient",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.playerHurt.event",
+                      "value":  "entity.player.hurt; volume 1.0; pitch (randâˆ’rand)Ã—0.2+1.0 â†’ [0.8, 1.2] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.playerHurt.duration",
+                      "value":  "400â€“600 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.playerHurt.freqRange",
+                      "value":  "f0 130 Hz â†’ 95 Hz glide; formants F1 600 Hz Q8, F2 1100 Hz Q10, F3 2500 Hz Q12; breath layer \u003e 1.5 kHz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.playerHurt.invulnerabilityWindow",
+                      "value":  "10 ticks (500 ms) â€” sound cannot retrigger inside it",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.playerDeath.duration",
+                      "value":  "1000â€“1300 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.playerDeath.freqRange",
+                      "value":  "f0 150 Hz â†’ 80 Hz over 900 ms; same formant set, 5â€“7 Hz tremolo, heavier breath noise",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.itemPickup.event",
+                      "value":  "entity.item.pickup (legacy \"random.pop\")",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.itemPickup.volume",
+                      "value":  "0.2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.itemPickup.pitchFormula",
+                      "value":  "((randâˆ’rand)Ã—0.7 + 1.0) Ã— 2.0  â†’  raw range 0.6â€“3.4 Ã—, clamped to [0.5, 2.0]",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.itemPickup.pitchClampEdgeCase",
+                      "value":  "â‰ˆ50 % of pickups land at exactly pitch 2.0 (clamped); the other â‰ˆ50 % spread over 0.6â€“2.0 Ã—",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.itemPickup.duration",
+                      "value":  "â‰ˆ110 ms base sample â†’ â‰ˆ55 ms as heard at pitch 2.0",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.itemPickup.freqRange",
+                      "value":  "Bandpassed noise/blip centred â‰ˆ1000 Hz base â†’ â‰ˆ2000 Hz as heard; Qâ‰ˆ3, attack 1 ms, decay 45 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.xpOrbPickup.event",
+                      "value":  "entity.experience_orb.pickup (legacy \"random.orb\")",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.xpOrbPickup.volume",
+                      "value":  "0.1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.xpOrbPickup.pitchFormula",
+                      "value":  "0.5 Ã— ((randâˆ’rand)Ã—0.7 + 1.8)  â†’  0.55â€“1.25 Ã—, mode 0.9",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.xpOrbPickup.duration",
+                      "value":  "250â€“350 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.xpOrbPickup.freqRange",
+                      "value":  "Bell partials â‰ˆ880 Hz + â‰ˆ1320 Hz; upward glide 800â†’1400 Hz in first 30 ms; exp decay 250 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.doorOpen.event",
+                      "value":  "block.wooden_door.open / close; legacy level event ID 1003",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.doorOpen.params",
+                      "value":  "volume 1.0; pitch randÃ—0.1+0.9 â†’ [0.9, 1.0] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.doorOpen.duration",
+                      "value":  "700â€“1000 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.doorOpen.freqRange",
+                      "value":  "Creak: saw 300â€“600 Hz with noise-driven FM (8â€“25 Hz, Â±15 %) through bandpass 800 Hz Q6; latch thud 90 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.chestOpen.event",
+                      "value":  "block.chest.open / block.chest.close (legacy random.chestopen / random.chestclosed)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.chestOpen.params",
+                      "value":  "volume 0.5; pitch randÃ—0.1+0.9 â†’ [0.9, 1.0] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.chestOpen.duration",
+                      "value":  "500â€“800 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.chestOpen.lidAnimation",
+                      "value":  "0.1 per tick (open/close over 10 ticks = 500 ms)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.buttonBlock.params",
+                      "value":  "volume 0.3; pitch 0.6 Ã— on press, 0.5 Ã— on release (fixed, no randomization)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.buttonGui.event",
+                      "value":  "ui.button.click; volume 0.25, pitch 1.0, category ui, plays 2D (no attenuation)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.buttonGui.duration",
+                      "value":  "30â€“60 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.buttonGui.freqRange",
+                      "value":  "Single mid click â‰ˆ1000â€“1800 Hz, attack 1 ms, decay 20â€“30 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.eating.params",
+                      "value":  "volume 0.5 + 0.5Ã—randInt(2) â†’ exactly 0.5 or 1.0; pitch (randâˆ’rand)Ã—0.2+1.0 â†’ [0.8, 1.2] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.eating.cadence",
+                      "value":  "One bite sound every 4 ticks (200 ms) during the 32-tick (1.6 s) use animation â‰ˆ 8 bites",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.eating.duration",
+                      "value":  "200â€“350 ms per bite",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.eating.freqRange",
+                      "value":  "Brown/pink noise, lowpass cutoff swept 400â†’1600â†’500 Hz over 250 ms, AM chomps at â‰ˆ12 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.burp.params",
+                      "value":  "entity.player.burp; volume 0.5; pitch randÃ—0.1+0.9 â†’ [0.9, 1.0] Ã—; fires once at end of eating",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.drinking.params",
+                      "value":  "entity.generic.drink; volume 0.5; pitch randÃ—0.1+0.9 â†’ [0.9, 1.0] Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.drinking.freqRange",
+                      "value":  "Per-glug sine sweep 150â†’400 Hz over 60 ms, repeated â‰ˆ4 Hz, through lowpass 900 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.bowShoot.event",
+                      "value":  "entity.arrow.shoot (legacy random.bow); volume 1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.bowShoot.pitchFormula",
+                      "value":  "1.0 / (randÃ—0.4 + 1.2) + powerÃ—0.5  â†’  0.625â€“0.833 Ã— uncharged, 1.125â€“1.333 Ã— at full draw",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.bowShoot.powerFormula",
+                      "value":  "t = drawTicks/20; power = (tÂ² + 2t)/3, capped at 1.0; full charge at 20 ticks (1.0 s); no shot below power 0.1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.bowShoot.duration",
+                      "value":  "200â€“300 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.bowShoot.freqRange",
+                      "value":  "Bandpass noise centre swept 2500â†’600 Hz over 120 ms Qâ‰ˆ4 + 120 Hz string thump (60 ms)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.arrowHit.event",
+                      "value":  "entity.arrow.hit (legacy random.bowhit); volume 1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.arrowHit.pitchFormula",
+                      "value":  "1.2 / (randÃ—0.2 + 0.9)  â†’  1.091â€“1.333 Ã—",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.arrowHit.player",
+                      "value":  "entity.arrow.hit_player; volume 0.18; pitch 0.45 Ã— (clamps to 0.5)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.arrowHit.duration",
+                      "value":  "120â€“180 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.arrowHit.freqRange",
+                      "value":  "3 ms noise click at 3 kHz + damped sine 500 Hz (decay 80 ms) + 150 Hz thud (60 ms)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.explosion.event",
+                      "value":  "entity.generic.explode; volume 4.0 â†’ 64-block radius",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.explosion.pitchFormula",
+                      "value":  "(1.0 + (randâˆ’rand)Ã—0.2) Ã— 0.7  â†’  0.56â€“0.84 Ã—, mode 0.70",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.explosion.duration",
+                      "value":  "1500â€“2000 ms base sample â†’ â‰ˆ2100â€“2900 ms as heard at pitch 0.7",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.explosion.freqRange",
+                      "value":  "Noise lowpass swept 3000â†’80 Hz over 800 ms + sine boom 90â†’35 Hz + brown-noise tail lowpass 200 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.tntPrimed.params",
+                      "value":  "entity.tnt.primed; volume 1.0; pitch 1.0 Ã—; played once at prime",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.tntPrimed.fuse",
+                      "value":  "80 ticks (4.0 s) when lit by player; 10â€“30 ticks when chain-ignited by an explosion",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.tntFuse.freqRange",
+                      "value":  "Highpass 4 kHz white noise + bandpass 6 kHz Q1, AM by random noise at 30â€“60 Hz, slow swell",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.fireAmbient.event",
+                      "value":  "block.fire.ambient; 1/24 chance per fire block per client tick (mean â‰ˆ1.2 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.fireAmbient.params",
+                      "value":  "volume 1.0 + rand â†’ [1.0, 2.0]; pitch randÃ—0.7 + 0.3 â†’ [0.3, 1.0] Ã— (clamped to â‰¥0.5)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.fireAmbient.duration",
+                      "value":  "â‰ˆ1500 ms base â†’ 1500â€“3000 ms as heard after pitch clamp",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.fireAmbient.freqRange",
+                      "value":  "Brown-noise bed lowpass 800 Hz (cutoff LFO 0.3â€“2 Hz) + crackle grains 5â€“15 ms bandpassed 1.5â€“5 kHz at â‰ˆ4/s",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.waterAmbient.freqRange",
+                      "value":  "Pink noise lowpass 1200 Hz, cutoff LFO 0.15 Hz Â±300 Hz; bubbles = upward sine sweep 400â†’900 Hz over 60 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.underwaterAmbience.probabilities",
+                      "value":  "Loop additions 90 %, rare additions 9 %, ultra-rare additions 1 %; volumes 0.45â€“1.0, pitch 1.0, attenuation 16 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.lavaPop.event",
+                      "value":  "block.lava.pop; â‰ˆ1/100 chance per lava block per client tick",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.lavaPop.params",
+                      "value":  "volume 0.2 + randÃ—0.2 â†’ [0.2, 0.4]; pitch 0.9 + randÃ—0.15 â†’ [0.90, 1.05] Ã—",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.lavaPop.duration",
+                      "value":  "200â€“300 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.lavaPop.freqRange",
+                      "value":  "Downward sine sweep 220â†’80 Hz over 90 ms + lowpass-700 Hz noise splat (60 ms)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.lavaAmbient.event",
+                      "value":  "block.lava.ambient; â‰ˆ1/200 chance per block per client tick; same volume/pitch as lava pop",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.waterFizz.params",
+                      "value":  "block.fire.extinguish / random.fizz; volume 0.5; pitch 2.6 + (randâˆ’rand)Ã—0.8 â†’ 1.8â€“3.4 Ã— (clamps at 2.0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "mob.ambient.interval",
+                      "value":  "getAmbientSoundInterval() = 80 ticks; trigger is rand(1000) \u003c counter++ with counter reset to âˆ’80 â†’ mean â‰ˆ125 ticks (â‰ˆ6.2 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "mob.ambient.volume",
+                      "value":  "getSoundVolume() = 1.0 for most mobs",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.zombieIdle.duration",
+                      "value":  "1200â€“1800 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.zombieIdle.freqRange",
+                      "value":  "Saw f0 â‰ˆ100â†’70 Hz glide, vibrato 4 Hz Â±3 %; formants F1 500 Hz Q6, F2 900 Hz Q8, F3 2400 Hz Q10; lowpass 3 kHz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.zombieHurt.duration",
+                      "value":  "500â€“700 ms; f0 110â†’80 Hz, attack 10 ms, decay 450 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.zombieDeath.duration",
+                      "value":  "1100â€“1400 ms; f0 100â†’55 Hz, decay 1000 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.skeletonIdle.duration",
+                      "value":  "700â€“900 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.skeletonIdle.freqRange",
+                      "value":  "6â€“10 clack grains: damped sines 1200 Hz + 1900 Hz, 25 ms decay each, over 400 ms; faint 300 Hz hollow tone at âˆ’20 dB",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.skeletonHurt.duration",
+                      "value":  "450â€“600 ms; denser rattle plus a 5 ms highpass-2 kHz crack transient",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.boneRattle.grainSpec",
+                      "value":  "3â€“6 damped sines at 900â€“2200 Hz, 15â€“30 ms decay each, random 20â€“80 ms spacing",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.creeperPrimed.params",
+                      "value":  "entity.creeper.primed; volume 1.0; pitch exactly 0.5 Ã— (fixed, no randomization)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sfx.creeperPrimed.fuse",
+                      "value":  "30 ticks (1.5 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.creeperHiss.duration",
+                      "value":  "â‰ˆ1500 ms base â†’ â‰ˆ3000 ms as heard at pitch 0.5",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.creeperHiss.freqRange",
+                      "value":  "White noise, bandpass centre rising 1500â†’3500 Hz base (i.e. 750â†’1750 Hz as heard) Qâ‰ˆ1.5, slow 200 ms attack swelling over 1.2 s",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.creeper.explosionPower",
+                      "value":  "3.0 (charged: 6.0); explosion sound volume 4.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sfx.spiderHiss.duration",
+                      "value":  "600â€“900 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.spiderHiss.freqRange",
+                      "value":  "Bandpass 3000 Hz Qâ‰ˆ2 with Â±400 Hz wobble at 12 Hz + 4â€“8 chitter clicks at 6â€“10 kHz in the first 200 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.pigIdle.duration",
+                      "value":  "400â€“600 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.pigIdle.freqRange",
+                      "value":  "f0 200â†’280â†’180 Hz over 350 ms; F1 700 Hz Q8, F2 1300 Hz Q8, nasal notch at 900 Hz; snort noise at 2 kHz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.cowIdle.duration",
+                      "value":  "1500â€“2000 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.cowIdle.freqRange",
+                      "value":  "f0 150â†’130â†’110 Hz, vibrato 5 Hz Â±2 %; F1 450 Hz, F2 1000 Hz, F3 2300 Hz; lowpass 4 kHz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.sheepIdle.duration",
+                      "value":  "800â€“1000 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.sheepIdle.freqRange",
+                      "value":  "f0 260â†’220 Hz with 18â€“22 Hz tremolo (60 % depth) and Â±6 % FM; F1 700 Hz, F2 1250 Hz, F3 2600 Hz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.chickenIdle.duration",
+                      "value":  "350â€“500 ms (2â€“3 clucks)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.chickenIdle.freqRange",
+                      "value":  "Per cluck: f0 glide 700â†’400 Hz over 120 ms, F1 1200 Hz Q10, F2 2600 Hz; 90 ms gaps; attack 5 ms decay 90 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.villagerIdle.duration",
+                      "value":  "600â€“1000 ms",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "sfx.villagerIdle.freqRange",
+                      "value":  "f0 130â†’175â†’120 Hz contour; heavy lowpass 900 Hz (closed mouth); nasal F1 280 Hz Q10, F2 1100 Hz Q12, notch 700 Hz; 6 Hz vibrato",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "ambience.cave.moodRate.darkness",
+                      "value":  "+1/6000 per tick at block light 0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambience.cave.moodRate.blockLight",
+                      "value":  "âˆ’(blockLight âˆ’ 1)/6000 per tick when block light \u003e 1",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambience.cave.moodRate.skyLight",
+                      "value":  "âˆ’1/1000 per sky-light level per tick",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambience.cave.interval.fullDarkness",
+                      "value":  "6000 ticks (5 minutes)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambience.cave.searchVolume",
+                      "value":  "17Ã—17Ã—17 block cube centred on the player\u0027s eye position",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambience.cave.playbackParams",
+                      "value":  "volume 1.0, pitch 1.0, attenuation 16 blocks; 23 cave sound variants",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "music.menu.delay",
+                      "value":  "20â€“600 ticks (1â€“30 s) before a random menu track starts",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "music.game.delay",
+                      "value":  "12000â€“24000 ticks (10â€“20 minutes) between tracks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "music.frequencyOption",
+                      "value":  "Default = 10â€“20 min, Frequent = 10 min, Constant = 5 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "music.menuTracks",
+                      "value":  "Mutation, Moog City 2, Beginning 2, Floating Trees (2:55â€“4:04)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "music.attenuation",
+                      "value":  "Music plays 2D at constant volume regardless of distance; category music",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.sweden.key",
+                      "value":  "D major (opens on an E minor triad)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.sweden.tempo",
+                      "value":  "81 BPM",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.sweden.progression",
+                      "value":  "Bm â€“ E â€“ A â€“ Gmaj7  (vi â€“ II â€“ V â€“ IVmaj7 in D major)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.sweden.duration",
+                      "value":  "3:35 (215 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.sweden.form",
+                      "value":  "Passacaglia â€” changing melody over a repeated bass line",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.sweden.instrumentation",
+                      "value":  "Piano, sustained strings, pizzicato strings, glockenspiel, harp",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.minecraft.duration",
+                      "value":  "4:14 (254 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.minecraft.scale",
+                      "value":  "Purely pentatonic",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.minecraft.instrumentation",
+                      "value":  "Chiming piano, melancholy string chords, plucked/strummed strings (harp or guitar), glockenspiel, ambient synth pads",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.door.key",
+                      "value":  "F major",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.miceOnVenus.chords",
+                      "value":  "C, F, Am, Dm, D in the key of F major",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.trackDurations",
+                      "value":  "Key 1:05, OxygÃ¨ne 1:05, Dry Hands 1:08, Wet Hands 1:30, Clark 3:11, Sweden 3:35, Minecraft 4:14, Aria Math 5:09, Dreiton 8:16, Taswell 8:34",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "c418.homage.tempoRange",
+                      "value":  "55â€“90 BPM, predominantly 4/4",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.homage.loopLength",
+                      "value":  "8â€“16 bars, repeated 4â€“8 times with additive layering every 8 or 16 bars",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "c418.homage.reverb",
+                      "value":  "Plate/hall, RT60 2.5â€“5.0 s, pre-delay 20â€“40 ms, tail lowpassed at â‰ˆ4 kHz",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "c418.homage.voicingRegisters",
+                      "value":  "Bass root C2â€“F2; chord tones C4â€“C5 (gap of a 10th or more above the bass); melody C5â€“C6",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "copyright.assets",
+                      "value":  "Zero Minecraft .ogg files may be shipped â€” assets/minecraft/sounds/** is proprietary Mojang/Microsoft content with no reuse licence",
+                      "confidence":  "high"
+                  }
+              ],
+    "notes":  "## 0. Scope and confidence discipline\n\nFacts marked **high** come from minecraft.wiki or from Mojang\u0027s own (Bukkit-mirrored) server source, where the literal expression is quoted. Facts marked **medium** are from decompiled-source recall corroborated by secondary sources. **Every `sfx.*.duration` / `sfx.*.freqRange` entry is marked low** â€” Minecraft\u0027s sample-level spectral content is *not documented anywhere*. Those are my own synthesis recipes derived from listening/DSP reasoning, engineered to *evoke* the samples, not to replicate them. That is exactly what you want for a clone: original audio that reads as \"Minecraft-ish\".\n\n---\n\n## 1. Engine mixing model (implement this first)\n\n### 1.1 Attenuation\nJava uses OpenAL with the **linear** distance model, configured per-source as:\n\n```\nAL_DISTANCE_MODEL   = AL_LINEAR_DISTANCE\nAL_ROLLOFF_FACTOR   = 1\nAL_REFERENCE_DISTANCE = 0\nAL_MAX_DISTANCE     = max(volume, 1.0) * attenuation_distance   // attenuation_distance defaults to 16\n```\n\nResulting gain:\n```\ng(d) = clamp(1 - d / maxDistance, 0, 1)\nfinal = clamp(g(d) * volume * categorySlider * masterSlider, 0, 1)\n```\n\n**Key consequence:** gain is *linear in distance*, not inverse-square. A block-break sound at 8 blocks is at exactly 0.5 amplitude, and at 16 blocks it is silent â€” not \"quiet\", silent. This is a big part of Minecraft\u0027s audio feel: sounds vanish abruptly at the edge of the sphere rather than tapering forever.\n\n**Web Audio equivalent** (exact match, since Web Audio\u0027s `\u0027linear\u0027` model uses the same formula `1 - rolloff*(d - ref)/(max - ref)`):\n```js\nconst p = ctx.createPanner();\np.panningModel   = \u0027HRTF\u0027;        // matches MC \"Directional Audio: ON\"; use \u0027equalpower\u0027 for the OFF mode\np.distanceModel  = \u0027linear\u0027;\np.refDistance    = 0.0001;        // Web Audio rejects/misbehaves at exactly 0\np.rolloffFactor  = 1;\np.maxDistance    = Math.max(volume, 1.0) * 16;   // in world units == blocks\n```\nSet the listener from the camera each frame (`positionX/Y/Z`, `forwardX/Y/Z`, `upX/Y/Z`) using `setValueAtTime`/`linearRampToValueAtTime` to avoid zipper noise.\n\n**Non-attenuated sounds.** Music, UI sounds, and `Attenuation.NONE` events (lightning, wither spawn, ender dragon death, thunder) bypass the panner entirely â€” route them straight to the category gain node. Stereo `.ogg` files also bypass attenuation in vanilla; in a synth clone, mirror this by routing any 2-channel source direct.\n\n### 1.2 Volume / pitch clamping\n- `pitch` is clamped to **[0.5, 2.0]**. Anything the call site computes outside that is silently clamped.\n- `volume` is clamped to **[0, 1]** *after* the category and master sliders are applied â€” but the `volume` field is used *un-clamped* to compute `maxDistance` first. That is why `volume 4.0` on explosions gives a 64-block radius without being 4Ã— louder.\n- Pitch is a **playback-rate** change, so duration scales as `1/pitch`. In Web Audio:\n  - for `AudioBufferSourceNode`: set `playbackRate.value = pitch`.\n  - for pure synthesis: multiply **every** oscillator/filter frequency by `pitch` **and** divide every envelope time by `pitch`. Doing only the first is the #1 way a synth clone sounds wrong.\n\n### 1.3 Randomization â€” there is no global rule\nThe engine applies **no automatic pitch jitter**. Variety comes from two places:\n\n1. **Weighted sample-variant selection** (the dominant source). Each sound event lists N files with a `weight` (default 1, `weight: 2` â‰¡ listed twice). Footsteps typically have 6 variants, block breaks 4, mob ambients 3â€“4. **In a synth clone, emulate this by randomizing 2â€“4 *structural* parameters per fire** (grain count, grain positions, filter centre Â±15 %, partial detune) â€” not just pitch. This is what stops a synth clone sounding like a machine gun.\n2. **Per-call-site pitch expressions.** The five idioms that cover ~95 % of the game:\n\n| Idiom | Expression | Distribution | Used by |\n|---|---|---|---|\n| Mob voice | `(râˆ’r)*0.2 + 1.0` | triangular [0.8, 1.2], mode 1.0 | every mob ambient/hurt/death, player hurt/death, eating |\n| Baby mob voice | `(râˆ’r)*0.2 + 1.5` | triangular [1.3, 1.7] | baby variants |\n| Wooden mechanism | `r*0.1 + 0.9` | uniform [0.9, 1.0] | doors, trapdoors, fence gates, chests, burp, drinking |\n| Splash/swim | `1.0 + (râˆ’r)*0.4` | triangular [0.6, 1.4] | water entry, swim strokes |\n| Item break | `0.8 + r*0.4` | uniform [0.8, 1.2] | tool/armour breaking (volume 0.8) |\n\n`r` = `Random.nextFloat()` âˆˆ [0,1). Note `(r1 âˆ’ r2)` is a **triangular** distribution centred on 0 â€” implement it as `(Math.random() - Math.random())`, not `(Math.random()*2 - 1)`. The triangular shape is audible: most fires cluster near nominal pitch with rare outliers, which is what makes MC sound organic rather than randomized.\n\nRedstone/UI sounds use **fixed** pitches (button 0.6 on / 0.5 off, creeper primed 0.5) â€” do not add jitter there or it stops sounding mechanical.\n\n### 1.4 Two clampable edge cases worth reproducing\n- **Item pickup**: `((râˆ’r)*0.7 + 1.0) * 2.0` â†’ nominal range 0.6â€“3.4 Ã—, clamped at 2.0. Since `r1 \u003e r2` half the time, **â‰ˆ50 % of item-pickup \"pops\" play at exactly pitch 2.0** and the rest spread down to 0.6. The result is a recognizably \"topped-out\" pop with occasional dramatic low ones. Reproduce the clamp; it *is* the sound.\n- **Fizz** (`random.fizz`, lava-meets-water, extinguish): `2.6 + (râˆ’r)*0.8` â†’ 1.8â€“3.4, clamped to 2.0 â†’ **most fizzes are pinned at exactly 2.0 Ã—**, giving that fixed hiss with occasional lower ones.\n- **Fire ambient**: pitch `r*0.7 + 0.3` â†’ 0.3â€“1.0, clamped at 0.5, so ~29 % of fire sounds play at exactly pitch 0.5 (max stretch, deepest roar).\n\n### 1.5 Voice limits\n255 channels in Java (247 general + 8 reserved); streamed sounds capped at 4 concurrent. In a browser clone, cap active `AudioBufferSourceNode`s/oscillator graphs at ~48â€“64 and cull by lowest computed gain â€” Web Audio degrades badly past a few hundred live nodes.\n\n### 1.6 Categories\nJava has 11 sliders, all defaulting to 100 %: `master, music, record, weather, block, hostile, neutral, player, ambient, voice, ui`. Build one `GainNode` per category, all feeding a `master` GainNode. Use `setTargetAtTime(v, t, 0.02)` when the user drags a slider.\n\n---\n\n## 2. Block sound plumbing (SoundType)\n\nA block\u0027s `SoundType` carries `(volume, pitch, breakSound, stepSound, placeSound, hitSound, fallSound)`. Almost all types are `(1.0, 1.0)`; the notable exceptions are **METAL = (1.0, 1.5)** and **ANVIL = (0.3, 1.0)**.\n\nThe **call sites** then transform those:\n\n| Event | Volume | Pitch | Trigger |\n|---|---|---|---|\n| Break (level event 2001) | `(vol + 1)/2` â†’ **1.0** | `pitch * 0.8` â†’ **0.8 Ã—** | block destroyed |\n| Place (`BlockItem.place`) | `(vol + 1)/2` â†’ **1.0** | `pitch * 0.8` â†’ **0.8 Ã—** | block placed |\n| Step (`Entity.playStepSound`) | `vol * 0.15` â†’ **0.15** | `pitch * 1.0` â†’ **1.0 Ã—** | see Â§2.1 |\n| Hit (mining tick) | `(vol + 1)/8` â†’ **0.25** | `pitch * 0.5` â†’ **0.5 Ã—** | every 4 ticks while mining |\n| Fall (landing) | `vol * 0.5` â†’ **0.5** | `pitch * 0.75` â†’ **0.75 Ã—** | fall onto block |\n\nDesign takeaway: **break and place are the same family of samples at 0.8 Ã— pitch**, and **the mining \"tick\" is the hit sound at half pitch and quarter volume**. You can generate all five from one per-material synth function parameterized by `(volume, pitchScale)`.\n\nMaterial mapping gotchas:\n- **Dirt/coarse dirt use `SoundType.GRAVEL`** â€” not a dedicated dirt type. Grass block uses `SoundType.GRASS`.\n- **`SoundType.GLASS` uses GLASS for break/place but STONE for step/hit/fall.** Walking on glass sounds like stone.\n- Sand, gravel, snow, wool, wood, stone, metal each have their own full set.\n\n### 2.1 Footstep cadence\n`moveDist += distanceMoved * 0.6` each move step; a footstep fires whenever `moveDist` crosses the next integer, i.e. **one step per 1.667 blocks travelled**. Derived intervals (walking 4.317 b/s, sprinting 5.612 b/s, sneaking 1.295 b/s):\n- walk â‰ˆ **386 ms**, sprint â‰ˆ **297 ms**, sneak â‰ˆ **1287 ms**.\n\nFootsteps are quiet â€” volume **0.15** â€” but are the single most-heard sound in the game. Budget your synthesis cost accordingly: they should be the cheapest node graph you have (one noise source + one biquad + one gain is enough).\n\n---\n\n## 3. Synthesis recipes (Web Audio)\n\n### 3.0 Shared building blocks\n```js\n// One 2-second white-noise buffer, created once and reused for every noise voice.\nfunction makeNoise(ctx, secs = 2) {\n  const b = ctx.createBuffer(1, ctx.sampleRate * secs, ctx.sampleRate);\n  const d = b.getChannelData(0);\n  for (let i = 0; i \u003c d.length; i++) d[i] = Math.random() * 2 - 1;\n  return b;\n}\n// Play a random slice so successive fires differ (cheap variant emulation):\nsrc.buffer = noiseBuf;\nsrc.start(t, Math.random() * (noiseBuf.duration - 0.5), dur);\n\n// Percussive envelope. NEVER exponentialRamp to 0.\nfunction env(g, t, peak, atkMs, decMs) {\n  g.gain.setValueAtTime(0.0001, t);\n  g.gain.exponentialRampToValueAtTime(peak, t + atkMs / 1000);\n  g.gain.exponentialRampToValueAtTime(0.0001, t + (atkMs + decMs) / 1000);\n}\n// Damped modal partial (for wood knocks, glass shards, bone clacks, bells):\nfunction partial(ctx, t, freq, decMs, amp, type = \u0027sine\u0027) {\n  const o = ctx.createOscillator(); o.type = type; o.frequency.value = freq;\n  const g = ctx.createGain(); env(g, t, amp, 1, decMs);\n  o.connect(g); o.start(t); o.stop(t + decMs / 1000 + 0.05); return g;\n}\n// Formant bank for all vocal mobs â€” three parallel bandpass filters:\nfunction formants(ctx, src, F) {  // F = [[hz,Q,gain], ...]\n  const out = ctx.createGain();\n  for (const [hz, q, gn] of F) {\n    const bp = ctx.createBiquadFilter();\n    bp.type = \u0027bandpass\u0027; bp.frequency.value = hz; bp.Q.value = q;\n    const g = ctx.createGain(); g.gain.value = gn;\n    src.connect(bp); bp.connect(g); g.connect(out);\n  }\n  return out;\n}\n```\nThree archetypes cover nearly every sound in the game:\n1. **Noise + swept filter + exponential decay** â€” breaks, steps, hisses, explosions, wind, water.\n2. **Grain scatter** â€” N short impulsive events with randomized onsets. Gravel, glass shatter, bone rattle, fire crackle, chicken clucks.\n3. **Sourceâ€“filter voice** â€” a sawtooth/pulse glottal source with a pitch contour, through 3 bandpass formants. Every mob and player vocalization. **This is the highest-leverage function to write.** Change f0, its contour, and the three formant frequencies and you get zombie, cow, pig, sheep, villager, and the player \"oof\" from one code path.\n\n### 3.1 Block break / place\n\n| Material | Dur (ms) | Character | Recipe |\n|---|---|---|---|\n| **Stone** | 250â€“350 | broadband crack + low thud | white noise â†’ bandpass 1200 Hz Q 1.2, centre swept 2000â†’600 Hz over 150 ms; A 2 ms / D 180 ms; layer a 90 Hz sine, D 40 ms, at âˆ’6 dB |\n| **Dirt / Gravel** | 280â€“350 | granular crunch | 5â€“10 grains of 8â€“20 ms noise, highpass 800 Hz, onsets scattered over 180 ms with 3â€“15 ms gaps; grain bandpass 1600â€“2200 Hz Q 0.8; 120 Hz body thump |\n| **Grass** | 250â€“320 | dry rustle, **no** transient | pink noise â†’ HP 300 Hz + LP 2500 Hz; A 5 ms / D 220 ms; amplitude-modulate with a fast random LFO at 40â€“80 Hz for crackle |\n| **Wood** | 200â€“280 | hollow knock | two damped partials 180 Hz + 430 Hz (inharmonic ratio 2.4), D 60â€“90 ms each, plus a 5 ms noise transient bandpassed at 2 kHz; bend both partials âˆ’8 % over 80 ms |\n| **Sand** | 300â€“400 | pure soft hiss | white noise â†’ HP 700 Hz + LP 5000 Hz; **soft attack, A 15 ms**, near-linear D 300 ms; no tonal layer at all |\n| **Glass** | 600â€“900 | bright shatter | 3 ms crack (noise, HP 4 kHz) then 6â€“12 shard partials at random 2000â€“7000 Hz, D 30â€“120 ms each, onsets over 300 ms, plus a HP-3 kHz noise wash decaying 400 ms |\n| **Snow** | 250â€“350 | squeaky | grains at 2â€“6 kHz, HP 1500 Hz, plus a 200 ms squeal: bandpass 3 kHz Q 12 with Â±10 % FM at 30 Hz |\n| **Wool** | 200â€“280 | muffled | noise â†’ LP 900 Hz, A 8 ms / D 180 ms; no highs at all |\n| **Metal** | 200â€“300 (Ã—1.5 pitch â†’ 130â€“200 as heard) | clank | partials 900 / 1450 / 2600 Hz, D 120 ms, plus 3 ms noise transient; add slight ring-mod at 40 Hz |\n\nRemember: play break **and** place at **pitch 0.8** (so multiply all frequencies above by 0.8 and divide durations by 0.8, i.e. Ã—1.25).\n\n### 3.2 Footsteps\nSame generators, radically shortened, at volume 0.15:\n- **stone** 80â€“110 ms, bandpass 1500 Hz Q 1.5, D 70 ms.\n- **grass** 110â€“150 ms, pink noise LP 3000 Hz, D 110 ms â€” softest of the set.\n- **gravel/dirt** 100â€“140 ms, 3â€“5 grains of 6â€“15 ms.\n- **wood** 90â€“130 ms, resonances 250 Hz (Q 8) + 700 Hz (Q 6), D 80 ms â€” the hollow \"tok\" comes from Q, not level.\n- **sand** 130â€“170 ms, HP 800 / LP 6000, A 12 ms â€” deliberately no click.\n- **snow** 120â€“160 ms, HP 1500 Hz, granular squeak.\n- **wool** 100â€“140 ms, LP 900 Hz.\n- **metal** 150â€“200 ms at pitch 1.5, partials 900/1450/2600 Hz, D 120 ms.\n- **water/swim** uses the splash idiom: noise LP swept 4000â†’800 Hz, D 250 ms, pitch `1 + (râˆ’r)*0.4`.\n\n### 3.3 Player vocal (hurt / death)\nSourceâ€“filter, vowel â‰ˆ /ÊŒ/:\n- **Hurt** 400â€“600 ms. Glottal source: sawtooth f0 130 Hz â†’ 95 Hz (exponential glide over 300 ms), plus a 20 % pulse-width square blended in for grit. Formants F1 600 Hz Q 8, F2 1100 Hz Q 10, F3 2500 Hz Q 12. Envelope A 15 ms / D 350 ms. Add a breath layer: noise HP 1.5 kHz at âˆ’18 dB with the same envelope. Pitch multiplier 0.8â€“1.2 triangular.\n- **Death** 1000â€“1300 ms. Same bank; f0 150 â†’ 80 Hz over 900 ms, A 20 ms / D 900 ms, add 5â€“7 Hz tremolo (LFO on gain, 25 % depth) and push the breath layer to âˆ’10 dB. Roll off above 4 kHz.\n- Hurt cannot retrigger inside the 10-tick (500 ms) invulnerability window â€” enforce this or rapid damage machine-guns the sound.\n\n### 3.4 Pickups\n- **Item \"pop\"** â€” volume 0.2, effective pitch usually exactly 2.0. Bandpassed noise blip: noise â†’ bandpass **2000 Hz** Q 3 (that\u0027s the 1000 Hz base Ã— 2.0), A 1 ms / D 45 ms, plus a 1 ms click. Total ~55 ms as heard. Do **not** make it tonal; the MC pop is a filtered burst, not a beep.\n- **XP orb** â€” volume 0.1, pitch 0.55â€“1.25 (mode 0.9). Two sine partials at 880 Hz and 1320 Hz (a perfect fifth â€” this is the \"chime\" quality), plus a fast upward glide 800â†’1400 Hz in the first 30 ms on the fundamental. A 2 ms / exponential D 250 ms. At volume 0.1 it is deliberately near-subliminal; the *rate* of overlapping pops when absorbing a pile of orbs is the actual effect. Orbs are absorbed 1 per 2 ticks, so expect ~10 overlapping copies/second â€” build a voice pool.\n\n### 3.5 Mechanisms\n- **Wooden door open/close** (vol 1.0, pitch 0.9â€“1.0, 700â€“1000 ms): sawtooth 300â€“600 Hz, frequency modulated by a *noise-driven* LFO at 8â€“25 Hz with Â±15 % depth (this irregular wobble is the \"creak\"; a clean sine LFO sounds like a theremin), through bandpass 800 Hz Q 6. A 40 ms, S 400 ms, D 300 ms. End with a 90 Hz latch thud, D 60 ms. Iron door: swap the bandpass for inharmonic partials at 350 / 620 / 1180 Hz.\n- **Chest open/close** (vol 0.5, pitch 0.9â€“1.0, 500â€“800 ms): a 60 ms wooden knock (damped sines 200 + 480 Hz) at t=0, then a 250 ms creak (as above, but bandpass 1100 Hz), then on *close* a 120 Hz thud. The lid animates at 0.1/tick, so open and close both take 10 ticks (500 ms) â€” sync the visual.\n- **Block button** â€” vol 0.3, pitch fixed 0.6 (press) / 0.5 (release). A single 40 ms click: noise â†’ bandpass 1200 Hz Q 2 (Ã—0.6 â†’ 720 Hz as heard), D 25 ms + a 300 Hz damped sine at âˆ’12 dB.\n- **GUI button** â€” `ui.button.click`, volume 0.25, pitch 1.0, **2D** (no panner), category `ui`. 30â€“60 ms. Sine or narrow-bandpassed noise ~1000â€“1800 Hz, A 1 ms / D 25 ms. Keep it dull â€” a bright click gets fatiguing at menu-navigation rates.\n\n### 3.6 Consumption\n- **Eating** â€” one bite every **4 ticks (200 ms)** through the 32-tick (1.6 s) animation â‰ˆ 8 bites. Volume is `0.5 + 0.5*randInt(2)` â†’ **exactly 0.5 or 1.0, never in between** (a coin flip per bite â€” this bimodality is audible and worth reproducing). Pitch 0.8â€“1.2. Each bite: brown/pink noise â†’ lowpass with cutoff swept 400 â†’ 1600 â†’ 500 Hz over 250 ms, gain envelope carrying 3â€“4 chomp bumps at ~12 Hz. Fire `entity.player.burp` once at the end (vol 0.5, pitch 0.9â€“1.0): a 300 ms low vocal burst, f0 ~90 Hz descending, formants 400/900 Hz, heavily lowpassed at 1.2 kHz.\n- **Drinking** â€” vol 0.5, pitch 0.9â€“1.0. Per glug: sine sweeping 150 â†’ 400 Hz over 60 ms with a 90 ms decay, through lowpass 900 Hz; repeat at ~4 Hz. Same 32-tick duration for potions.\n\n### 3.7 Combat\n- **Bow shoot** â€” vol 1.0, pitch `1/(r*0.4 + 1.2) + power*0.5`. Draw: `t = ticks/20; power = (tÂ² + 2t)/3` capped at 1.0, full at 20 ticks; below power 0.1 no shot fires. So the pitch *rises with draw strength* â€” 0.625â€“0.833 at a snap shot, 1.125â€“1.333 at full draw. That\u0027s a free, diegetic charge indicator; wire it up. Sound: bandpassed noise, centre swept **2500 â†’ 600 Hz over 120 ms**, Q 4, A 2 ms / D 180 ms, plus a 120 Hz string thump (D 60 ms). The strong *downward* sweep is what makes it read as \"thwip\".\n- **Arrow hit** â€” vol 1.0, pitch `1.2/(r*0.2 + 0.9)` â†’ 1.09â€“1.33 (always slightly sharp). 120â€“180 ms: 3 ms noise click at 3 kHz + damped sine 500 Hz (D 80 ms) + 150 Hz thud (D 60 ms). Hitting a *player* uses a separate event at volume 0.18, pitch 0.45 (clamps to 0.5) â€” a deep, quiet thud, deliberately different.\n- **Explosion** â€” vol **4.0** (â‡’ **64-block** radius), pitch `(1 + (râˆ’r)*0.2)*0.7` â†’ 0.56â€“0.84, mode 0.70. As heard, ~2.1â€“2.9 s. Four layers:\n  1. white noise â†’ lowpass swept 3000 â†’ 80 Hz over 800 ms, Q 1; A 1 ms / D 1500 ms exponential;\n  2. sine \"boom\" 90 â†’ 35 Hz over 300 ms, D 600 ms, at 0 dB;\n  3. a `WaveShaperNode` soft-clip (`tanh(3x)`) on layer 1 for crunch;\n  4. tail: brown noise â†’ lowpass 200 Hz, D 1800 ms at âˆ’12 dB.\n  Because it\u0027s the loudest thing in the game, duck the other category buses ~4 dB for 400 ms after it fires.\n- **TNT fuse** â€” `entity.tnt.primed` at volume 1.0 pitch 1.0, fired **once** at prime, then the entity burns for **80 ticks (4.0 s)** (10â€“30 ticks if chain-ignited). Since it plays once, either use a ~1 s hiss and accept the gap, or (better for a clone) loop it: white noise â†’ highpass 4 kHz + bandpass 6 kHz Q 1, amplitude-modulated by band-limited noise at 30â€“60 Hz, with a slow swell in the last 500 ms before detonation.\n\n### 3.8 Environmental loops\n- **Fire** â€” `block.fire.ambient` at **1/24 per fire block per client tick** (mean ~1.2 s per block), volume `1.0 + r` â†’ **1.0â€“2.0** (i.e. audible out to 16â€“32 blocks), pitch `r*0.7 + 0.3` clamped to â‰¥0.5. Bed: brown noise â†’ lowpass 800 Hz with cutoff LFO 0.3â€“2 Hz, plus pink noise bandpassed 2.5 kHz at âˆ’18 dB. Crackles: 5â€“15 ms bandpassed grains (1.5â€“5 kHz) at a Poisson rate of ~4/s with random amplitude over 30 dB.\n- **Lava** â€” `block.lava.pop` at ~1/100 per block/tick, `block.lava.ambient` at ~1/200; both volume `0.2 + r*0.2` (0.2â€“0.4), pitch `0.9 + r*0.15` (0.90â€“1.05). Pop: **downward** sine sweep 220 â†’ 80 Hz over 90 ms + lowpass-700 Hz noise splat, D 180 ms. The downward direction is essential â€” an upward sweep reads as \"water bubble\", downward reads as \"thick molten blorp\".\n- **Water** â€” flowing: pink noise â†’ lowpass 1200 Hz with a 0.15 Hz cutoff LFO of Â±300 Hz; bubbles: upward sine 400 â†’ 900 Hz over 60 ms, D 80 ms, ~1/s. Underwater loop: heavy lowpass ~500 Hz on the *entire master bus* (this is the single most effective underwater cue), plus rare additions grouped 90 % / 9 % / 1 % as vanilla does, volumes 0.45â€“1.0.\n- **Cave mood** (`ambient.cave`, 23 variants, volume 1.0, pitch 1.0, attenuation 16): mood accumulates **+1/6000 per tick** at block light 0, **âˆ’(blockLightâˆ’1)/6000** when block light \u003e 1, and **âˆ’1/1000 per sky-light level**. At 100 % mood a sound plays from a random block in a **17Ã—17Ã—17** cube around the player\u0027s eyes â†’ in total darkness, one cave sound per **6000 ticks (5 min)**. Synthesis: long (2â€“6 s) sparse content â€” a slow reverse-swelled noise band around 200â€“900 Hz, a low sine drone 60â€“110 Hz with slow detuned beating, occasional distant metallic clank (partials 700/1150/2300 Hz through a 4 s convolution reverb). Deliberately unpitched and non-melodic. Run these through a `ConvolverNode` with a synthetic 3â€“5 s exponentially-decaying noise impulse.\n\n### 3.9 Mobs â€” all from one sourceâ€“filter voice\nEverything below is `getSoundVolume() = 1.0`, `getVoicePitch()` triangular **0.8â€“1.2** (babies **1.3â€“1.7**), fired on the ambient schedule: `ambientSoundTime` increments per tick, sound plays when `random.nextInt(1000) \u003c ambientSoundTime++`, then resets to `âˆ’80`. So it cannot fire for 80 ticks, then probability ramps at n/1000 â€” expected extra wait â‰ˆ âˆš(2Â·1000) â‰ˆ 45 ticks â†’ **mean interval â‰ˆ 125 ticks â‰ˆ 6.2 s**. Implement this exact ramp; a flat random interval sounds noticeably different (no minimum gap).\n\n| Mob / state | Dur (ms) | f0 contour (Hz) | Formants (Hz, Q) | Notes |\n|---|---|---|---|---|\n| Zombie idle | 1200â€“1800 | 100 â†’ 70, vibrato 4 Hz Â±3 % | 500 Q6, 900 Q8, 2400 Q10 | saw source, LP 3 kHz, A 80 / S 800 / D 500 ms. Real samples are pitched-*down* vocals â€” bias everything low |\n| Zombie hurt | 500â€“700 | 110 â†’ 80 | same, +brightness | A 10 / D 450 ms |\n| Zombie death | 1100â€“1400 | 100 â†’ 55 | same, LP 2.5 kHz | D 1000 ms, add noise rattle at âˆ’15 dB |\n| Skeleton idle | 700â€“900 | *no f0* | â€” | grain scatter: 6â€“10 clacks = damped sines 1200 + 1900 Hz, D 25 ms each, over 400 ms; faint 300 Hz hollow tone at âˆ’20 dB |\n| Skeleton hurt | 450â€“600 | â€” | â€” | denser grains + one 5 ms HP-2 kHz crack transient at t=0 |\n| Skeleton death | ~1000 | â€” | â€” | grain density *decreasing* over 800 ms with descending grain pitch â€” a collapsing pile |\n| Bone rattle / step | 80â€“120 | â€” | â€” | 3â€“6 damped sines 900â€“2200 Hz, D 15â€“30 ms, 20â€“80 ms spacing |\n| Creeper hiss | ~3000 as heard | *noise* | â€” | **pitch fixed at 0.5** (no jitter). Bandpass centre rising 750 â†’ 1750 Hz as heard, Q 1.5; 200 ms attack swelling to full over 1.2 s; add 60 Hz rumble in the last 400 ms; **hard-cut into the explosion**. Fuse is 30 ticks (1.5 s), explosion power 3.0 (charged 6.0) |\n| Spider hiss | 600â€“900 | *noise* | â€” | bandpass 3000 Hz Q 2 with Â±400 Hz wobble at 12 Hz; 4â€“8 chitter clicks at 6â€“10 kHz in the first 200 ms. Higher, drier, shorter than creeper |\n| Pig | 400â€“600 | 200 â†’ 280 â†’ 180 | 700 Q8, 1300 Q8, **notch at 900** | the anti-formant notch is what makes it nasal; snort noise at 2 kHz for the first 80 ms |\n| Cow | 1500â€“2000 | 150 â†’ 130 â†’ 110, vibrato 5 Hz Â±2 % | 450, 1000, 2300 | A 120 / S 900 / D 600 ms, LP 4 kHz |\n| Sheep | 800â€“1000 | 260 â†’ 220 | 700, 1250, 2600 | **tremolo AM 18â€“22 Hz at 60 % depth** plus Â±6 % FM â€” the bleat *is* the tremolo |\n| Chicken | 350â€“500 | per cluck 700 â†’ 400 over 120 ms | 1200 Q10, 2600 | 2â€“3 clucks with 90 ms gaps, A 5 / D 90 ms each |\n| Villager \"hmm\" | 600â€“1000 | 130 â†’ 175 â†’ 120 | 280 Q10, 1100 Q12, **notch 700** | **lowpass 900 Hz** (mouth closed) is the defining move. Rise-then-fall = \"hmm?\"; monotone fall = \"no\"; monotone rise = \"yes\". 6 Hz vibrato |\n\nFor hurt variants generally: shorten to ~40 % of idle length, raise f0 ~15 %, cut attack to â‰¤15 ms, and open the lowpass ~1 octave. For death: lengthen to ~150 % of idle, glide f0 down by a fifth, add tremolo. One parameterized function covers all of it.\n\n---\n\n## 4. C418 style â€” composing an original homage\n\n### 4.1 What is documented\n- **\"Sweden\"**: D major (opens on an E minor triad), **81 BPM**, 3:35, built as a **passacaglia** â€” a changing melody over a repeated bass line. Loop: **Bm â€“ E â€“ A â€“ Gmaj7** = **vi â€“ II â€“ V â€“ IVmaj7** in D. Instrumentation: piano, sustained strings, pizzicato strings, glockenspiel, harp. C418\u0027s own description: \"a very minimalistic chord progression that you can follow very easily\", built on \"slow buildup, slowly fading away\".\n- **\"Minecraft\"**: 4:14, **purely pentatonic**, chiming piano â†’ melancholy string chords â†’ plucked/strummed strings (harp or guitar) â†’ glockenspiel â†’ ambient synth pads. C418 calls it \"the most minimalist song\" and the framework for the whole soundtrack.\n- **\"Door\"**: F major. **\"Mice on Venus\"**: C, F, Am, Dm, D in F major; ambient synth intro, piano over synth bass, strings + pizzicato, echoing celesta figure.\n- Album context: minimalism forced partly by the sound engine\u0027s limits; critics compare it to Satie, Roedelius, and Eno.\n- Menu tracks are Mutation, Moog City 2, Beginning 2, Floating Trees (2:55â€“4:04). Durations elsewhere: Key 1:05, Dry Hands 1:08, Wet Hands 1:30, Clark 3:11, Aria Math 5:09, Dreiton 8:16, Taswell 8:34.\n\n### 4.2 The style, distilled into rules you can compose against\n**Tempo \u0026 meter.** 55â€“90 BPM, almost always 4/4. Rubato-feeling but usually straight; no swing. No drums in the ambient cues at all.\n\n**Harmony.**\n- Stay diatonic in one major key, but **make the tonic scarce**. Sweden\u0027s loop hits vi, II, V and IV â€” never a root-position I.\n- **The signature move: end the loop on IV or IVmaj7 instead of resolving Vâ†’I.** The loop restarts from an unresolved plagal position. Do this and 70 % of the flavour is there.\n- Use maj7, add9, sus2 constantly; avoid dominant 7ths (too bluesy/functional) and avoid any secondary-dominant drama.\n- A borrowed II (major supertonic, as in Sweden\u0027s `E` in D major) as a brief lift, then back to diatonic.\n- Long **pedal points**: hold the tonic or dominant in the bass for 8 bars while upper voices move by step.\n- Other progressions that sit squarely in the idiom without copying anything: `I â€“ iii â€“ IV â€“ vi`, `vi â€“ IV â€“ I â€“ V`, `ii7 â€“ V â€“ Imaj7 â€“ IVmaj7`, `I â€“ V/vi(=III) â€“ vi â€“ IV`.\n\n**Voicing.** This is where most homages fail. Use **wide open spacing**:\n- bass root at C2â€“F2, then a **gap of a 10th or more**, then the chord tones in C4â€“C5, melody C5â€“C6;\n- left hand often just a bare root + fifth, or root + tenth;\n- never stack close-position triads below C4 â€” that\u0027s what makes an imitation sound \"video-gamey\" instead of airy;\n- melody stays inside about a 9th, moves mostly by step and third, uses **repeated notes** and lots of rests (two-bar phrase, two bars of silence).\n- Pentatonic melody over diatonic harmony is a reliable generator: the melody can\u0027t hit an avoid note, so everything sounds \"correct but floating\".\n\n**Instrumentation (Web Audio / sample-free targets).**\n- **Piano**: soft/felt, low velocity, sustain pedal down. Synthesize as 4â€“6 detuned sine partials with inharmonicity (`f_n = nÂ·f0Â·âˆš(1 + BÂ·nÂ²)`, B â‰ˆ 0.0004), per-partial decay shortening with n (fundamental 3â€“5 s, 6th partial ~0.4 s), a 3 ms hammer-noise transient bandpassed at 3 kHz.\n- **Pad**: 3 detuned sawtooth oscillators (Â±7 cents), lowpass ~2 kHz with a slow envelope, **1â€“3 s attack**, 2 s release, chorus (two delay lines at 12/19 ms modulated 0.2 Hz).\n- **Glockenspiel/celesta/music box**: two inharmonic sine partials (ratio â‰ˆ 2.76 and 5.4), D 800â€“1500 ms, HP 1 kHz.\n- **Pizzicato strings**: 30 ms noise-excited resonator, D 250 ms, LP 3 kHz.\n- **Sustained strings**: sawtooth + slow 4â€“6 Hz vibrato (Â±1.5 %), 400 ms attack, gentle lowpass, quiet.\n- **Sub bass**: sine or triangle, one note per bar, LP 200 Hz.\n\n**Production.** Plate/hall reverb **RT60 2.5â€“5.0 s**, pre-delay 20â€“40 ms, tail lowpassed around 4 kHz (build a `ConvolverNode` impulse from exponentially decaying filtered noise). Light tape-style wobble (0.3 Hz Â±0.15 % pitch), gentle bit/sample-rate reduction for lo-fi grit, everything mixed **quiet** with very low dynamic range. Piano near-centre, pads wide.\n\n**Form.** 8- or 16-bar loop, repeated 4â€“8 times. **Additive arrangement**: a new layer enters every 8 or 16 bars (piano â†’ bass â†’ pad â†’ strings â†’ glockenspiel), then subtract in the same order over the last third. No key change, no bridge, no climax â€” a hump, not an arc. Total 1:00â€“4:15. Fade in, fade out.\n\n**Menu vs. in-game.** Menu tracks are longer, warmer, and more overtly \"musical\" (Moog City 2 has real motion). In-game cues are sparser and more static so they survive a 10â€“20-minute wait and don\u0027t compete with block sounds. Write in-game cues with a narrow spectral footprint â€” leave 200 Hzâ€“2 kHz relatively open, because that\u0027s where footsteps and mining live.\n\n### 4.3 Music playback integration\n- Menu: pick a random track after **20â€“600 ticks (1â€“30 s)**.\n- Gameplay: next track **12000â€“24000 ticks (10â€“20 min)** after the previous one ends. Vanilla exposes a \"Music Frequency\" option: Default 10â€“20 min, Frequent 10 min, Constant 5 s. Ship at least \"Default\" and \"Frequent\".\n- Music is 2D (no panner), routed to the `music` category gain node, and does **not** duck for gameplay sounds in vanilla.\n\n---\n\n## 5. What must NOT be copied â€” hard boundary\n\n**Do not ship, embed, decode, or fetch any Minecraft audio asset.** `assets/minecraft/sounds/**` (and the `.ogg` files inside any resource pack or the client jar) are proprietary Mojang/Microsoft content with no reuse licence. Extracting them \"just for the prototype\" is still distribution once the page is served. **Every sound in your clone must be synthesized at runtime** â€” which is what Â§3 is for.\n\n**Do not reproduce any C418 (Daniel Rosenfeld), Lena Raine, Aaron Cherof, or Kumi Tanioka composition.** Specifically:\n- No sampling, re-recording, re-sequencing, or MIDI transcription of \"Sweden\", \"Minecraft\", \"Wet Hands\", \"Mice on Venus\", \"Subwoofer Lullaby\", \"Haggstrom\", \"Living Mice\", \"Moog City\", \"Aria Math\", \"Pigstep\", or anything else from Volume Alpha/Beta, the Nether/Caves \u0026 Cliffs/Trails \u0026 Tales updates.\n- **Melody is the protected element.** Do not reproduce a recognizable melodic contour even transposed, re-orchestrated, slowed, or with a few notes altered. There is no safe \"N-note\" threshold â€” the practical test is whether a listener could name the original. If someone in a playtest says \"oh, that\u0027s Sweden\", it is too close and must be rewritten.\n- Do not recreate a track\u0027s exact *combination* of melody + bass line + arrangement, even with all pitches shifted; the passacaglia bass of \"Sweden\" plus its melody is the work.\n\n**Do not use the branding.** No \"Minecraft\", \"Mojang\", \"C418\", or official track titles in your game name, track titles, file names, or metadata in any way that implies association or origin. Name your homage tracks something of your own.\n\n**What you may freely emulate** (these are not protectable): tempo, key, scale and mode choices, chord progressions and their voicing conventions, instrumentation and timbre choices, form (loop lengths, additive arrangement), reverb and production style, overall mood, and every engine-mechanics number in Â§1â€“Â§3 (attenuation curves, pitch formulas, intervals) â€” those are functional facts, not expression. Write new melodies over borrowed harmonic grammar and you are on solid ground.\n\n*This is engineering guidance, not legal advice. If the clone will be monetized or widely distributed, get an actual lawyer to look at it â€” and separately check Minecraft\u0027s own brand/EULA guidelines, which restrict passing a clone off as official regardless of copyright.*",
+    "sources":  [
+                    "https://minecraft.wiki/w/Sounds",
+                    "https://minecraft.wiki/w/Sounds.json",
+                    "https://minecraft.wiki/w/Block_sound_type",
+                    "https://minecraft.wiki/w/Commands/playsound",
+                    "https://minecraft.wiki/w/Options",
+                    "https://minecraft.wiki/w/Ambience",
+                    "https://minecraft.wiki/w/Music",
+                    "https://minecraft.wiki/w/Sweden",
+                    "https://minecraft.wiki/w/Minecraft_(song)",
+                    "https://minecraft.wiki/w/Mice_on_Venus",
+                    "https://minecraft.wiki/w/Minecraft_-_Volume_Alpha",
+                    "https://docs.neoforged.net/docs/resources/client/sounds/",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/EntityItem.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/EntityExperienceOrb.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/EntityLiving.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/EntityHuman.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/Entity.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/EntityInsentient.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/Explosion.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/ItemBow.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/EntityArrow.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/TileEntityChest.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/BlockButtonAbstract.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/BlockDoor.java",
+                    "https://raw.githubusercontent.com/Bukkit/mc-dev/master/net/minecraft/server/BlockFluids.java",
+                    "https://www.hooktheory.com/theorytab/view/c418/sweden---minecraft",
+                    "https://www.hooktheory.com/theorytab/view/c418/mice-on-venus",
+                    "https://en.wikipedia.org/wiki/Minecraft_%E2%80%93_Volume_Alpha",
+                    "https://gist.github.com/tryashtar/95383f0da9ce282a90e56188a936c641",
+                    "https://learn.microsoft.com/en-us/minecraft/creator/documents/introductiontosound"
+                ]
+}

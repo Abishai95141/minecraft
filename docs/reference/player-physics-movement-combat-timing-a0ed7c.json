@@ -1,0 +1,835 @@
+﻿{
+    "topic":  "Minecraft Java Edition (~1.20) player physics, movement, combat timing, health \u0026 hunger â€” implementation constants",
+    "facts":  [
+                  {
+                      "key":  "tick.rate",
+                      "value":  "20 ticks/second (1 tick = 0.05 s = 50 ms)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "unit.block",
+                      "value":  "1 block = 1 meter; wiki speeds in \"m/s\" == blocks/second",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.movement_speed.player_default",
+                      "value":  "0.1 (internal units; ~blocks/tick of acceleration input)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.sneaking_speed.default",
+                      "value":  "0.3 (multiplier on movement input)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.jump_strength.default",
+                      "value":  "0.42 blocks/tick (initial vertical velocity)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.gravity.default",
+                      "value":  "0.08 blocks/tick^2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.safe_fall_distance.default",
+                      "value":  "3 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.fall_damage_multiplier.default",
+                      "value":  "1 (multiplier)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.step_height.default",
+                      "value":  "0.6 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.attack_speed.default",
+                      "value":  "4 attacks/second (empty hand)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.attack_damage.default",
+                      "value":  "2 HP (empty hand base; player unarmed hit deals 1 HP after cooldown scaling at full charge = 2 HP)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "attr.max_health.default",
+                      "value":  "20 HP (10 hearts)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.knockback_resistance.default",
+                      "value":  "0 (range -2 to 1, proportion)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.block_interaction_range.default",
+                      "value":  "4.5 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "attr.entity_interaction_range.default",
+                      "value":  "3 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.walk",
+                      "value":  "4.317 blocks/second (0.21586 blocks/tick)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.walk.diagonal",
+                      "value":  "4.406 blocks/second (0.22030 blocks/tick)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.sprint",
+                      "value":  "5.612 blocks/second (0.28062 blocks/tick)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.sprint_jump.average",
+                      "value":  "7.127 blocks/second (0.35635 blocks/tick averaged over the jump cycle)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.sneak",
+                      "value":  "1.295 blocks/second (0.064758 blocks/tick); wiki also rounds to 1.3 blocks/second",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.sneak.diagonal",
+                      "value":  "1.831 blocks/second (input vector not normalized below length 1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.swim.submerged",
+                      "value":  "1.97 blocks/second (0.098 blocks/tick) walking/swimming underwater, no sprint",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.swim.surface",
+                      "value":  "2.20 blocks/second at the surface of still water",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.swim.sprint",
+                      "value":  "3.918 blocks/second (0.1959 blocks/tick) â€” sprint-swimming in swim pose",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.swim.sprint.depth_strider_III",
+                      "value":  "5.305 blocks/second (0.26534 blocks/tick)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.swim.dolphins_grace",
+                      "value":  "9.800 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.fly.creative",
+                      "value":  "10.89â€“10.92 blocks/second (0.5444 blocks/tick); wiki quotes 10.92 m/s, formula gives 10.889",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.fly.creative.sprint",
+                      "value":  "21.6â€“21.78 blocks/second (1.0889 blocks/tick); wiki quotes 21.6 m/s, formula gives 21.778",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.fly.creative.vertical",
+                      "value":  "7.5 blocks/second terminal (impulse +/-0.15 blocks/tick per tick, vertical damping 0.6/tick)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.spectator.max",
+                      "value":  "43.556 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.walk.on_ice",
+                      "value":  "4.157 blocks/second (ice, packed ice, frosted ice)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.walk.on_blue_ice",
+                      "value":  "4.376 blocks/second",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "speed.walk.on_slime_block",
+                      "value":  "3.040 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.walk.on_soul_sand_or_honey",
+                      "value":  "2.508 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "speed.walk.in_cobweb",
+                      "value":  "0.490 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sprint.multiplier",
+                      "value":  "1.3x (attribute modifier +0.30, operation multiply_total, applied to movement_speed)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sprint.food_requirement",
+                      "value":  "food level \u003e 6 (i.e. \u003e= 7 of 20); sprint is force-cancelled at food level \u003c= 6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sprint.jump_horizontal_boost",
+                      "value":  "+0.2 blocks/tick added along facing yaw on the jump tick",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sprint.fov_multiplier",
+                      "value":  "x1.15 on the FOV degrees value (from (movement_speed/walk_speed + 1)/2 = (1.3+1)/2), interpolated over a few frames",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sprint.max_horizontal_jump_distance",
+                      "value":  "5 blocks (no effects/ice); ~9+ blocks in an ice corridor; 11+ blocks with survival-obtainable effects",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "friction.slipperiness.default",
+                      "value":  "0.6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "friction.slipperiness.slime_block",
+                      "value":  "0.8",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "friction.slipperiness.ice",
+                      "value":  "0.98 (ice, packed ice, frosted ice)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "friction.slipperiness.blue_ice",
+                      "value":  "0.989",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drag.horizontal.ground",
+                      "value":  "velocity *= slipperiness * 0.91 per tick (0.546 on default blocks)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drag.horizontal.air",
+                      "value":  "velocity *= 0.91 per tick",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drag.vertical.air",
+                      "value":  "velocity_y = (velocity_y - 0.08) * 0.98 per tick",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drag.horizontal.water",
+                      "value":  "0.8 per tick (0.9 while sprint-swimming)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drag.vertical.water",
+                      "value":  "0.8 per tick, with -0.005 blocks/tick^2 gravity (gravity/16)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "drag.lava",
+                      "value":  "0.5 per tick horizontal and vertical; gravity/4 = 0.02 blocks/tick^2",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "accel.ground",
+                      "value":  "0.1 * sprintMul * (0.6/slipperiness)^3 per tick, times 0.98 for pure-forward input",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "accel.air",
+                      "value":  "0.02 per tick (0.026 while sprinting), times 0.98 for pure-forward input",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "accel.water",
+                      "value":  "0.02 per tick (raised toward movement_speed by Depth Strider)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "accel.fly.creative",
+                      "value":  "0.05 per tick (0.10 while sprint-flying)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "velocity.cutoff",
+                      "value":  "any velocity component with |v| \u003c 0.003 blocks/tick is snapped to 0 each tick (was 0.005 before ~1.13)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "gravity.player",
+                      "value":  "0.08 blocks/tick^2 downward (= 32 blocks/second^2)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "terminal_velocity.player",
+                      "value":  "3.92 blocks/tick = 78.4 blocks/second downward",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "terminal_velocity.items_and_falling_blocks",
+                      "value":  "1.96 blocks/tick = 39.2 blocks/second (gravity 0.04, drag 0.98)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "integration.order.player",
+                      "value":  "Position, then Acceleration (gravity), then Drag",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "jump.initial_velocity",
+                      "value":  "0.42 blocks/tick vertical (+0.1 per Jump Boost level)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "jump.height",
+                      "value":  "1.2522 blocks apex (wiki); per-tick simulation with 0.42/0.08/0.98 yields 1.2516 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "jump.height.jump_boost_I",
+                      "value":  "1.8361 blocks (wiki rounds to 1.83)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "jump.height.jump_boost_II",
+                      "value":  "2.5168 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "jump.airtime",
+                      "value":  "~12 ticks (0.6 s) from leaving ground to landing on the same level",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "jump.cooldown",
+                      "value":  "10 ticks minimum between jumps (noJumpDelay); rarely limiting since airtime is ~12 ticks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "jump.block_factor.honey_block",
+                      "value":  "jump velocity x0.5",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "step_up.height",
+                      "value":  "0.6 blocks (auto step-up without jumping)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hitbox.standing",
+                      "value":  "0.6 blocks wide x 1.8 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hitbox.sneaking",
+                      "value":  "0.6 blocks wide x 1.5 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hitbox.swimming_crawling_elytra",
+                      "value":  "0.6 blocks wide x 0.6 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hitbox.sleeping",
+                      "value":  "0.2 blocks wide x 0.2 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "eye_height.standing",
+                      "value":  "1.62 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "eye_height.sneaking",
+                      "value":  "1.27 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "eye_height.swimming_crawling_elytra",
+                      "value":  "0.4 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sneak.ledge_protection",
+                      "value":  "prevents walking off an edge when the drop exceeds 0.6 blocks; player may overhang up to ~0.6 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fall_damage.formula",
+                      "value":  "damage_HP = ceil((fallDistance_blocks - 3) * fall_damage_multiplier)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fall_damage.threshold",
+                      "value":  "3 blocks (no damage at or below); 4 blocks = 1 HP, 5 blocks = 2 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fall_damage.fatal_from_full_health",
+                      "value":  "23 blocks of accumulated fall distance = 20 HP; requires a ~23.5 block drop in practice (last tick of fall distance is not counted)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fall_damage.reduction.hay_bale",
+                      "value":  "80% reduction (damage x0.2)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fall_damage.reduction.bed",
+                      "value":  "50% reduction",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fall_damage.negation.slime_block",
+                      "value":  "100% negated; bounces unless sneaking",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fall_damage.reduction.feather_falling",
+                      "value":  "3 EPF per level, x4% each = 12% per level, 48% at Feather Falling IV; total damage reduction capped at 80%",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "health.max",
+                      "value":  "20 HP (10 hearts)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "regen.fast.condition",
+                      "value":  "food level == 20 AND saturation \u003e 0 AND health \u003c max AND naturalRegeneration gamerule true",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "regen.fast.rate",
+                      "value":  "every 10 ticks (0.5 s): heal min(saturation,6)/6 HP and add that same value as exhaustion (1 HP + 6.0 exhaustion when saturation \u003e= 6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "regen.slow.condition",
+                      "value":  "saturation == 0 AND food level \u003e= 18 AND health \u003c max",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "regen.slow.rate",
+                      "value":  "1 HP every 80 ticks (4 s), costing 6.0 exhaustion",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "regen.stops_at",
+                      "value":  "food level \u003c= 17",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hunger.max_food_level",
+                      "value":  "20 (10 drumsticks)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hunger.max_saturation",
+                      "value":  "20, and hard-capped to the current food level",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "hunger.exhaustion_threshold",
+                      "value":  "4.0 (when exhaustion \u003e 4.0, subtract 4.0 and drain 1 saturation, or 1 food level if saturation is 0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.walking",
+                      "value":  "0.0 per meter (Java Edition â€” walking costs nothing)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "exhaustion.sneaking",
+                      "value":  "0.0 per meter (removed in 1.11)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.climbing",
+                      "value":  "0.0 per meter",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "exhaustion.sprinting",
+                      "value":  "0.1 per meter",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.swimming",
+                      "value":  "0.01 per meter (also walking in/under water)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.jump",
+                      "value":  "0.05 per jump",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.sprint_jump",
+                      "value":  "0.2 per jump (replaces the 0.05, not additive)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.attack",
+                      "value":  "0.1 per attack landed on an entity",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.break_block",
+                      "value":  "0.005 per block broken",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.take_damage",
+                      "value":  "0.1 per distinct damage instance (armor-affected damage types)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "exhaustion.regenerate_health",
+                      "value":  "6.0 per 1 HP healed",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "exhaustion.hunger_effect",
+                      "value":  "0.005 per tick per effect level (0.1/second at level I)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "starvation.rate",
+                      "value":  "1 HP every 80 ticks (4 s) at food level 0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "starvation.floor.easy",
+                      "value":  "stops at 10 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "starvation.floor.normal",
+                      "value":  "stops at 1 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "starvation.floor.hard",
+                      "value":  "no floor â€” can kill",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "starvation.peaceful",
+                      "value":  "food level never drops on Peaceful",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.bread",
+                      "value":  "5 hunger, 6.0 saturation (modifier 0.6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.cooked_porkchop",
+                      "value":  "8 hunger, 12.8 saturation (modifier 0.8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.cooked_beef_steak",
+                      "value":  "8 hunger, 12.8 saturation (modifier 0.8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.apple",
+                      "value":  "4 hunger, 2.4 saturation (modifier 0.3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.carrot",
+                      "value":  "3 hunger, 3.6 saturation (modifier 0.6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.cooked_chicken",
+                      "value":  "6 hunger, 7.2 saturation (modifier 0.6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.golden_apple",
+                      "value":  "4 hunger, 9.6 saturation (modifier 1.2); grants Absorption I 2:00 and Regeneration II 0:05",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.enchanted_golden_apple",
+                      "value":  "4 hunger, 9.6 saturation (modifier 1.2); Absorption IV 2:00, Regeneration II 0:20, Fire Resistance I 5:00, Resistance I 5:00",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "food.cooked_mutton",
+                      "value":  "6 hunger, 9.6 saturation (modifier 0.8)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.baked_potato",
+                      "value":  "5 hunger, 6.0 saturation (modifier 0.6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.cookie",
+                      "value":  "2 hunger, 0.4 saturation (modifier 0.1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.melon_slice",
+                      "value":  "2 hunger, 1.2 saturation (modifier 0.3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.raw_beef",
+                      "value":  "3 hunger, 1.8 saturation (modifier 0.3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.rotten_flesh",
+                      "value":  "4 hunger, 0.8 saturation (modifier 0.1); 80% chance of Hunger I for 30 s",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "food.golden_carrot",
+                      "value":  "6 hunger, 14.4 saturation (modifier 1.2)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "food.eat_duration",
+                      "value":  "32 ticks (1.6 s) for normal food; golden apples and honey bottles also 32 ticks; dried kelp 16 ticks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "air.max_supply",
+                      "value":  "300 ticks (15 seconds)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "air.depletion",
+                      "value":  "-1 per tick while the eye position is in water and the player lacks Water Breathing / Conduit Power / Creative",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drowning.damage",
+                      "value":  "2 HP per second (once per 20 ticks) once air is exhausted",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "drowning.trigger",
+                      "value":  "air counter continues to -20, then deals 2 HP and resets to 0 â€” first drowning hit lands 320 ticks (16 s) after submerging",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "air.refill_rate",
+                      "value":  "+4 air per tick when out of water (full 300 in 75 ticks / 3.75 s) per code; the wiki text instead states 1 bubble per 0.2 s",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "respiration.effect",
+                      "value":  "chance x/(x+1) per tick that air does NOT decrease, x = enchantment level; Respiration III ~ 4x effective air (60 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "damage.invulnerability_frames",
+                      "value":  "10 ticks (0.5 s) of partial immunity; internal invulnerableTime is set to 20 ticks and the override rule applies while it is \u003e 10",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "damage.immunity_rule",
+                      "value":  "during i-frames, damage \u003c= the original amount is ignored; a larger hit deals only (new - original) HP and raises the stored amount",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "damage.fire_block",
+                      "value":  "1 HP every 10 ticks (0.5 s) while standing in fire",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "damage.on_fire",
+                      "value":  "1 HP per second (20 ticks) while burning outside a fire block",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "damage.lava",
+                      "value":  "4 HP every 10 ticks (0.5 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "damage.cactus",
+                      "value":  "1 HP every 10 ticks (0.5 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "damage.suffocation",
+                      "value":  "1 HP every 10 ticks (0.5 s) while a solid block occupies the eye position",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "damage.void",
+                      "value":  "4 HP every 10 ticks below y = -64 - 64",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "knockback.base_horizontal_impulse",
+                      "value":  "0.4 blocks/tick applied along the horizontal attack direction",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "knockback.base_vertical",
+                      "value":  "velocity_y = min(0.4, velocity_y/2 + 0.4) blocks/tick when the target is on ground",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "knockback.sprint_bonus",
+                      "value":  "+0.5 blocks/tick extra impulse (equivalent to Knockback I); sprint is cancelled by the hit and the attacker\u0027s horizontal velocity is multiplied by 0.6",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "knockback.enchant_per_level",
+                      "value":  "+0.5 blocks/tick impulse per Knockback level",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "knockback.displacement.base",
+                      "value":  "1.552 blocks horizontal, 0.8125 blocks vertical (unenchanted, non-sprint hit)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "knockback.displacement.per_knockback_level",
+                      "value":  "+2.586 blocks horizontal per level; vertical becomes 1.0 block at any enchant level",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "knockback.resistance_formula",
+                      "value":  "applied_velocity = velocity * (1 - knockback_resistance); netherite armor gives 0.1 per piece (0.4 full set)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.hand_fist",
+                      "value":  "attack speed 4.0 -\u003e 5 ticks (0.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.sword",
+                      "value":  "attack speed 1.6 -\u003e 12.5 ticks (0.625 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.axe.wood_stone",
+                      "value":  "attack speed 0.8 -\u003e 25 ticks (1.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.axe.iron",
+                      "value":  "attack speed 0.9 -\u003e 22.2 ticks (1.111 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.axe.diamond_netherite",
+                      "value":  "attack speed 1.0 -\u003e 20 ticks (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.pickaxe",
+                      "value":  "attack speed 1.2 -\u003e 16.7 ticks (0.833 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.shovel",
+                      "value":  "attack speed 1.0 -\u003e 20 ticks (1.0 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.hoe.diamond_netherite",
+                      "value":  "attack speed 4.0 -\u003e 5 ticks (0.25 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.hoe.iron",
+                      "value":  "attack speed 3.0 -\u003e 6.7 ticks (0.333 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.hoe.wood_stone",
+                      "value":  "attack speed 2.0 -\u003e 10 ticks (0.5 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.trident",
+                      "value":  "attack speed 1.1 -\u003e 18.2 ticks (0.909 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.mace",
+                      "value":  "attack speed 0.6 -\u003e 33.3 ticks (1.667 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cooldown.damage_scaling",
+                      "value":  "damage_multiplier = 0.2 + 0.8 * p^2 where p = clamp(ticksSinceAttack / cooldownTicks, 0, 1); enchantment bonus damage scales linearly with p",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cooldown.crit_threshold",
+                      "value":  "p \u003e ~0.848 (code checks attackStrengthScale(0.5) \u003e 0.9); crit also requires falling, not on ground, not on a ladder, not in water, no Blindness, not riding, not sprinting; crit multiplies base damage by 1.5",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cooldown.sweep_threshold",
+                      "value":  "p \u003e ~0.848, on ground, horizontal move \u003c 0.6 * walk speed, sword in hand; sweep deals 1 HP + Sweeping Edge bonus in a 1x1x0.25 expanded box",
+                      "confidence":  "medium"
+                  }
+              ],
+    "notes":  "## Core per-tick integration (Java 1.20). Everything below is in blocks and ticks; multiply by 20 for blocks/second.\n\n### Horizontal movement (ground and air)\nPer tick, in this order:\n1. `xxa *= 0.98; zza *= 0.98` â€” the raw input impulses are damped by 0.98 (this is the source of the 4.317 vs 4.406 discrepancy).\n2. Build the input vector `v = (strafe, 0, forward)`. If `|v|^2 \u003e 1` normalize it, else use as-is. Scale by `accel`, rotate by yaw. **This is why diagonal walking is faster (4.406) but diagonal sneaking is faster still relative to straight sneaking (1.831 vs 1.295): after the 0.3 sneak multiplier the vector length is 0.4157 \u003c 1 so it is never normalized down.**\n3. `accel` = on ground: `movement_speed * (0.21600002 / slipperiness^3)` â€” with default slipperiness 0.6 this reduces to exactly `movement_speed`, i.e. `0.1 * (0.6/S)^3`. In air: `0.02` (`0.026` sprinting). Creative flight: `0.05` (`0.10` sprinting).\n4. Add accel to velocity, call `move()`, then apply drag: `vx *= f; vz *= f` where `f = slipperiness * 0.91` on ground, `0.91` in air (creative flight uses the air value, hence the \"flying feels like ice\" note).\n\nClosed-form steady-state speed: **v_terminal = accel / (1 - f)**.\n\nVerified against wiki-published speeds to 4 significant figures:\n| case | S | f | accel | b/t | b/s | wiki |\n|---|---|---|---|---|---|---|\n| walk | 0.6 | 0.546 | 0.1*0.98=0.098 | 0.215859 | 4.3172 | 4.317 |\n| sprint | 0.6 | 0.546 | 0.13*0.98=0.1274 | 0.280617 | 5.6123 | 5.612 |\n| sneak | 0.6 | 0.546 | 0.098*0.3=0.0294 | 0.064758 | 1.2952 | 1.295 |\n| ice walk | 0.98 | 0.8918 | 0.098*(0.6/0.98)^3=0.0224905 | 0.207860 | 4.1572 | 4.157 |\n| blue ice walk | 0.989 | 0.89999 | 0.0218818 | 0.218796 | 4.3759 | 4.376 |\n| slime walk | 0.8 | 0.728 | 0.098*0.421875=0.0413438 | 0.151999 | 3.0400 | 3.040 |\n| creative fly | â€” | 0.91 | 0.05*0.98=0.049 | 0.544444 | 10.889 | 10.92 |\n| sprint-fly | â€” | 0.91 | 0.10*0.98=0.098 | 1.088889 | 21.778 | 21.6 |\n\nThe 1.3x sprint boost is an **attribute modifier** on `movement_speed` (`multiply_total`, +0.30), so it stacks multiplicatively with Speed I/II (+20%/level, also multiply_total): sprint + Speed II = 0.1 * 1.3 * 1.4 = 0.182.\n\n### Vertical movement\n`y += vy; vy = (vy - 0.08) * 0.98` every tick. Terminal velocity `= -0.08*0.98/(1-0.98) = -3.92 b/t = -78.4 b/s`.\nAny velocity component with `|v| \u003c 0.003` is snapped to 0 at the start of the tick (in `LivingEntity.aiStep`). Pre-1.13 this constant was 0.005; that change is exactly why the documented jump height moved from ~1.249 to ~1.2522 blocks.\n\nJump: on the jump tick set `vy = 0.42 * blockJumpFactor + 0.1 * jumpBoostLevel` (blockJumpFactor = 0.5 on honey blocks, 1.0 otherwise). If sprinting, additionally `vx += -sin(yaw)*0.2; vz += cos(yaw)*0.2`. Note the boost is a raw impulse added on top of the current velocity, so a sprint-jump chain hits a higher average than steady-state sprinting (7.127 vs 5.612 b/s).\n\nTick-by-tick jump apex trace (y after each tick): 0.42, 0.7532, 1.001336, 1.16591, 1.24879, **1.25162 (apex)**, 1.17602, 1.02353, 0.79589, 0.49480, 0.12180, land. ~12 ticks airtime.\n\n### Water\n`travel()` water branch: `f = isSprinting ? 0.9 : 0.8` (horizontal drag), `accel = 0.02`. Depth Strider level `d` (halved when not on the ground, so effectively `d/2` while swimming): `f += (0.546 - f) * d/3` and `accel += (movement_speed - accel) * d/3`. Vertical: `vy *= 0.8` then `vy -= 0.08/16 = 0.005`.\nCross-check: sprint-swim = `0.02*0.98/(1-0.9) = 0.196 b/t = 3.92 b/s` (wiki 3.918). Depth Strider III sprint-swim with the airborne halving: `f = 0.9 + (0.546-0.9)*0.5 = 0.723`, `accel = 0.02 + (0.13-0.02)*0.5 = 0.075`, terminal `= 0.075*0.98/0.277 = 0.26534 b/t = 5.307 b/s` (wiki 5.305). Dolphin\u0027s Grace overrides `f = 0.96`.\n\nSwim pose (sprint-swimming / crawling) collapses the hitbox to 0.6 x 0.6 with eye height 0.4, letting the player pass through 1-block gaps.\n\n### Block speed factors (multiply horizontal velocity, distinct from slipperiness)\nSoul sand and honey block set `blockSpeedFactor = 0.4`; cobweb clamps velocity to `(0.25, 0.05, 0.25)`. The published resulting walk speeds are 2.508 b/s (soul sand/honey) and 0.490 b/s (cobweb) â€” I could not reproduce 2.508 from a naive `0.4` application, so treat the *application order* as low confidence and hardcode the measured speed instead.\n\n### Fall damage\nAccumulate `fallDistance += -dy` each tick while moving downward and not on the ground; reset to 0 on landing, on entering water, on grabbing a ladder/vine/scaffolding, in cobweb, and while Slow Falling or Levitation is active. On landing: `damage = ceil((fallDistance - safeFallDistance) * fallDamageMultiplier)` with defaults 3 and 1. Damage of 0 or less deals nothing. Because the final partial tick is not accumulated, a drop authored at exactly 23 blocks does not kill a full-health player â€” 23.5 does.\nReduction stack: hay bale x0.2, honey block x0.2, bed x0.5, slime block x0 (also x0 while sneaking as of 1.21.2). Feather Falling/Protection use EPF: `reduction = min(20, EPF) * 4%`, capped at 80%.\n\n### Damage timing / i-frames\n`hurt()` sets `invulnerableTime = 20` and stores `lastHurt = amount`. While `invulnerableTime \u003e 10` (the first 10 ticks) a new hit of `amount \u003c= lastHurt` is fully ignored and a larger hit deals only `amount - lastHurt`, updating `lastHurt`. After that window a new hit applies in full. So the practical i-frame window is **10 ticks / 0.5 s**, which is also why fire (0.5 s cadence) and cactus land every tick-window they can.\n\n### Attack cooldown\n`cooldownTicks = 20 / attack_speed`. The white charge bar fills over that period. Output damage `= base * (0.2 + 0.8*p^2)`, enchant bonus `* p`. Crits require `p` above ~0.848 **and** downward vertical motion with `fallDistance \u003e 0`, not on ground/ladder/water, not sprinting, no Blindness, no vehicle â€” crit multiplies base weapon damage by 1.5 and prevents the sweep attack. Sweep requires `p \u003e ~0.848`, being on the ground, and horizontal movement below `0.6 * walk speed`.\n\n### Knockback algorithm (`LivingEntity.knockback(strength, dx, dz)`)\n```\nstrength *= 1 - knockbackResistance\nif strength \u003c= 0: return\ndir = normalize(vec3(dx, 0, dz)) * strength\nvel.x = vel.x/2 - dir.x\nvel.z = vel.z/2 - dir.z\nvel.y = onGround ? min(0.4, vel.y/2 + strength) : vel.y   // airborne targets get NO extra lift in Java\n```\nA melee hit calls this twice: once from `hurt()` with `strength = 0.4`, and, if `knockbackLevel + (sprinting ? 1 : 0) \u003e 0`, again with `strength = 0.5 * that count`. The attacker\u0027s own horizontal velocity is multiplied by 0.6 and sprinting is cancelled. Published net displacements: 1.552 blocks base, +2.586 per knockback level, vertical 0.8125 base rising to 1.0 with any Knockback level.\n\n### Hunger tick (`FoodData.tick`, runs every tick)\n```\nif exhaustion \u003e 4.0:\n    exhaustion -= 4.0                 # subtracts 4, does NOT reset to 0\n    if saturation \u003e 0: saturation = max(saturation - 1, 0)\n    elif difficulty != PEACEFUL: foodLevel = max(foodLevel - 1, 0)\n\nif naturalRegeneration and saturation \u003e 0 and hurt and foodLevel \u003e= 20:\n    if ++timer \u003e= 10: heal(min(saturation,6)/6); exhaustion += min(saturation,6); timer = 0\nelif naturalRegeneration and saturation \u003c= 0 and hurt and foodLevel \u003e= 18:\n    if ++timer \u003e= 80: heal(1); exhaustion += 6.0; timer = 0\nelif foodLevel \u003c= 0:\n    if ++timer \u003e= 80: starve for 1 HP subject to the difficulty floor; timer = 0\nelse: timer = 0\n```\nEating: `foodLevel = min(foodLevel + nutrition, 20); saturation = min(saturation + nutrition*saturationModifier*2, foodLevel)`. Saturation is invisible in the UI and is always capped at the current food level, so eating steak at 20/20 food but 0 saturation gives 12.8 -\u003e clamped to 20.\n\nOnly sprinting (0.1/m) and swimming/being in water (0.01/m) cost exhaustion for movement in Java Edition â€” walking, sneaking and climbing cost **zero**. (Bedrock differs; the wiki\u0027s exhaustion table has no walking row for Java.) Jumping is a flat 0.05, replaced by 0.2 when the jump is a sprint-jump.\n\nSprint gating: `canSprint = foodLevel \u003e 6 || abilities.mayfly`. Sprinting also requires forward input and is cancelled by: hitting an entity, using an item, colliding horizontally, food dropping to 6, or entering the sneak pose.\n\n### Air / drowning\n`air` starts at 300 and decrements 1/tick while the eye block is water (and not a bubble column, and no Water Breathing / Conduit Power / Creative / Respiration proc). When `air == -20`, set `air = 0` and deal 2 HP of drowning damage â€” so the first hit is at t = 320 ticks (16 s) and then every 20 ticks. Out of water, `air = min(air + 4, 300)` per tick (75 ticks to full). **Conflict:** the wiki prose says air refills at 1 bubble per 0.2 s, which would imply a 2 s full refill; I have marked the refill rate low confidence for that reason. Respiration level x gives an `x/(x+1)` chance per tick of skipping the decrement.\n\n### FOV\nClient FOV multiplier `= (movement_speed_attribute / abilities.walkingSpeed + 1) / 2`, with an extra `*1.1` while in creative flight, then interpolated toward the target each frame. Sprinting alone therefore gives `(0.13/0.1 + 1)/2 = 1.15`, i.e. a base 70 deg FOV renders at ~80.5 deg. The \"FOV Effects\" slider (0â€“100%) scales how much of this delta is applied. I found no wiki page stating 1.15 explicitly â€” hence medium confidence.\n\n### Version caveats\nThe attack-cooldown table on the wiki now includes spears (1.21.9+) and the mace (1.21); for a ~1.20 target use only hand/sword/axe/pickaxe/shovel/hoe/trident rows. The wiki\u0027s Attribute page lists `movement_speed` default 0.7 and `flying_speed` default 0.4 â€” those are the *registry* defaults across entity types, **not** the player\u0027s; the player uses 0.1 movement speed and 0.05 fly speed. Two other conflicts I hit: the Slime Block page claims a 1.359 m/s walk speed while the Walking page\u0027s table says 3.040 m/s â€” the formula confirms **3.040** is right; and the Hunger page\u0027s prose says exhaustion \"resets to 0\" while the code subtracts exactly 4.0, which matters for accumulating fractional exhaustion.",
+    "sources":  [
+                    "https://minecraft.wiki/w/Transportation",
+                    "https://minecraft.wiki/w/Sprinting",
+                    "https://minecraft.wiki/w/Walking",
+                    "https://minecraft.wiki/w/Sneaking",
+                    "https://minecraft.wiki/w/Swimming",
+                    "https://minecraft.wiki/w/Flying",
+                    "https://minecraft.wiki/w/Jumping",
+                    "https://minecraft.wiki/w/Talk:Jumping",
+                    "https://minecraft.wiki/w/Entity",
+                    "https://minecraft.wiki/w/Player",
+                    "https://minecraft.wiki/w/Attribute",
+                    "https://minecraft.wiki/w/Attack_cooldown",
+                    "https://minecraft.wiki/w/Damage",
+                    "https://minecraft.wiki/w/Knockback",
+                    "https://minecraft.wiki/w/Knockback_(mechanic)",
+                    "https://minecraft.wiki/w/Hunger",
+                    "https://minecraft.wiki/w/Food",
+                    "https://minecraft.wiki/w/Health",
+                    "https://minecraft.wiki/w/Carrot",
+                    "https://minecraft.wiki/w/Cookie",
+                    "https://minecraft.wiki/w/Slime_Block",
+                    "https://minecraft.wiki/w/Ice",
+                    "https://minecraft.wiki/w/Blue_Ice",
+                    "https://minecraft.wiki/w/Respiration",
+                    "https://minecraft.wiki/w/Air",
+                    "https://minecraft.wiki/w/Tutorial:Breaking_a_fall",
+                    "https://minecraft.wiki/w/Options"
+                ]
+}

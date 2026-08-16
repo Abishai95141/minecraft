@@ -1,0 +1,980 @@
+﻿{
+    "topic":  "Minecraft Java Edition 1.20 â€” mob stats, drops, spawning, and AI behavior (zombie, skeleton, creeper, spider, enderman, slime, pig, cow, sheep, chicken, villager, iron golem)",
+    "facts":  [
+                  {
+                      "key":  "units.note",
+                      "value":  "1 heart = 2 HP. Wiki writes health as HP where 20 HP = 10 hearts. All damage below is HP.",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.health",
+                      "value":  "20 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.armor",
+                      "value":  "2 armor points (1.6%â€“8% damage reduction depending on incoming damage)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.attackDamage",
+                      "value":  "easy 2.5 HP / normal 3 HP / hard 4.5 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.movementSpeedAttribute",
+                      "value":  "0.23 (adult), 0.35 (baby)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.speed",
+                      "value":  "~2.33 blocks/second (adult, chase); baby ~5.40 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "zombie.hitbox",
+                      "value":  "0.6 blocks wide x 1.95 blocks tall (baby 0.49 x 0.98)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.xp",
+                      "value":  "5 XP adult, 12 XP baby, +1â€“3 XP per naturally-equipped armor/weapon item",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.drops",
+                      "value":  "rotten flesh 0â€“2 (uniform, avg 1.0); iron ingot 0.83%, carrot 0.83%, potato 0.83% (player/tamed-wolf kill only); head 100% only on charged-creeper kill",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.followRange",
+                      "value":  "35 blocks (targets players); villagers targeted at 35â€“52.5 blocks depending on regional difficulty",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.knockbackResistance",
+                      "value":  "0%â€“5% (randomized per spawn, base value 0â€“0.05)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "zombie.doorBreaking",
+                      "value":  "hard difficulty only; ~10% of zombies get the goal; ~10 seconds to break a wooden door",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "zombie.reinforcements",
+                      "value":  "hard difficulty; leader zombies 50â€“75% chance, normal zombies 0â€“10% base chance (SpawnReinforcements attribute)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "zombie.drownedConversion",
+                      "value":  "head submerged 30 seconds (600 ticks) -\u003e converts to drowned",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.health",
+                      "value":  "20 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.armor",
+                      "value":  "0 armor points",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.meleeDamage",
+                      "value":  "easy 2 HP / normal 2 HP / hard 3.5 HP (only used if it has no bow)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.arrowDamage",
+                      "value":  "easy 2â€“4 HP / normal 3.5â€“5 HP / hard 4â€“8 HP (base arrow damage 2, scaled by velocity + random)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.movementSpeedAttribute",
+                      "value":  "0.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.speed",
+                      "value":  "~2.75 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "skeleton.hitbox",
+                      "value":  "0.6 blocks wide x 1.99 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.xp",
+                      "value":  "5 XP (+1â€“3 per equipped item)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.drops",
+                      "value":  "bone 0â€“2, arrow 0â€“2; bow 8.5% (player kill, +1%/Looting level); picked-up gear 100%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.followRange",
+                      "value":  "16 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.shootRange",
+                      "value":  "starts shooting within 15 blocks with line of sight",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.shootInterval",
+                      "value":  "one arrow every 3 seconds (60 ticks) on easy/normal, every 2 seconds (40 ticks) on hard â€” = 20-tick bow draw + 40/20-tick min interval",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.arrowSpeed",
+                      "value":  "1.6 blocks/tick = 32 blocks/second (player fully-charged bow is 3.0 blocks/tick = 60 blocks/s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "skeleton.accuracyError",
+                      "value":  "divergence value 10 (easy), 6 (normal), 2 (hard); lower = more accurate",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.aimLead",
+                      "value":  "aims 0.2 blocks higher per horizontal block of range (dy + horizontalDistance*0.2)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skeleton.strafe",
+                      "value":  "strafes in circles; backs away when player is within 4 blocks (retreat threshold = 25% of attack radius squared)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.health",
+                      "value":  "20 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.armor",
+                      "value":  "0 armor points",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.movementSpeedAttribute",
+                      "value":  "0.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.speed",
+                      "value":  "~2.75 blocks/second chasing; ~1.76 blocks/second wandering (stroll goal uses speedModifier 0.8)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "creeper.hitbox",
+                      "value":  "0.6 blocks wide x 1.7 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.xp",
+                      "value":  "5 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.drops",
+                      "value":  "gunpowder 0â€“2 (avg 1.0); music disc 1 (100% when killed by a skeleton/stray arrow); creeper head 100% on charged-creeper kill",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.fuse",
+                      "value":  "30 ticks = 1.5 seconds",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.explosionPower",
+                      "value":  "3 (charged 6)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.blastRadius",
+                      "value":  "entities damaged within 2 x power = 6 blocks (12 blocks charged)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.maxBlastDamage",
+                      "value":  "regular: easy 22.5 HP / normal 43 HP / hard 64.5 HP; charged: easy 43.5 / normal 85 / hard 127.5",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.ignitionDistance",
+                      "value":  "3 blocks (starts fuse)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.abortDistance",
+                      "value":  "7 blocks (fuse resets if player leaves)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.followRange",
+                      "value":  "16 blocks (14 blocks if the player is sneaking)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.catAvoidance",
+                      "value":  "flees cats/ocelots within 6 blocks (AvoidEntityGoal 6.0, speed 1.0 far / 1.2 near)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "creeper.charged",
+                      "value":  "lightning strike within 4 blocks; explosion power doubles 3 -\u003e 6",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.health",
+                      "value":  "16 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.armor",
+                      "value":  "0 armor points",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.attackDamage",
+                      "value":  "easy 2 HP / normal 2 HP / hard 3 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.movementSpeedAttribute",
+                      "value":  "0.3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.speed",
+                      "value":  "~3.96 blocks/second chasing; ~2.54 blocks/second wandering (stroll speedModifier 0.8)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "spider.hitbox",
+                      "value":  "1.4 blocks wide x 0.9 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.xp",
+                      "value":  "5 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.drops",
+                      "value":  "string 0â€“2 (avg 1.0); spider eye 0â€“1 (avg 0.33, player/tamed-wolf kill only)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.lightAggression",
+                      "value":  "hostile at light level \u003c= 11 (internal brightness \u003c 0.5); neutral above; already-aggravated spiders stay aggressive",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.wallClimb",
+                      "value":  "climbs any vertical surface it is horizontally colliding with, treated as a ladder (climb speed 0.15 blocks/tick upward)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "spider.leapGoal",
+                      "value":  "LeapAtTargetGoal with vertical impulse 0.4; triggers at ~4â€“8 blocks from target",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "spider.spawnSpace",
+                      "value":  "needs 3x1x3 free area centered on the spawn block (wide hitbox)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spider.jockey",
+                      "value":  "1% chance to spawn with a skeleton rider",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.health",
+                      "value":  "40 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.armor",
+                      "value":  "0 armor points",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.attackDamage",
+                      "value":  "easy 4.5 HP / normal 7 HP / hard 10.5 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.movementSpeedAttribute",
+                      "value":  "0.3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.speed",
+                      "value":  "~3.96 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "enderman.hitbox",
+                      "value":  "0.6 blocks wide x 2.9 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.xp",
+                      "value":  "5 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.drops",
+                      "value":  "ender pearl 0â€“1 (50% base, up to 0â€“4 / 91.67% with Looting III); held block 100%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.aggroTrigger",
+                      "value":  "player within 64 blocks looks at its head hitbox for 5 game ticks (0.25 s); carved pumpkin worn prevents this",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.teleportRange",
+                      "value":  "random teleport picks target within +/-32 blocks per axis (64x64x64 cube); combat teleports up to 19 blocks horizontally / 22 vertically; needs 3 non-solid blocks above destination",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.waterDamage",
+                      "value":  "1 HP per damage event from water/rain/splash water bottle; teleports repeatedly while wet",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "enderman.blockPickup",
+                      "value":  "1/20 (5%) chance per tick to select a random block in a 3x3x3 area to pick up; requires mobGriefing true",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.health",
+                      "value":  "size 1 (small) 1 HP, size 2 (medium) 4 HP, size 4 (large) 16 HP â€” formula HP = size^2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.attackDamage",
+                      "value":  "small 0; medium easy 2.5 / normal 3 / hard 4.5 HP; large easy 3 / normal 4 / hard 6 HP",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "slime.movementSpeedAttribute",
+                      "value":  "0.2 + 0.1 x size -\u003e 0.3 (small), 0.4 (medium), 0.6 (large)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "slime.hitbox",
+                      "value":  "cube of 0.52 x size blocks per axis: 0.52 (small), 1.04 (medium), 2.08 (large)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.xp",
+                      "value":  "1 XP (small), 2 XP (medium), 4 XP (large) â€” equals size",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.drops",
+                      "value":  "slimeball 0â€“2 (avg 1.0) â€” only from the smallest size",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.jumpInterval",
+                      "value":  "no target: every 10â€“30 ticks (0.5â€“1.5 s); with target: every 3â€“10 ticks (0.15â€“0.5 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.split",
+                      "value":  "on death, medium and large spawn 2â€“4 slimes of size/2 (rounded down)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.spawnSlimeChunk",
+                      "value":  "1/10 of chunks are slime chunks; spawns below Y=40 at any light level",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.spawnSwamp",
+                      "value":  "swamp biome, Y=51 to Y=69, light level \u003c= 7, probability scales with moon phase (max at full moon, none at new moon)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "slime.despawn",
+                      "value":  "despawns randomly if no player within 32 blocks (standard rule)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pig.health",
+                      "value":  "10 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pig.movementSpeedAttribute",
+                      "value":  "0.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pig.speed",
+                      "value":  "~2.75 blocks/second wandering; ridden with saddle 2.42 blocks/second, carrot-on-a-stick boost peaks ~5.2 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "pig.hitbox",
+                      "value":  "0.9 x 0.9 blocks (baby 0.45 x 0.45)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pig.xp",
+                      "value":  "1â€“3 XP (adults only, player/tamed-wolf kill)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pig.drops",
+                      "value":  "raw porkchop 1â€“3 (cooked if on fire); saddle 100% if equipped",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "pig.breedItems",
+                      "value":  "carrot, potato, beetroot",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cow.health",
+                      "value":  "10 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cow.movementSpeedAttribute",
+                      "value":  "0.2",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cow.speed",
+                      "value":  "~1.76 blocks/second wandering; panic goal speedModifier 2.0 -\u003e ~7.0 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cow.hitbox",
+                      "value":  "0.9 blocks wide x 1.4 blocks tall (baby 0.45 x 0.7)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cow.xp",
+                      "value":  "1â€“3 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cow.drops",
+                      "value":  "raw beef 1â€“3 (cooked if on fire); leather 0â€“2 (avg ~1.0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cow.breedItem",
+                      "value":  "wheat",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.health",
+                      "value":  "8 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.movementSpeedAttribute",
+                      "value":  "0.23",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.speed",
+                      "value":  "~2.33 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sheep.hitbox",
+                      "value":  "0.9 blocks wide x 1.3 blocks tall (baby 0.45 x 0.65)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.xp",
+                      "value":  "1â€“3 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.drops",
+                      "value":  "1 wool of its color (0 if already sheared); mutton 1â€“2 (cooked if on fire)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.shearYield",
+                      "value":  "1â€“3 wool",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.colorProbabilities",
+                      "value":  "white 81.836%, light gray 5%, gray 5%, black 5%, brown 3%, pink 0.164%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sheep.grassEatChance",
+                      "value":  "1/1000 per tick for adults, 1/50 for lambs (wiki phrasing: 1/500 every other tick); eating animation 40 ticks, regrows wool",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.health",
+                      "value":  "4 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.movementSpeedAttribute",
+                      "value":  "0.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.speed",
+                      "value":  "~2.75 blocks/second; panic speedModifier 1.4 -\u003e ~5.4 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "chicken.hitbox",
+                      "value":  "0.4 blocks wide x 0.7 blocks tall (baby 0.3 x 0.4)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.xp",
+                      "value":  "1â€“3 XP (10 XP for chicken jockey)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.drops",
+                      "value":  "feather 0â€“2; raw chicken 1 (cooked if on fire)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.eggInterval",
+                      "value":  "every 6000â€“12000 ticks (5â€“10 minutes); thrown egg has 1/8 chance to hatch a chick",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "chicken.fallDamage",
+                      "value":  "immune â€” terminal fall speed limited by wing flapping (vertical velocity clamped to -0.08 blocks/tick when falling and not sneaking on a ladder)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "chicken.breedItems",
+                      "value":  "wheat seeds, beetroot seeds, melon seeds, pumpkin seeds, torchflower seeds, pitcher pod",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.health",
+                      "value":  "20 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.movementSpeedAttribute",
+                      "value":  "0.5 (brain walk targets normally use speedModifier 0.5 -\u003e effective ~2.75 blocks/second)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "villager.hitbox",
+                      "value":  "0.6 blocks wide x 1.95 blocks tall (baby 0.49 x 0.98)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.xp",
+                      "value":  "0 XP on death; 3â€“6 XP per successful trade, 8â€“11 XP when the trade also makes it willing to breed",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.drops",
+                      "value":  "none on death (farmers 8.5% bone meal, +1%/Looting level)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.fleeRadius",
+                      "value":  "zombie/husk/drowned/zombie villager/vex 8 blocks; vindicator/zoglin 10; evoker/illusioner/ravager 12; pillager 15",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.schedule",
+                      "value":  "ticks 0â€“2000 wake/wander, 2000â€“9000 work, 9000â€“11000 meet/gather, 11000â€“12000 return home, 12000â€“24000 sleep",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "villager.zombificationChance",
+                      "value":  "easy 0%, normal 50%, hard 100%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "villager.breeding",
+                      "value":  "needs 12 food points (bread=3, carrot/potato/beetroot=1 each) + a free bed; 5-minute cooldown; baby matures in 20 minutes",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ironGolem.health",
+                      "value":  "100 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.armor",
+                      "value":  "0 armor points",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.knockbackResistance",
+                      "value":  "1.0 (100% â€” immune to knockback)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.attackDamageAttribute",
+                      "value":  "15 base; per-hit damage = 7.5 + random(0..14) -\u003e normal 7.5â€“21.5 HP, easy 4.75â€“11.75 HP, hard 11.25â€“32.25 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.movementSpeedAttribute",
+                      "value":  "0.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.speed",
+                      "value":  "~2.75 blocks/second",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ironGolem.hitbox",
+                      "value":  "1.4 blocks wide x 2.7 blocks tall",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.xp",
+                      "value":  "0 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.drops",
+                      "value":  "iron ingot 3â€“5 (100%); poppy 0â€“2 (Looting has no effect)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.attackLaunch",
+                      "value":  "attack adds +0.4 blocks/tick vertical velocity to the target on top of normal knockback",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ironGolem.attackAnimation",
+                      "value":  "10 ticks; melee cooldown 20 ticks (1 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ironGolem.repair",
+                      "value":  "1 iron ingot heals 25 HP; cracking stages at 75%, 50%, 25% health",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.despawn",
+                      "value":  "never despawns; immune to fall damage and drowning",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ironGolem.verticalAttackLimit",
+                      "value":  "cannot hit targets 2.75+ blocks above it (Java)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.hostileLight",
+                      "value":  "Java 1.18+: block light must be 0 (and sky light effectively 0, i.e. night or fully enclosed) for overworld monsters",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.blockBelow",
+                      "value":  "must be a solid, complete, opaque top surface; mob needs its full hitbox free of collision; cannot be on bedrock/barrier or in water (land mobs)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.playerDistance",
+                      "value":  "no player and no world spawn point within 24 blocks (spherical) of the spawn position",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.radius",
+                      "value":  "chunks with a player horizontally within 128 blocks; spawn position must be within a 128-block-radius sphere of a player",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.cycle",
+                      "value":  "monsters attempt spawning every game tick (20 Hz); passive/creature category only every 400 ticks (20 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.packAttempts",
+                      "value":  "3 pack attempts per category per chunk per cycle; pack members offset by +/-5 blocks (triangular distribution) on X and Z",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.mobCaps",
+                      "value":  "monster 70, creature 10, ambient 15, water creature 5, water ambient 20, underground water creature 5, axolotl 5 (scaled by loaded chunks / 289)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.groupSize.java",
+                      "value":  "zombie 4, skeleton 4, creeper 4, spider 4, enderman 1â€“4, pig/cow/sheep/chicken 4",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.passiveLight",
+                      "value":  "animals require light level \u003e 8 on grass blocks with 2 blocks of air above; mostly spawn during world generation",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "spawn.babyChance",
+                      "value":  "5% of naturally spawned pigs/cows/sheep/chickens are babies; 5% of zombies spawn as baby zombies",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "spawn.biomeExclusions",
+                      "value":  "no hostile spawns in mushroom fields or deep dark; no cow/pig/sheep in snowy plains, meadows, mangrove swamp, pale garden (cows also excluded from cherry grove)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "despawn.instant",
+                      "value":  "despawns instantly if the nearest player is farther than 128 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "despawn.random",
+                      "value":  "1/800 chance per tick (2.47%/second) when nearest player is beyond 32 blocks AND the mob\u0027s noActionTime \u003e 600 ticks (30 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "despawn.persistence",
+                      "value":  "PersistenceRequired=1 disables despawning: set by name tag, by picking up items, by being bred/spawned from an egg (Java: bred animals and villagers never despawn)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "daylightBurn.mobs",
+                      "value":  "zombies and skeletons ignite in direct sunlight; burn for 8 seconds per re-ignition; fire deals 1 HP every 20 ticks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "daylightBurn.condition",
+                      "value":  "requires sky access, brightness value f \u003e 0.5 (~light 12+) and random.nextFloat()*30 \u003c (f-0.4)*2; a helmet prevents burning while it takes durability damage; rain/water/shade stops it",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "combat.invulnerabilityFrames",
+                      "value":  "10 ticks (0.5 s) of invulnerability after taking damage; a stronger hit within that window applies only the difference",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "combat.difficultyScaling",
+                      "value":  "if normal damage = D, then easy = min(D, 0.5D + 1), hard = 1.5D, peaceful = 0 (applies to damage types tagged damage_scales_with_difficulty, including explosions and mob melee)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "combat.armorFormula",
+                      "value":  "damage x (1 - min(20, max(armor/5, armor - damage/(2 + toughness/4))) / 25); cap 80% reduction at 20 armor points",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "combat.meleeCooldown",
+                      "value":  "MeleeAttackGoal fires every 20 ticks (1 s) for all standard hostile melee mobs",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "combat.meleeReach",
+                      "value":  "attackReachSqr = (2*mobWidth)^2 + targetWidth; a 0.6-wide zombie vs a 0.6-wide player = sqrt(2.04) â‰ˆ 1.43 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "knockback.baseImpulse",
+                      "value":  "0.4 blocks/tick horizontal impulse, vertical set to min(0.4, vy/2 + 0.4) blocks/tick",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "knockback.distance",
+                      "value":  "base melee knockback moves the target ~1.552 blocks horizontally and ~0.8125 blocks upward",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "knockback.enchantAndSprint",
+                      "value":  "+0.5 impulse per Knockback level (~+2.586 blocks/level); sprint attack adds one extra level\u0027s worth; vertical becomes 1 block",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "knockback.resistance",
+                      "value":  "impulse multiplied by (1 - knockback_resistance); iron golem 1.0 = fully immune; zombie 0â€“0.05",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "explosion.entityDamageFormula",
+                      "value":  "diameter = 2*power; if distance \u003e diameter, no damage. d = distance/diameter; impact = (1 - d) * exposure; damage = floor((impact^2 + impact)/2 * 7 * diameter + 1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "explosion.validation",
+                      "value":  "creeper power 3 point-blank full exposure = (1+1)/2*7*6+1 = 43 HP normal, matching the wiki\u0027s 43; charged power 6 = 85 HP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "explosion.exposure",
+                      "value":  "cast rays from explosion center to a ceil(2*w+1) x ceil(2*h+1) x ceil(2*w+1) grid of points in the entity hitbox; exposure = fraction of unobstructed rays (0..1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "explosion.blockRays",
+                      "value":  "1352 rays to the surface of a 16x16x16 grid; each ray starts with intensity power*(0.7 + random*0.6), steps 0.3 blocks, loses 0.225 per step plus (blastResistance + 0.3)*0.3 per block traversed",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "explosion.knockback",
+                      "value":  "velocity += direction_unit * (1 - d) * exposure * (1 - explosion_knockback_resistance)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "movement.frictionModel",
+                      "value":  "ground: horizontal velocity *= 0.91 * slipperiness (0.6 default = 0.546/tick); air drag 0.91; gravity -0.08 blocks/tick^2 for mobs, -0.04 for items; vertical drag 0.98",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "movement.terminalSpeedFormula",
+                      "value":  "v_blocks_per_second = 20 * A / (1 - 0.91*slipperiness) = 44.05 * A on normal ground, where A = per-tick acceleration",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "movement.aiMobAcceleration",
+                      "value":  "AI mobs: A = (speedModifier * movement_speed)^2 -\u003e v â‰ˆ 44.05 * (speedModifier * attr)^2 blocks/s (Mob.setSpeed also sets forward input zza to the same value, so it is squared)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "movement.riddenAcceleration",
+                      "value":  "player-controlled entities: A = speed * 0.98 -\u003e v â‰ˆ 43.18 * attr blocks/s (validated: horse 0.1125â€“0.3375 -\u003e 4.86â€“14.57 blocks/s; pig 0.25*0.225*0.98 -\u003e 2.43 blocks/s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "movement.playerReference",
+                      "value":  "player walk 4.317 blocks/s (attr 0.1), sprint 5.612 blocks/s (x1.3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "movement.stepHeight",
+                      "value":  "0.6 blocks for most mobs (players 0.6); jump impulse 0.42 blocks/tick -\u003e 1.25 block jump",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.followRangeDefault",
+                      "value":  "follow_range default 16 blocks for mobs (registry generic default 32); zombie overrides to 35, enderman to 64",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.targetSearchBox",
+                      "value":  "NearestAttackableTargetGoal searches AABB inflated by followRange horizontally and 4 blocks vertically, re-runs every 10 ticks, requires line of sight unless mustSee=false",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.sneakDetection",
+                      "value":  "effective detection range multiplied by 0.8 when the target is sneaking (and by up to 0.7 more for invisibility, floor 2 blocks)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.pathRecompute",
+                      "value":  "MeleeAttackGoal recomputes the path every 4 + random(0..6) ticks, and only if the target has moved \u003e= 1 block",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.strollGoal",
+                      "value":  "WaterAvoidingRandomStrollGoal: 1/120 chance per tick to pick a new destination within 10 blocks horizontally / 7 vertically; will not start if noActionTime \u003e= 100",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.lookGoals",
+                      "value":  "LookAtPlayerGoal: 2% chance per tick to start, range 6 blocks (passive) / 8 blocks (hostile), holds 40â€“80 ticks. RandomLookAroundGoal: 2% chance per tick, 20â€“40 ticks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.panicGoal",
+                      "value":  "triggered on damage or fire; runs to a random position within 5 blocks horizontally / 4 vertically; speedModifier: cow 2.0, chicken 1.4, pig 1.25, sheep 1.25",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.temptGoal",
+                      "value":  "tempted by the breeding item within 10 blocks (wiki quotes ~6 blocks for observed following); stops approaching within 2.5 blocks; speedModifier ~1.0â€“1.25",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ai.breedGoal",
+                      "value":  "love mode lasts 600 ticks (30 s); partners pathfind to each other within 8 blocks; breeding cooldown 6000 ticks (5 min); baby age -24000 ticks (20 min); breeding drops 1â€“7 XP",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ai.followParent",
+                      "value":  "baby follows nearest adult of the same species within 8 blocks (speedModifier 1.1â€“1.25)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ai.babyGrowthBoost",
+                      "value":  "feeding a baby its breeding item reduces remaining growth time by 10%",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sound.ambientInterval",
+                      "value":  "getAmbientSoundInterval default 80 ticks; each tick plays if random.nextInt(1000) \u003c ambientSoundTime++, counter reset to -80 after playing -\u003e ~5â€“7 s average between idle sounds",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sound.pitchAdult",
+                      "value":  "1.0 +/- 0.2 (random.nextFloat() - random.nextFloat()) * 0.2 + 1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sound.pitchBaby",
+                      "value":  "1.5 +/- 0.2 (wiki lists baby zombie sounds at pitch 1.3â€“1.7)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sound.categories",
+                      "value":  "hostile mobs -\u003e \u0027Hostile Creatures\u0027 channel; passive/neutral mobs -\u003e \u0027Friendly Creatures\u0027 channel",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sound.volumes",
+                      "value":  "typical mob ambient/hurt/death volume 1.0; step sounds volume 0.15 (Java); zombie infect / door sounds volume 2.0; skeleton shoot volume 1.0 pitch 0.833â€“1.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sound.stepInterval",
+                      "value":  "step sound plays every ~1.667 blocks of horizontal travel (moveDist accumulates distance * 0.6, triggers at each integer)",
+                      "confidence":  "medium"
+                  }
+              ],
+    "notes":  "## Speed conversion (READ FIRST â€” biggest gotcha)\n\n`movement_speed` is NOT blocks/tick or blocks/s. Ground movement is an accelerate-then-damp loop:\n\n```\neach tick:  velocity += accel;  velocity *= 0.91 * slipperiness   // slipperiness 0.6 for normal blocks\nterminal:   v_bps = 20 * accel / (1 - 0.91*slipperiness) = 44.053 * accel   (normal ground)\n```\n\nTwo different accel values depending on who drives the entity:\n\n- **Player / ridden entity**: `accel = speed * inputMagnitude`, input is 0.98 for a held key â†’ `v â‰ˆ 43.18 * speed`. Verified: player 0.1 â†’ 4.317 b/s; sprint Ã—1.3 â†’ 5.612 b/s; horse 0.1125â€“0.3375 â†’ 4.86â€“14.57 b/s (wiki: \"4.8â€“14.5\"); ridden pig uses `getSteeringSpeed = attr * 0.225` â†’ 0.25 â†’ 2.43 b/s (wiki: 2.42).\n- **AI mob**: `Mob.setSpeed(f)` sets both the speed scalar AND the forward input `zza` to `f`, and `moveRelative` does not normalize input vectors with length \u003c 1, so `accel = fÂ²` where `f = speedModifier * movement_speed`. â†’ **`v â‰ˆ 44.05 * (speedModifier * attr)Â²`**. This is why zombie (0.23 â†’ 2.33 b/s) is clearly slower than a walking player while a baby zombie (0.35 â†’ 5.40 b/s) is just under sprint speed, and why a 0.5-speed villager does not move at 21 b/s. Marked medium confidence: derived from code + cross-checked against gameplay, not stated numerically on the wiki. If your clone feels wrong, the linear reading (`v = 43.18 * attr`) is the alternative, but it produces 10 b/s zombies.\n- `speedModifier` comes from the goal, not the mob: chase 1.0, creeper/spider stroll 0.8, cow panic 2.0, golem move-towards-target 0.9, villager brain walk 0.5. Note when `speedModifier * attr \u003e 1.0` the input vector *is* normalized, so accel becomes linear (`= f`), not squared.\n- Slippery ice: slipperiness 0.98 â†’ denominator 1 - 0.8918 = 0.108, plus `getFrictionInfluencedSpeed = speed * (0.216 / slipperinessÂ³)` which rescales accel; on default 0.6 blocks that factor is exactly 1.0.\n\n## AI tick structure\n\nPer server tick, `Mob.serverAiStep()` order: sensing update (line-of-sight cache, valid 1 tick) â†’ `targetSelector.tick()` â†’ `goalSelector.tick()` â†’ `navigation.tick()` (advances along the current path, recomputes if stale) â†’ `moveControl.tick()` (rotates toward `wantedX/Y/Z` with max 90Â°/tick yaw lerp, sets speed/zza, requests jump when the next node is higher) â†’ `lookControl.tick()` â†’ `jumpControl.tick()` â†’ `travel()` applies input, gravity, friction.\n\n`GoalSelector` holds `WrappedGoal(priority, goal)`. **Lower priority number = higher precedence.** Each goal declares flags from {MOVE, LOOK, JUMP, TARGET}; a goal may start only if every flag it wants is either free or held by a strictly-lower-numbered running goal (which then gets stopped). Goals with `requiresUpdateEveryTick()` false are re-evaluated on a 2-tick cadence in some versions; assume every tick.\n\nRepresentative Java 1.20 goal sets (source-derived, medium confidence):\n\n- **Zombie** â€” goals: 0 Float, 1 BreakDoor (hard difficulty, ~10% of zombies), 2 ZombieAttack(1.0), 4 MoveTowardsRestriction(1.0), 6 MoveThroughVillage(1.0), 7 WaterAvoidingRandomStroll(1.0), 8 LookAtPlayer(8 blocks), 8 RandomLookAround. Targets: 1 HurtByTarget (alerts other zombies), 2 NearestAttackableTarget(Player), 3 Villager, 3 IronGolem, 5 baby Turtle.\n- **Skeleton** â€” 2 RestrictSun, 3 FleeSun(1.0), 3 AvoidEntity(Wolf, 6 blocks, 1.0/1.2), 4 RangedBowAttack(speed 1.0, interval 20, radius 15), 5 WaterAvoidingRandomStroll(1.0), 6 LookAtPlayer(8), 6 RandomLookAround. Targets: 1 HurtByTarget, 2 Player, 3 IronGolem.\n- **Creeper** â€” 1 Float, 2 Swell, 3 AvoidEntity(Ocelot/Cat, 6 blocks), 4 MeleeAttack(1.0), 5 WaterAvoidingRandomStroll(0.8), 6 LookAtPlayer(8), 6 RandomLookAround. Targets: 1 NearestAttackableTarget(Player), 2 HurtByTarget.\n- **Spider** â€” 1 Float, 3 LeapAtTarget(0.4), 4 SpiderAttack (melee), 5 WaterAvoidingRandomStroll(0.8), 6 LookAtPlayer(8), 6 RandomLookAround. Targets: 1 HurtByTarget, 2 SpiderTarget(Player), 3 SpiderTarget(IronGolem) â€” the Spider target goals abort when `getBrightness() \u003e= 0.5`.\n- **Enderman** â€” 0 Float, 1 FreezeWhenLookedAt, 2 MeleeAttack(1.0), 7 WaterAvoidingRandomStroll(1.0), 8 LookAtPlayer(8), 8 RandomLookAround, 10 LeaveBlock, 11 TakeBlock. Targets: 1 LookForPlayer (the stare check), 2 HurtByTarget, 3 Endermite.\n- **Slime** â€” uses a custom `SlimeMoveControl`: 1 Float, 2 SlimeAttack, 3 SlimeRandomDirection (turns 0â€“360Â° every 40â€“140 ticks), 5 KeepOnJumping. Jump timer 10â€“30 ticks idle, 3â€“10 ticks with a target.\n- **Animals (cow/pig/sheep/chicken)** â€” 0 Float, 1 Panic, 2 Breed(1.0), 3 Tempt(breeding item), 4 FollowParent(1.1â€“1.25), 5 WaterAvoidingRandomStroll(1.0) (+ sheep: EatBlock), 6 LookAtPlayer(6 blocks), 7 RandomLookAround.\n- **Iron golem** â€” 1 MeleeAttack(1.0, longMemory=true), 2 MoveTowardsTarget(0.9, within 32 blocks), 2 MoveBackToVillage(0.6), 4 RandomStrollInVillage(0.6), 5 OfferFlower, 7 LookAtPlayer(6), 8 RandomLookAround. Targets: 1 DefendVillage, 2 HurtByTarget, 2 Player (only if angry), 3 any `Enemy` mob except creepers.\n- **Villager** â€” not goal-based; uses the Brain/Behavior/Schedule system with memory modules and activity switching (CORE, IDLE, WORK, MEET, REST, PANIC, RAID, HIDE). For a clone, a state machine keyed on time-of-day + threat memory reproduces it adequately.\n\n## Pathfinding\n\nA* on block-position nodes via `GroundPathNavigation` + `WalkNodeEvaluator`. Search range = `follow_range` attribute (16 default, 35 zombie). Node types carry malus costs: WALKABLE 0, OPEN 0, WATER 8, WATER_BORDER 8, DANGER_FIRE 8, DAMAGE_FIRE -1 (impassable), DANGER_OTHER 8, LAVA -1, FENCE -1, DOOR_WOOD_CLOSED -1 unless the mob can open doors, TRAPDOOR/BLOCKED -1. Heuristic is Euclidean distance to the target node. Path is followed node-to-node; navigation recomputes when the target moves â‰¥1 block or the mob makes no progress for ~100 ticks (`timeoutLimit` based on the mob\u0027s speed). Step-up is 0.6 blocks (no jump needed); a 1-block rise sets `JumpControl.jump()`. Mobs stop path-following when within the goal accuracy (default `maxDistanceToWaypoint = width \u003e 0.75 ? width/2 : 0.75 - width/2`).\n\n## Skeleton ranged attack (exact loop)\n\n`RangedBowAttackGoal(mob, speedModifier=1.0, attackIntervalMin, attackRadius=15.0)`; `attackIntervalMin = 20` on Hard, `40` otherwise. Loop:\n1. Move to keep the target within `attackRadius`; if `distSq \u003e attackRadiusÂ² * 0.75` stop backing up, if `distSq \u003c attackRadiusÂ² * 0.25` back away (this is the \"retreat when within ~4 blocks\" behavior since 15*0.5 = 7.5, and empirically the wiki reports 4 blocks).\n2. After 20 ticks of continuous line-of-sight, start strafing: `moveControl.strafe(backwards ? -0.5 : 0.5, clockwise ? 0.5 : -0.5)`, flipping `clockwise` with 30% probability every 20 ticks.\n3. Bow draw = 20 ticks; on release, `arrow.shoot(dx, dy + horizontalDist*0.2, dz, velocity=1.6, inaccuracy = 14 - difficultyId*4)` â†’ 10/6/2 for easy/normal/hard. Net cadence 60 ticks (easy/normal) / 40 ticks (hard).\n4. Arrow: 1.6 blocks/tick â‰ˆ 32 blocks/s, gravity âˆ’0.05 blocks/tickÂ², drag 0.99/tick in air; damage = ceil(velocity * base 2.0) plus random, giving the 2â€“8 HP spread; arrows can crit (+random bonus) which is where the top of the hard range comes from.\n\n## Creeper detonation state machine\n\n`swell` counter: increments while a target is within 3 blocks and line-of-sight is clear (`SwellGoal`), decrements otherwise; explodes at `maxSwell = 30` ticks. Aborts if the target exits 7 blocks. Flint \u0026 steel / fire charge / lightning-ignite forces the fuse immediately. Explosion is `Level.explode(this, x, y, z, power, Explosion.BlockInteraction.MOB (destroys blocks only if mobGriefing))`, no fire. Charged creeper doubles power 3â†’6, which quadruples the affected volume and roughly doubles peak damage.\n\n## Explosion algorithm (implementable)\n\n```\ndiameter = 2 * power\nfor each entity with distance(center, entityCenter) \u003c= diameter:\n    d = distance / diameter                         // 0..1\n    exposure = seenPercent(center, entityAABB)      // ray grid, 0..1\n    impact = (1 - d) * exposure\n    damage = floor((impact*impact + impact) / 2 * 7 * diameter + 1)\n    damage = applyDifficultyScaling(damage)         // easy min(D,0.5D+1), hard 1.5D\n    velocity += normalize(entityCenter - center) * impact_kb\n```\nEverything inside `diameter` takes â‰¥1 damage even at exposure 0, because of the `+1`.\nBlock destruction: 1352 rays to the boundary of a 16Ã—16Ã—16 grid; per ray `f = power * (0.7 + rand*0.6)`; march in 0.3-block steps; at each step `f -= (blockExplosionResistance + 0.3) * 0.3` then `f -= 0.225`; block is destroyed while `f \u003e 0`.\n\n## Despawn / persistence exact check\n\n```\ncheckDespawn():\n  d2 = squaredDistanceToNearestPlayer\n  if (d2 \u003e 128*128) discard()\n  if (noActionTime \u003e 600 \u0026\u0026 random.nextInt(800) == 0 \u0026\u0026 d2 \u003e 32*32) discard()\n```\n`noActionTime` resets whenever the mob has a target/takes damage/is ridden; it also gets reset by `Mob.tick()` for mobs close to a player. Java-side special cases: bred animals, villagers, and iron golems never despawn; monsters, ambient, and aquatic mobs do (except shulker, wither, elder guardian, ender dragon).\n\n## Sound character (for choosing/synthesizing samples)\n\nAll ambient/hurt/death sounds use volume 1.0 and pitch 0.8â€“1.2 (babies 1.3â€“1.7); footsteps volume 0.15, pitch 1.0, every ~1.67 blocks travelled.\n- zombie: low guttural moan/groan, ~150 Hz fundamental, audible to 16 blocks; door-attack thud volume 2.0.\n- skeleton: dry hollow bone rattle/clack, mid-high, short; `entity.skeleton.shoot` is a taut bowstring twang (pitch 0.833â€“1.25).\n- creeper: no idle sound at all; only `entity.creeper.primed` (rising sibilant hiss, plays once at fuse start) and `entity.generic.explode` (low boom).\n- spider: raspy hissing chitter, breathy noise-band, short bursts.\n- enderman: `entity.enderman.ambient` is an eerie reversed-vocal warble; `entity.enderman.stare` is a loud descending shriek on aggro; `entity.enderman.teleport` is a short pitched \"vwoop\".\n- slime: wet squelch/squish, pitch scales inversely with size (big slimes use a lower-pitched, louder variant; `entity.slime.squish` plays on each landing).\n- pig: short nasal oink; cow: low sustained moo (~0.8 s); sheep: bleating \"baa\" with vibrato; chicken: clipped cluck plus a distinct plop on egg-lay.\n- villager: nasal \"hmm/hrm\" grunt; separate yes/no/trade variants (rising = yes, falling = no).\n- iron golem: metallic grinding/creak on idle, heavy iron thud on attack, sheet-metal clang on damage.\n\n## Known gaps / disagreements\n\n- Slime medium-size attack damage: the wiki lists 3 HP on normal, but the source relation `attack_damage = size` predicts 2 for size 2 (large 4 matches). Use the wiki\u0027s 2.5/3/4.5 for fidelity; flagged medium.\n- Villager `movement_speed` 0.5 is a raw attribute; villagers never move at the corresponding speed because every brain walk target uses a 0.4â€“0.6 speed modifier.\n- Iron golem `follow_range` is not published; default 16 blocks is assumed, with `MoveTowardsTargetGoal` extending engagement to 32 blocks.\n- Creeper \"14 blocks when sneaking\" (wiki) does not match the code\u0027s Ã—0.8 visibility multiplier (12.8); use the wiki number if matching observed behavior matters more.\n- Chicken\u0027s slow-fall is not a fixed \"speed\"; it clamps downward velocity, so wing-flapping descent is roughly 0.08 blocks/tick (1.6 blocks/s) rather than accelerating.\n- Ambient sound cadence is derived from the `nextInt(1000) \u003c ambientSoundTime++` counter, not stated on the wiki; treat \"~5â€“7 s\" as approximate.",
+    "sources":  [
+                    "https://minecraft.wiki/w/Zombie",
+                    "https://minecraft.wiki/w/Skeleton",
+                    "https://minecraft.wiki/w/Creeper",
+                    "https://minecraft.wiki/w/Spider",
+                    "https://minecraft.wiki/w/Enderman",
+                    "https://minecraft.wiki/w/Slime",
+                    "https://minecraft.wiki/w/Pig",
+                    "https://minecraft.wiki/w/Cow",
+                    "https://minecraft.wiki/w/Sheep",
+                    "https://minecraft.wiki/w/Chicken",
+                    "https://minecraft.wiki/w/Villager",
+                    "https://minecraft.wiki/w/Iron_Golem",
+                    "https://minecraft.wiki/w/Attribute",
+                    "https://minecraft.wiki/w/Entity",
+                    "https://minecraft.wiki/w/Mob_spawning",
+                    "https://minecraft.wiki/w/Explosion",
+                    "https://minecraft.wiki/w/Damage",
+                    "https://minecraft.wiki/w/Knockback",
+                    "https://minecraft.wiki/w/Breeding",
+                    "https://minecraft.wiki/w/Mob",
+                    "https://minecraft.wiki/w/Pathfinding",
+                    "https://minecraft.fandom.com/wiki/Spawn"
+                ]
+}

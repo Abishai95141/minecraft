@@ -1,0 +1,963 @@
+﻿{
+    "topic":  "Minecraft Java Edition 1.20 â€” lighting model, lightmap/brightness curve, smooth lighting (AO), day/night cycle, sky \u0026 fog colors, clouds, gamma",
+    "facts":  [
+                  {
+                      "key":  "light.blockLight.range",
+                      "value":  "0-15 (integer)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.skyLight.range",
+                      "value":  "0-15 (integer)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.clientEffectiveLevel",
+                      "value":  "max(skyLight, blockLight) â€” but the renderer indexes a 2D 16x16 lightmap by (blockLight, skyLight), it does NOT take a max",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.blockLight.decayPerBlock",
+                      "value":  "1 level per 1 block of taxicab distance (per axis step)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.propagation.decayFormula",
+                      "value":  "newLevel = currentLevel - max(1, opacity(targetBlock)) ; opacity = BlockState.getLightBlock()",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.opacity.opaqueFullBlock",
+                      "value":  "15 (blocks all light)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.opacity.transparent",
+                      "value":  "0 (air, glass, torch, slabs\u0027 empty space, etc.)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.opacity.filtering",
+                      "value":  "1 (water, ice, frosted ice, leaves, cobweb, slime block, honey block, powder snow, bubble column)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.skyLight.downwardPropagation",
+                      "value":  "0 decay straight down through opacity-0 blocks (column stays 15 to the ground)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.skyLight.lateralPropagation",
+                      "value":  "-1 per block horizontally or upward, plus target opacity",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.skyLight.sourceLevel",
+                      "value":  "15 at every column above the highest opaque block",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.packedLightmapCoord",
+                      "value":  "blockLight \u003c\u003c 4 | skyLight \u003c\u003c 20 (LightTexture.pack)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "light.lightmapTextureSize",
+                      "value":  "16 x 16 texels (x = blockLight, y = skyLight)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.formula",
+                      "value":  "b(L) = (L/15) / (4 - 3*(L/15))  ==  L / (60 - 3L)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L0",
+                      "value":  "0.00000 (0.00 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L1",
+                      "value":  "0.017544 (1.75 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L2",
+                      "value":  "0.037037 (3.70 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L3",
+                      "value":  "0.058824 (5.88 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L4",
+                      "value":  "0.083333 (8.33 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L5",
+                      "value":  "0.111111 (11.11 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L6",
+                      "value":  "0.142857 (14.29 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L7",
+                      "value":  "0.179487 (17.95 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L8",
+                      "value":  "0.222222 (22.22 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L9",
+                      "value":  "0.272727 (27.27 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L10",
+                      "value":  "0.333333 (33.33 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L11",
+                      "value":  "0.407407 (40.74 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L12",
+                      "value":  "0.500000 (50.00 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L13",
+                      "value":  "0.619048 (61.90 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L14",
+                      "value":  "0.777778 (77.78 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.curve.L15",
+                      "value":  "1.000000 (100.00 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "brightness.ambientBlend",
+                      "value":  "B(L) = lerp(ambientLight, b(L), 1.0) = b(L) + ambientLight * (1 - b(L))",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambientLight.overworld",
+                      "value":  "0.0 (dimensionless 0-1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambientLight.the_nether",
+                      "value":  "0.1 (dimensionless 0-1)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ambientLight.the_end",
+                      "value":  "0.0 (dimensionless 0-1); the End\u0027s bright floor comes from forceBrightLightmap, not ambient_light",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "rendered.overworld.fullDaylight.gamma0",
+                      "value":  "98.0 % screen brightness (derived 0.9804; wiki states 98 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "rendered.overworld.midnight.sky15.gamma0",
+                      "value":  "RGB (16.5 %, 16.5 %, 28.0 %) â€” blue-shifted; wiki states ~17 %",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "rendered.overworld.totalDarkness.gamma0",
+                      "value":  "5.88 % grey (wiki states ~5 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "rendered.the_end.totalDarkness.gamma0",
+                      "value":  "RGB (26.8 %, 29.9 %, 27.0 %) â€” bluish-green; wiki states ~28 %",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "rendered.the_nether.totalDarkness.gamma0",
+                      "value":  "RGB (20.8 %, 16.5 %, 13.8 %) derived / ~25 % per wiki â€” orange-tinted",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lightmap.skyColumnTint",
+                      "value":  "vec3(skyDarken, skyDarken, 1.0) lerped 35 % toward (1,1,1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lightmap.skyMultiplier",
+                      "value":  "f = skyDarken * 0.95 + 0.05 (1.0 during lightning flash)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lightmap.blockLightMultiplier",
+                      "value":  "f7 = blockLightRedFlicker + 1.5 (flicker is a damped random walk, decays *0.9/tick, step Â±0.1 max)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lightmap.blockLightWarmTint",
+                      "value":  "R = f9 ; G = f9*((f9*0.6+0.4)*0.6+0.4) ; B = f9*(f9*f9*0.6+0.4)  where f9 = B(blockLevel)*1.5",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "lightmap.greyLerp",
+                      "value":  "lerp toward (0.75,0.75,0.75) by 0.04, applied twice (once before gamma, once after)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "gamma.optionRange",
+                      "value":  "0.0-1.0 float in options.txt (UI 0-100: 0 = Moody, 50 = Default, 100 = Bright)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "gamma.default",
+                      "value":  "0.5 (UI 50)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "gamma.function",
+                      "value":  "notGamma(x) = 1 - (1-x)^4 ; final = lerp(x, notGamma(x), max(0, gamma - darknessEffectScale))",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "gamma.effect.blackPixel",
+                      "value":  "gamma 0 -\u003e 5.88 % ; gamma 1.0 -\u003e 14.01 % screen brightness for light level 0",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "faceShade.up",
+                      "value":  "1.0 (100 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "faceShade.down",
+                      "value":  "0.5 (50 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "faceShade.north_south",
+                      "value":  "0.8 (80 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "faceShade.east_west",
+                      "value":  "0.6 (60 %)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "faceShade.constantAmbientLightDimensions",
+                      "value":  "0.9 for all 6 faces (dimensions with constant ambient light)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ao.shadeBrightness.opaqueBlock",
+                      "value":  "0.2 (BlockState.isCollisionShapeFullBlock() == true)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.shadeBrightness.nonOpaque",
+                      "value":  "1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.vertexValue.formula",
+                      "value":  "vertexAO = (b_side1 + b_side2 + b_corner + b_center) * 0.25",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.possibleValues",
+                      "value":  "{1.0, 0.8, 0.6, 0.4, 0.2} for 0,1,2,3,4 opaque neighbours (ao = 1 - 0.2 * nOpaque)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.classicIntegerRule",
+                      "value":  "vertexAO(s1,s2,c) = (s1 \u0026\u0026 s2) ? 0 : 3 - (s1 + s2 + c) ; range 0-3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.quadFlipRule",
+                      "value":  "flip the quad diagonal when a00 + a11 \u003e a01 + a10",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.lightBlend.formula",
+                      "value":  "blend(l0,l1,l2,lc): replace any of l0,l1,l2 that == 0 with lc, then (l0+l1+l2+lc) \u003e\u003e 2 \u0026 0xFF00FF",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "ao.neighboursSampled.perFace",
+                      "value":  "8 (4 edge + 4 corner) plus the 1 block in front of the face = 9",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "ao.neighboursSampled.perCube",
+                      "value":  "20 distinct neighbours for all vertices of a cube",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.tickLength",
+                      "value":  "50 ms (20 ticks/second)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.fullDayCycle",
+                      "value":  "24000 ticks = 1200 s = 20 minutes real time",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.speedRatio",
+                      "value":  "72x real time",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.day.tickRange",
+                      "value":  "0-11999 ticks (10 minutes)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.sunset.tickRange",
+                      "value":  "12000-12999 ticks (50 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.night.tickRange",
+                      "value":  "13000-22999 ticks (8 min 20 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.sunrise.tickRange",
+                      "value":  "23000-23999 ticks (50 s)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.noon",
+                      "value":  "tick 6000 (sun at zenith)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.midnight",
+                      "value":  "tick 18000 (moon at zenith)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "time.sleepWindow",
+                      "value":  "dayTime % 24000 in [12542, 23459] ticks (or any time during thunderstorm)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "celestial.timeOfDay.formula",
+                      "value":  "d = frac(dayTime/24000 - 0.25) ; e = 0.5 - cos(d*PI)/2 ; timeOfDay = (d*2 + e)/3   (0 at noon, 0.5 at midnight)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "celestial.sunRotation",
+                      "value":  "timeOfDay * 360 degrees about the X axis, after a -90 degree Y rotation",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "celestial.sunAngleRadians",
+                      "value":  "timeOfDay * 2*PI",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "celestial.sun.quadHalfSize",
+                      "value":  "30.0 units at distance 100.0 units =\u003e 2*atan(30/100) = 33.4 degrees apparent diameter",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "celestial.moon.quadHalfSize",
+                      "value":  "20.0 units at distance 100.0 units =\u003e 2*atan(20/100) = 22.6 degrees apparent diameter",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "celestial.starCount",
+                      "value":  "1500 stars at radius 100 units, quad size 0.15-0.25 units",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "celestial.starBrightness.formula",
+                      "value":  "s = clamp(1 - (cos(timeOfDay*2PI)*2 + 0.25), 0, 1) ; brightness = s*s*0.5 * (1 - rainLevel) ; max 0.5",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "moon.phaseFormula",
+                      "value":  "phase = floor(dayTime / 24000) mod 8 ; 0 = full moon",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "moon.lunarCycle",
+                      "value":  "8 in-game days = 192000 ticks = 2 h 40 min real time",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "moon.textureAtlas",
+                      "value":  "4 columns x 2 rows; u = (phase % 4)/4 .. +1/4 ; v = ((phase/4) % 2)/2 .. +1/2",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "moon.brightnessPerPhase",
+                      "value":  "[1.0, 0.75, 0.5, 0.25, 0.0, 0.25, 0.5, 0.75] â€” gameplay only (slime/phantom spawning), no render or light-level effect",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "skyDarken.integer.formula",
+                      "value":  "d2 = 0.5 + 2*clamp(cos(timeOfDay*2PI), -0.25, 0.25) ; skyDarken = (int)((1 - d2 * (1-5*rain/16) * (1-5*thunder/16)) * 11) ; range 0-11",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyLight.effective.noon",
+                      "value":  "15 (skyDarken 0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyLight.effective.midnight",
+                      "value":  "4 (skyDarken 11)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyLight.effective.rain",
+                      "value":  "12 (skyDarken 3)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyLight.effective.thunder",
+                      "value":  "10 (skyDarken 5)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyDarken.float.formula",
+                      "value":  "a = clamp(1 - (cos(timeOfDay*2PI)*2 + 0.2), 0, 1) ; f = (1-a) * (1-5*rain/16) * (1-5*thunder/16) ; skyDarkenF = f*0.8 + 0.2 ; range 0.2-1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.daylightFactor",
+                      "value":  "k = clamp(cos(timeOfDay*2PI)*2 + 0.5, 0, 1) ; skyColor = biomeSkyColor * k",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.fullyBlackFrom",
+                      "value":  "tick ~13668 to ~22332 (k = 0)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "skyColor.fullSaturationRange",
+                      "value":  "tick ~132 to ~11868 (k = 1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "skyColor.biome.plains",
+                      "value":  "#78A7FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.forest",
+                      "value":  "#79A6FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.desert_badlands",
+                      "value":  "#6EB1FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.jungle",
+                      "value":  "#77A8FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.ocean_river",
+                      "value":  "#7BA4FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.taiga",
+                      "value":  "#7DA3FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.snowy_plains",
+                      "value":  "#7FA1FF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.frozen_peaks",
+                      "value":  "#859DFF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.biome.the_end",
+                      "value":  "#000000",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.fromTemperature.formula",
+                      "value":  "f = clamp(temperature/3, -1, 1) ; HSVtoRGB(hue = 0.62222224 - f*0.05, sat = 0.5 + f*0.1, val = 1.0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "skyColor.night",
+                      "value":  "#000000 (biome color * 0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sunset.gradient.formula",
+                      "value":  "c = cos(timeOfDay*2PI) ; active only when -0.4 \u003c= c \u003c= 0.4 ; s = c*1.25 + 0.5 ; RGBA = (s*0.3+0.7, s*s*0.7+0.2, 0.2, (1-(1-sin(s*PI))*0.99)^2)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sunset.color.peak",
+                      "value":  "RGB (0.85, 0.375, 0.20) = #D96033, alpha 1.0",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sunset.color.outerEdge_high_s",
+                      "value":  "RGB (1.00, 0.90, 0.20) = #FFE633, alpha ~0.0001",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sunset.color.outerEdge_low_s",
+                      "value":  "RGB (0.70, 0.20, 0.20) = #B33333, alpha ~0.0001",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sunset.blueChannel",
+                      "value":  "constant 0.2 (51/255) across the whole gradient",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.default.biomeFogColor",
+                      "value":  "#C0D8FF (12638463) â€” Java Overworld daytime",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.brightnessScale.overworld",
+                      "value":  "fogColor * (k*0.94+0.06, k*0.94+0.06, k*0.91+0.09) where k = clamp(cos(timeOfDay*2PI)*2+0.5, 0, 1)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.night.overworld",
+                      "value":  "#C0D8FF * (0.06, 0.06, 0.09) = approx RGB (11.5, 13.0, 22.9) = #0B0D17",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.skyColorBlendFactor",
+                      "value":  "t = 1 - pow(0.25 + 0.75 * renderDistanceChunks/32, 0.25) ; fogColor = lerp(fogColor, skyColor, t)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.skyColorBlendFactor.at32chunks",
+                      "value":  "0.0 (pure biome fog color)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.skyColorBlendFactor.at8chunks",
+                      "value":  "0.1868",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.skyColorBlendFactor.at2chunks",
+                      "value":  "0.2617",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.terrain.start",
+                      "value":  "renderDistanceBlocks - clamp(renderDistanceBlocks/10, 4, 64) blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.terrain.end",
+                      "value":  "renderDistanceBlocks (= renderDistanceChunks * 16)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.terrain.startPercent",
+                      "value":  "90 % of render distance for rd \u003e= 40 blocks (wiki reports 92 %)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.terrain.shape",
+                      "value":  "CYLINDER â€” dist = max(length(pos.xz), abs(pos.y))",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.sky.start_end",
+                      "value":  "start 0 blocks, end = renderDistanceBlocks (FOG_SKY mode, cylinder)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.linearCurve",
+                      "value":  "factor = clamp((dist - start) / (end - start), 0, 1); color = mix(sceneColor, fogColor, factor)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.start",
+                      "value":  "renderDistanceBlocks * 0.05 (= 9.6 blocks at 12 chunks; wiki says ~10 blocks)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.end",
+                      "value":  "min(renderDistanceBlocks, 192) * 0.5 (= 96 blocks max)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.color.nether_wastes",
+                      "value":  "#330808",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.color.crimson_forest",
+                      "value":  "#330303",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.color.warped_forest",
+                      "value":  "#1A051A",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.color.soul_sand_valley",
+                      "value":  "#1B4745",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.nether.color.basalt_deltas",
+                      "value":  "#685F70",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.the_end.color",
+                      "value":  "#A080A0 (Java)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.water.start",
+                      "value":  "-8.0 blocks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.water.end",
+                      "value":  "96.0 blocks * max(0.25, waterVision) ; * 0.85 additionally in HAS_CLOSER_WATER_FOG biomes (swamps)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.water.initialEnd_onEntry",
+                      "value":  "effectively 0.01 blocks then ramps out",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.water.color.default",
+                      "value":  "#050533 (329011)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.water.color.warm_ocean",
+                      "value":  "#041F33",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.water.color.swamp",
+                      "value":  "#232317",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.water.color.biomeBlendTime",
+                      "value":  "5000 ms linear crossfade when swimming between biomes",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.water.waterVision.rampUp",
+                      "value":  "0 -\u003e 1 over 600 ticks (30 s); piecewise: v = clamp(t/100,0,1)*0.6 + clamp((t-100)/500,0,1)*0.4",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.lava.color",
+                      "value":  "#991A00 (RGB 0.6, 0.1, 0.0)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.lava.sightDistance",
+                      "value":  "1 block (3 blocks with Fire Resistance)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.powderSnow.color",
+                      "value":  "#9FBBC8 (RGB 0.623, 0.734, 0.785)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.powderSnow.sightDistance",
+                      "value":  "2 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.blindness.sightDistance",
+                      "value":  "5 blocks, color pure black, 20-tick fade-in/out",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.darkness.sightDistance",
+                      "value":  "15 blocks, color pure black, pulsing",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.bossEvent.range",
+                      "value":  "start = rd*0.05, end = min(rd, 192)*0.5 (max 96 blocks) â€” ender dragon / wither",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "fog.rain.tint",
+                      "value":  "R,G *= (1 - rain*0.5) ; B *= (1 - rain*0.4)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "fog.thunder.tint",
+                      "value":  "R,G,B *= (1 - thunder*0.5)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "void.fogDarkenFactor",
+                      "value":  "v = (cameraY - minBuildHeight) * 0.03125 ; if v \u003c 1: fogColor *= v*v (v clamped to \u003e= 0)",
+                      "confidence":  "low"
+                  },
+                  {
+                      "key":  "void.blackDisc",
+                      "value":  "radius-512 black disc drawn 16 blocks below the camera (translated +12) whenever eyeY \u003c horizonHeight",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "void.horizonHeight",
+                      "value":  "63.0 blocks (0.0 for superflat)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "void.overworld.start",
+                      "value":  "Y = -128 (Overworld), Y = 0 (Nether and End)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "sky.disc.radius",
+                      "value":  "512 blocks, drawn at camera-relative y = +16 (sky) and y = -16 (void disc)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "sky.disc.segments",
+                      "value":  "9 fan segments (45-degree steps from -180 to +180)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.height.java",
+                      "value":  "Y = 192 blocks (DimensionSpecialEffects CLOUD_LEVEL = 192.0f)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cloud.thickness.fancy",
+                      "value":  "4 blocks (Y 192 to 196)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cloud.cellSize.fancy",
+                      "value":  "12 x 12 blocks horizontally",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cloud.cellSize.fast",
+                      "value":  "8 x 8 blocks horizontally (flat quad)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.speed",
+                      "value":  "0.03 blocks/tick = 0.6 blocks/second westward (-X); one 12-block cell every 400 ticks (20 s)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.wrapPeriod",
+                      "value":  "2048 cloud cells (position modulo 2048 before rendering)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.color.formula",
+                      "value":  "k = clamp(cos(timeOfDay*2PI)*2 + 0.5, 0, 1) ; RGB = (k*0.9+0.1, k*0.9+0.1, k*0.85+0.15)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.color.noon",
+                      "value":  "RGB (1.00, 1.00, 1.00) = #FFFFFF",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.color.midnight",
+                      "value":  "RGB (0.10, 0.10, 0.15) = #1A1A26",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.color.rain",
+                      "value":  "RGB (191, 191, 191) = #BFBFBF",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cloud.color.thunder",
+                      "value":  "RGB (30, 30, 30) = #1E1E1E",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "cloud.renderDistance.java",
+                      "value":  "up to 128 chunks (independent of terrain render distance)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "cloud.dimensions.withoutClouds",
+                      "value":  "Nether and End: cloud height = NaN (no clouds rendered)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "renderDistance.range",
+                      "value":  "2 to 32 chunks (32-512 blocks); max 32 requires \u003e=1 GB allocated, else 16",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "renderDistance.default",
+                      "value":  "8 chunks (128 blocks)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.torch",
+                      "value":  "14",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.soulTorch",
+                      "value":  "10",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.redstoneTorch",
+                      "value":  "7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.glowstone_lantern_seaLantern_shroomlight_campfire_beacon_jackOLantern",
+                      "value":  "15",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.endRod",
+                      "value":  "14",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.furnaceLit",
+                      "value":  "13",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.netherPortal",
+                      "value":  "11",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.cryingObsidian_soulLantern_soulCampfire",
+                      "value":  "10",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.redstoneOreLit",
+                      "value":  "9",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.enchantingTable_enderChest_glowLichen",
+                      "value":  "7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "blockLight.magmaBlock_candle1",
+                      "value":  "3",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "torch.renderedBrightness",
+                      "value":  "block light 14 -\u003e raw curve 0.7778 -\u003e pre-tint f9 = 1.1667 (clamped to white-hot at the source, warm orange falloff from level 12 down)",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "torch.reach",
+                      "value":  "lights blocks up to 14 taxicab steps away (level 1 at distance 14)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "smoothLighting.option",
+                      "value":  "boolean ON/OFF as of 1.19.3 (was Off/Minimum/Maximum before)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "mobSpawn.monster.overworld",
+                      "value":  "block light 0, internal sky light \u003c= 7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "mobSpawn.monster.nether",
+                      "value":  "light level \u003c= 7",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "mobSpawn.monster.the_end",
+                      "value":  "light level \u003c= 15 (any)",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dimension.overworld.minY_height",
+                      "value":  "min_y = -64, height = 384 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dimension.the_nether.minY_height",
+                      "value":  "min_y = 0, height = 256, logical_height = 128 blocks",
+                      "confidence":  "high"
+                  },
+                  {
+                      "key":  "dimension.fixedTime.the_nether",
+                      "value":  "18000 ticks",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "key":  "dimension.fixedTime.the_end",
+                      "value":  "6000 ticks",
+                      "confidence":  "medium"
+                  }
+              ],
+    "notes":  "## 1. Light storage \u0026 propagation\n\nTwo independent 4-bit fields per block: `blockLight` and `skyLight`, each 0-15, stored as nibble arrays per 16x16x16 section.\n\n**Opacity.** `opacity(state)` = `BlockState.getLightBlock()`: 0 for see-through non-solids (air, glass, torches, fences, open trapdoors, non-full slabs\u0027 air), 1 for the \"light-filtering\" set (water, ice, frosted ice, all leaves, cobweb, slime block, honey block, powder snow, bubble column), 15 for any full opaque cube.\n\n**Block light BFS.** Seed every light-emitting block at its emission level. Relax neighbours with\n```\nnext = current - max(1, opacity(neighbourState))\nif (next \u003e stored[neighbour]) { stored[neighbour] = next; enqueue(neighbour) }\n```\n`max(1, â€¦)` is important: even opacity-0 blocks cost 1. Full opaque blocks cost 15, which terminates propagation. Removal requires a separate \"darkening\" BFS (flood the region whose value derives from the removed source down to 0, then re-flood from the surviving boundary sources) â€” vanilla does exactly this in two passes.\n\n**Sky light.** Every column above the world\u0027s highest opaque block is a source at 15. Propagation is anisotropic:\n- **Downward** into a block with opacity 0: `next = current` (no decay). This is why a 15-deep shaft stays at 15.\n- **Any other direction** (up, Â±X, Â±Z): `next = current - max(1, opacity)`.\n- Downward through opacity-o (o\u003e0): `next = current - o`. So sunlight through water loses 1/block.\n\nSpecial-case: some blocks (e.g. slabs/stairs placed as \"top\") behave as opacity 15 for skylight in the down direction only in older versions; in 1.20 the shape-aware occlusion test `BlockState.isSuffocating`/`canOcclude` plus `getLightBlock` governs it. Treat any `canOcclude() \u0026\u0026 isCollisionShapeFullBlock()` block as opacity 15.\n\n**Effective (gameplay) sky light** = `max(0, internalSkyLight - skyDarken)` where\n```\nd2 = 0.5 + 2*clamp(cos(timeOfDay*2PI), -0.25, 0.25)\nskyDarken = (int)((1 - d2*(1 - 5*rainLevel/16)*(1 - 5*thunderLevel/16)) * 11)   // 0..11\n```\nVerified: noon -\u003e 0 (light 15), midnight -\u003e 11 (light 4), rain -\u003e 3 (light 12), thunder -\u003e 5 (light 10). These exactly match the wiki\u0027s stated values, so the constants (0.25 clamp, 11 scale, 5/16) are right.\n\n**Crucial rendering caveat:** the *renderer* does NOT subtract `skyDarken`. It indexes the 16x16 lightmap with the raw internal skyLight (row) and blockLight (column), and the whole sky *column* is scaled by the float `skyDarkenF` (0.2 at midnight, 1.0 at noon). Gameplay uses the integer subtraction; rendering uses the float multiplier. Implement both.\n\n## 2. Light level -\u003e screen brightness\n\nBase curve (`LightTexture.getBrightness`):\n```\nb(L)      = (L/15) / (4 - 3*(L/15))     ==  L / (60 - 3L)\nB(L, dim) = b(L) + ambientLight(dim) * (1 - b(L))\n```\nThis is a hyperbola, not a gamma curve. It is very dark at low levels (L=7 is only 18 %, not 47 %) and steep at the top (L=14 -\u003e 78 %, L=15 -\u003e 100 %). If you use a naive `L/15` linear ramp your clone will look flat and washed out â€” this curve is the single biggest \"feel\" factor.\n\nFull per-frame lightmap build (16x16 texture, x = blockLight `j`, y = skyLight `i`), 1.19/1.20 `LightTexture.updateLightTexture`:\n```\nskyDarkenF = level.getSkyDarken(1.0)                 // 0.2 .. 1.0, see below\nfSky   = lightningFlash ? 1.0 : skyDarkenF*0.95 + 0.05\nskyTint = lerp(vec3(skyDarkenF, skyDarkenF, 1.0), vec3(1,1,1), 0.35)\nfBlk   = blockLightRedFlicker + 1.5                  // flicker ~ 0\n\nfor i in 0..15:                                       // sky\n  for j in 0..15:                                     // block\n    s  = B(i, dim) * fSky\n    f9 = B(j, dim) * fBlk\n    c  = vec3( f9,\n               f9 * ((f9*0.6 + 0.4)*0.6 + 0.4),       // green\n               f9 * (f9*f9*0.6 + 0.4) )               // blue\n    if (forceBrightLightmap):                         // The End\n        c = lerp(c, vec3(0.99, 1.12, 1.00), 0.25); clamp01(c)\n    else:\n        c += skyTint * s\n        c  = lerp(c, vec3(0.75), 0.04)\n        if (darkenWorldAmount \u003e 0)                    // ender dragon death etc.\n            c = lerp(c, c * vec3(0.7, 0.6, 0.6), darkenWorldAmount)\n        clamp01(c)\n    if (nightVisionScale \u003e 0):                        // normalise brightest channel to 1\n        m = max(c.r, c.g, c.b); if (m \u003c 1) c = lerp(c, c/m, nightVisionScale)\n    c = lerp(c, vec3(notGamma(c.r), notGamma(c.g), notGamma(c.b)), max(0, gamma - darknessEffectScale))\n    c = lerp(c, vec3(0.75), 0.04)\n    clamp01(c); texel[i][j] = c * 255\n```\nwith `notGamma(x) = 1 - (1-x)^4`.\n\n`skyDarkenF` (float, ClientLevel):\n```\na = clamp(1 - (cos(timeOfDay*2PI)*2 + 0.2), 0, 1)\nf = (1 - a) * (1 - 5*rain/16) * (1 - 5*thunder/16)\nskyDarkenF = f*0.8 + 0.2     // 1.0 at noon, 0.2 at midnight\n```\n\n**Verification that this pipeline is correct** (independently reproduces the wiki\u0027s published percentages, so trust it):\n- Overworld, sky 15 / block 0, noon, gamma 0 -\u003e 0.9804 = **98 %** (wiki: 98 %)\n- Overworld, sky 15 / block 0, midnight, gamma 0 -\u003e (0.165, 0.165, 0.280) = **16.5 %, blue-tinted** (wiki: ~17 %, \"shaded blue\")\n- Overworld, sky 0 / block 0, gamma 0 -\u003e 0.0588 = **5.9 %** (wiki: ~5 %)\n- End, sky 0 / block 0, gamma 0 -\u003e (0.268, 0.299, 0.270) = **~28 %, bluish-green** (wiki: 28 %, \"bluish-green\"). Note this only works with `ambient_light = 0.0` for the End plus `forceBrightLightmap = true`; the wiki\u0027s dimension-type table listing 0.25 for the End does not reproduce the published 28 % and is probably post-1.21 data or mis-parsed.\n- Nether, sky 0 / block 0, gamma 0 -\u003e (0.208, 0.165, 0.138), orange-tinted; wiki says ~25 %. 4 pp discrepancy â€” Nether\u0027s effective `skyDarkenF` under `fixed_time = 18000` is the uncertain part. Low-stakes.\n\n**Torch colour.** The warm tint is entirely from the green/blue polynomials above. At blockLight 12 (`f9 = 0.75`): RGB (0.75, 0.68, 0.55) â€” visibly orange. At blockLight 14 (`f9 = 1.167`) all three channels clamp to 1.0, so the block right at a torch is white-hot and the warmth appears in the falloff ring. `blockLightRedFlicker` is a damped random walk (`v += (rand()-rand())*rand()*rand()*0.1; v *= 0.9` each tick), giving a ~Â±0.02 multiplicative jitter â€” that is the subtle torch flicker.\n\n**Gamma.** `gamma` in options.txt is 0.0-1.0 (UI 0-100, default 50 = 0.5). It lerps each lightmap texel toward `1-(1-x)^4`, which massively lifts blacks (0.0588 -\u003e 0.1401 at gamma 1.0) while barely touching highlights (0.98 -\u003e 0.9999). Do not implement it as `pow(x, 1/gamma)`.\n\n## 3. Face shading (directional, independent of AO)\n\nMultiply the face\u0027s vertex colours by:\n`UP 1.0, DOWN 0.5, NORTH/SOUTH 0.8, EAST/WEST 0.6`.\nDimensions with `constantAmbientLight` use 0.9 for every face (flat look in the Nether). This applies whether or not smooth lighting is on, and also to item/entity models.\n\n## 4. Smooth lighting (Minecraft\u0027s actual AO)\n\nVanilla\u0027s is a *4-sample average*, not the classic 0-3 integer rule â€” though the two agree on the important cases.\n\nFor a quad on face direction `D` of block `P`:\n1. `C = P + D` â€” the block in front of the face. Its packed light and its shade-brightness are the \"center\" samples.\n2. The face plane has 4 edge-neighbours of `C` and 4 corner-neighbours of `C`. Each vertex of the quad owns one corner and its two adjacent edges.\n3. Per neighbour block `n`:\n   - `shade(n) = n.isCollisionShapeFullBlock() ? 0.2 : 1.0`\n   - `light(n) = packedLight(n)` (sky\u003c\u003c20 | block\u003c\u003c4)\n4. **Corner occlusion rule.** If both side blocks at a corner are view-blocking, the corner sample is *not* read; it is replaced by one of the side samples. This is the vanilla equivalent of 0fps\u0027s `if (side1 \u0026\u0026 side2) return 0` and is what produces the hard dark seam in an inside corner.\n5. Vertex AO:\n   ```\n   ao = (shade(side1) + shade(side2) + shade(corner) + shade(center)) * 0.25\n   ```\n   Since each term is 0.2 or 1.0, `ao = 1 - 0.2 * nOpaque`, i.e. one of {1.0, 0.8, 0.6, 0.4, 0.2}.\n6. Vertex light:\n   ```\n   blend(l1, l2, lc, lcenter):\n     if (l1 == 0) l1 = lcenter\n     if (l2 == 0) l2 = lcenter\n     if (lc == 0) lc = lcenter\n     return ((l1 + l2 + lc + lcenter) \u003e\u003e 2) \u0026 0x00FF00FF\n   ```\n   The 0-replacement matters: a fully dark neighbour would otherwise drag the whole vertex to black. The `\u0026 0x00FF00FF` mask averages the packed sky and block fields simultaneously without carry between them (this only works because both fields live in separate bytes).\n7. Final vertex colour = `baseTexel * biomeTint * ao * faceShade(D)`; final vertex light = the blended packed value, sampled from the 16x16 lightmap. The GPU bilinearly interpolates both across the quad.\n8. For sub-cube quads (stairs, slabs, fences) vanilla computes the 4 full-face corner values then bilinearly re-samples them at the quad\u0027s actual u,v within [0,1] (`AmbientOcclusionFace` + `SizeInfo`).\n\nIf you are greedy-meshing, use the 0fps integer variant instead and merge only across runs with identical AO:\n```\nvertexAO(s1, s2, c) = (s1 \u0026\u0026 s2) ? 0 : 3 - (s1 + s2 + c)     // 0..3\n```\nplus the anisotropy fix: emit the flipped diagonal when `a00 + a11 \u003e a01 + a10`. Map 0..3 to {0.4, 0.6, 0.8, 1.0} to match vanilla\u0027s visual weight (vanilla\u0027s 0.2 floor only occurs when all four samples are opaque, which is invisible geometry).\n\n## 5. Day / night\n\n`24000 ticks = 20 min = 1200 s`; 1 tick = 50 ms. Phase boundaries: day `0-11999`, sunset `12000-12999`, night `13000-22999`, sunrise `23000-23999`. Noon = 6000, midnight = 18000.\n\nCelestial angle (this is NOT linear in time â€” the sun lingers near the horizon):\n```\nd  = frac(dayTime/24000 - 0.25)\ne  = 0.5 - cos(d*PI)/2\ntimeOfDay = (d*2 + e) / 3          // 0.0 at tick 6000, 0.5 at tick 18000\nsunAngle  = timeOfDay * 2*PI       // radians\n```\nRender: rotate `-90 deg` about Y, then `timeOfDay*360 deg` about X. Sun quad half-extent 30 at +100 on the local Y axis; moon quad half-extent 20 at -100. Sun texture 32x32, moon atlas 4x2 phases. Stars: 1500 unit-sphere-rejection-sampled points at radius 100, quad size `0.15 + rand*0.1`, brightness `s*s*0.5` where `s = clamp(1 - (cos(sunAngle)*2 + 0.25), 0, 1)` â€” peaks at 0.5, multiplied by `(1 - rainLevel)`.\n\nMoon phase = `floor(dayTime/24000) % 8`, 0 = full moon, advancing at the end of each sunrise. Phase affects only slime/phantom spawning (`MOON_BRIGHTNESS_PER_PHASE = {1, .75, .5, .25, 0, .25, .5, .75}`); night sky light is always 4 regardless of phase in Java Edition.\n\n## 6. Sky, sunset gradient, horizon fog\n\n**Sky dome geometry.** A 9-segment triangle fan of radius 512 at camera-relative `y = +16`, painted flat with `skyColor`, and rendered *with the same linear fog enabled* (`FOG_SKY` mode: start 0, end = renderDistance). That single trick produces the entire horizon gradient: the zenith is 16 units away -\u003e unfogged -\u003e pure sky colour; the rim is 512 units away -\u003e fully fogged -\u003e pure fog colour. Reproduce this rather than authoring a gradient texture.\n\nA matching black disc at `y = -16` (translated +12) is drawn whenever `eyeY \u003c horizonHeight (63.0)` â€” that is the \"void\" below the horizon.\n\n**Sky colour.**\n```\nk = clamp(cos(timeOfDay*2PI)*2 + 0.5, 0, 1)\nskyColor = biomeSkyColor * k\n// rain: desaturate toward luma*0.6 with weight (1 - 0.95*rain)... then scale\n// thunder: same with weight (1 - 0.95*thunder), luma factor 0.2\n```\n`k` reaches 0 (pure black sky) for ticks ~13668-22332, and 1 for ticks ~132-11868. Biome sky colour for procedurally-coloured biomes: `HSVtoRGB(0.62222224 - f*0.05, 0.5 + f*0.1, 1.0)` with `f = clamp(temperature/3, -1, 1)` â€” verified against plains (#78A7FF, temp 0.8) and forest (#79A6FF, temp 0.7).\n\n**Sunset/sunrise fan.** Drawn as a 16-segment fan around the sun\u0027s horizon azimuth, rotated 90 deg to lie against the sky, additively blended:\n```\nc = cos(timeOfDay*2PI)\nif (c \u003c -0.4 || c \u003e 0.4) -\u003e no overlay\ns = c*1.25 + 0.5                                   // 0..1\na = (1 - (1 - sin(s*PI)) * 0.99); a = a*a           // 0.0001 at edges, 1.0 at peak\nrgb = (s*0.3 + 0.7,  s*s*0.7 + 0.2,  0.2)\n```\nBlue is pinned at 0.2 for the whole gradient â€” that is why Minecraft sunsets are red-orange-yellow with no purple. Peak colour `#D96033`. The centre vertex uses full alpha `a`, the rim vertices use alpha 0, giving the radial falloff. `c` passes through [-0.4, 0.4] twice per cycle: once at sunset (c decreasing) and once at sunrise (c increasing); the fan is mirrored 180 deg on the sunrise side via `sin(sunAngle) \u003c 0`.\n\n**Fog colour.** Sampled from biome fog colours through a 3D gaussian `CubicSampler` over quart-resolution biomes, so it blends smoothly when crossing biome borders. Then:\n```\nk = clamp(cos(timeOfDay*2PI)*2 + 0.5, 0, 1)\nfog = biomeFog * (k*0.94 + 0.06, k*0.94 + 0.06, k*0.91 + 0.09)\n// mix in sunset colour by max(0, dot(lookDir, Â±X_axis)) * sunsetAlpha\n// blend toward skyColor by t = 1 - pow(0.25 + 0.75*renderDistChunks/32, 0.25)\n// rain: R,G *= 1-0.5*rain ; B *= 1-0.4*rain\n// thunder: RGB *= 1-0.5*thunder\n```\nDefault biome fog `#C0D8FF`; at night the multipliers reduce it to about `#0B0D17`. The blue channel keeps a higher floor (0.09 vs 0.06) so night fog is blue, matching the night lightmap.\n\nThe render-distance blend `t` is the reason low render distances look hazier and more sky-coloured: `t = 0.26` at 2 chunks, `0.187` at 8 chunks, `0.0` at 32 chunks.\n\n## 7. Fog geometry\n\nShader:\n```glsl\nfloat fog_distance(vec3 pos, int shape) {\n  return shape == 0 ? length(pos) : max(length(pos.xz), abs(pos.y));  // 0=SPHERE 1=CYLINDER\n}\nfloat linear_fog_value(float d, float start, float end) {\n  return d \u003c= start ? 0.0 : d \u003e= end ? 1.0 : (d - start) / (end - start);\n}\ncolor.rgb = mix(color.rgb, fogColor.rgb, fogValue * fogColor.a);\n```\nTerrain (cylinder): `start = rd - clamp(rd/10, 4, 64)`, `end = rd`, where `rd` is render distance in blocks. That is 90 % of render distance for rd \u003e= 40 blocks; the wiki quotes 92 %, so treat the exact constant as Â±2 %. Sky pass: `start = 0, end = rd`.\n\nNether / boss fights: `start = rd*0.05`, `end = min(rd, 192)*0.5`. At 12 chunks this gives 9.6 -\u003e 96 blocks, which exactly reproduces the wiki\u0027s \"appears at 10 blocks, opaque at 96 blocks\" â€” good confirmation of the formula.\n\nWater (sphere): `start = -8`, `end = 96 * max(0.25, waterVision)`, times 0.85 in swamp-tagged biomes. `waterVision` ramps 0 -\u003e 1 over 600 ticks underwater (only accumulates with Water Breathing / Conduit Power / Respiration; otherwise it decays, so you sit at the 0.25 floor -\u003e **end = 24 blocks** for a normal player). On first submersion a much tighter fog is applied and eased out. Fog colour is the biome\u0027s `water_fog_color` (default `#050533`), crossfaded over 5000 ms when the biome changes.\n\nVoid darkening: `v = (cameraY - minBuildHeight) * 0.03125`, and if `v \u003c 1` the fog colour is multiplied by `v*v`. With 1.18+ `minBuildHeight = -64` this starts darkening at Y = -32 and is fully black at Y = -64. Confidence is low on the 0.03125 constant; the shape (quadratic fade over a 32-block band above the world floor) is the part to implement.\n\n## 8. Clouds\n\nLayer at `Y = 192` (fancy: solid boxes 192-196). Overworld only (`cloudHeight = NaN` disables them in Nether/End). Movement:\n```\noffset = (ticks + partialTick) * 0.03          // blocks\ncellX  = (camX + offset) / 12\ncellZ  =  camZ / 12 + 0.33\n// wrap both modulo 2048 cells; translate by -frac(cell), scale(12, 1, 12)\n```\nso clouds drift at 0.03 blocks/tick = 0.6 blocks/s toward -X (west), crossing one 12-block cell every 20 s. Cloud texture is a 256x256 alpha map sampled at 1 texel per cell (`1/256 = 0.00390625` per cell in UV).\n\nColour:\n```\nk = clamp(cos(timeOfDay*2PI)*2 + 0.5, 0, 1)\nrgb = (k*0.9 + 0.1, k*0.9 + 0.1, k*0.85 + 0.15)\n// rain desaturates toward luma*0.6 with weight (1 - 0.95*rain)\n```\nWhite at noon, `#1A1A26` at midnight (note the blue floor is higher than R/G: 0.15 vs 0.10). Fancy clouds apply per-face shading similar to terrain (top full, bottom ~0.7, N/S ~0.9, E/W ~0.8) and are alpha-blended; the layer is culled to a fixed grid rebuilt when the camera crosses a cell boundary, up to 128 chunks.\n\n## 9. Implementation ordering / gotchas\n\n1. Build the 16x16 lightmap once per frame on the CPU, upload as a texture, and sample it in the terrain shader with `texture(lightMap, vec2((block+0.5)/16, (sky+0.5)/16))` using **clamped nearest-ish** sampling â€” vanilla uses linear filtering with a 1/16 inset, giving smooth transitions between adjacent levels.\n2. Pack per-vertex light as two 0-15 values (or the packed int) and let the rasterizer interpolate; that plus the AO multiplier is all of \"smooth lighting\".\n3. AO and light are separate multipliers on the same vertex â€” do not fold AO into the light level, or you lose the distinction between a shadowed corner (dark AO, bright light) and a genuinely unlit block.\n4. The sky-colour daylight factor `k = clamp(2cos(theta)+0.5, 0, 1)` appears in four independent places (sky, fog brightness, cloud colour, sunset gate). Compute it once.\n5. `timeOfDay` is the non-linear cosine-eased function, while `skyDarken` uses `clamp(cos, -0.25, 0.25)`. Using linear time for either makes sunsets snap instead of linger.\n6. The single most impactful correctness detail for \"feel\" is the hyperbolic `L/(60-3L)` curve plus the 0.5/0.6/0.8/1.0 face shades. Everything else is polish.",
+    "sources":  [
+                    "https://minecraft.wiki/w/Light",
+                    "https://minecraft.wiki/w/Daylight_cycle",
+                    "https://minecraft.wiki/w/Sky",
+                    "https://minecraft.wiki/w/Fog",
+                    "https://minecraft.wiki/w/Cloud",
+                    "https://minecraft.wiki/w/Dimension_type",
+                    "https://minecraft.wiki/w/Options",
+                    "https://minecraft.wiki/w/Void",
+                    "https://minecraft.wiki/w/Sun",
+                    "https://minecraft.wiki/w/Moon",
+                    "https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds/",
+                    "http://greyminecraftcoder.blogspot.com/2014/12/lighting-18.html",
+                    "https://maven.fabricmc.net/docs/yarn-1.20-pre2+build.1/net/minecraft/client/render/LightmapTextureManager.html",
+                    "https://lexxie.dev/forge/1.20.1/net/minecraft/client/renderer/LevelRenderer.html",
+                    "Derived from Mojang client source (LightTexture, FogRenderer, LevelRenderer, ClientLevel, ModelBlockRenderer.AmbientOcclusionFace, DimensionSpecialEffects) as decompiled in 1.19/1.20 mappings; numeric outputs cross-checked against the wiki\u0027s published 98%/17%/5%/28% brightness figures and the 10/96-block Nether fog figures"
+                ]
+}
