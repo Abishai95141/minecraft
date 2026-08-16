@@ -54,11 +54,6 @@ function dayAngle(timeOfDay) {
   return ((((timeOfDay % d) + d) % d) / d) * TAU;
 }
 
-/** Sun elevation (unit-sphere Y) for a time of day. */
-function sunElevation(timeOfDay) {
-  return Math.sin(dayAngle(timeOfDay)) * TILT_COS;
-}
-
 /** Unit direction from the camera toward the sun, written into `out`. */
 function sunDirection(timeOfDay, out) {
   const a = dayAngle(timeOfDay);

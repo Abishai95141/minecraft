@@ -7,7 +7,7 @@ import { Mob, isPlayerEntity } from './mob.js';
 import {
   Goal, GoalFlag, FloatGoal, PanicGoal, MeleeAttackGoal, RangedAttackGoal,
   FollowTargetGoal, WanderGoal, LookAtPlayerGoal, AvoidSunGoal, FollowOwnerGoal,
-  TemptGoal, stopMoving, turnHead, turnTowards, yawToward,
+  TemptGoal, stopMoving, turnTowards, yawToward,
 } from './ai.js';
 import { B, BLOCKS, IS_FLUID } from '../world/blocks.js';
 import { Random, hash3 } from '../core/rng.js';
@@ -366,7 +366,8 @@ class HollowWarden extends Mob {
   }
 
   onDeath(source) {
-    for (const add of this.adds) add?.kill?.();
+    // The adds are bound to it; they collapse quietly rather than counting as kills.
+    for (const add of this.adds) add?.remove?.();
     this.adds.length = 0;
     this.world.emit('bossDefeated', { mob: this, killer: isPlayerEntity(source) ? source : null });
     super.onDeath(source);

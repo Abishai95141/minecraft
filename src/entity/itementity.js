@@ -106,25 +106,30 @@ export class ItemEntity extends Entity {
   }
 
   /**
-   * Hands the stack to a player. Guarded, because inventory wiring comes up in
-   * a later stage than the world does.
+   * Hands the stack over. `Player.pickUp` owns the sound and the story event
+   * when it exists; the raw-inventory fallback keeps drops usable before the
+   * player module is wired in.
    */
   pickUpBy(player) {
-    const inv = player.inventory;
-    if (!inv || typeof inv.add !== 'function') return false;
+    const name = this.itemName;
     const before = this.stack.count;
-    const rest = inv.add(this.stack);
-    const taken = before - (rest && !rest.isEmpty ? rest.count : 0);
-    if (taken <= 0) return false;
 
-    this.world.emit('itemPicked', {
-      player,
-      entity: this,
-      item: this.itemName,
-      count: taken,
-    });
-    player.playSound?.('pop');
+    let rest;
+    if (typeof player.pickUp === 'function') {
+      rest = player.pickUp(this.stack);
+    } else if (player.inventory && typeof player.inventory.add === 'function') {
+      rest = player.inventory.add(this.stack);
+      const took = before - (rest && !rest.isEmpty ? rest.count : 0);
+      if (took > 0) {
+        this.world.emit('itemPicked', { player, entity: this, item: name, count: took });
+        this.world.emit('sound', { name: 'pop', x: this.x, y: this.y, z: this.z, volume: 0.3, pitch: 1 });
+      }
+    } else {
+      return false;
+    }
 
+    const remaining = rest && !rest.isEmpty ? rest.count : 0;
+    if (remaining >= before) return false;
     if (!rest || rest.isEmpty) this.remove();
     else this.stack = rest;
     return true;

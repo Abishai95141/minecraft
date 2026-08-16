@@ -43,7 +43,7 @@ export class AudioEngine {
     this.buses = Object.create(null);
     this.volumes = Object.create(null);
 
-    this.listener = { pos: [0, 0, 0], forward: [0, 0, 1], right: [-1, 0, 0] };
+    this.listener = { pos: [0, 0, 0], forward: [0, 0, 1], right: [1, 0, 0] };
 
     this._ready = false;
     this._voices = [];            // scheduled end times, for the voice cap
@@ -202,10 +202,16 @@ export class AudioEngine {
       const len = Math.hypot(forward[0], forward[1], forward[2]) || 1;
       const f0 = forward[0] / len, f1 = forward[1] / len, f2 = forward[2] / len;
       l.forward[0] = f0; l.forward[1] = f1; l.forward[2] = f2;
-      // right = forward x up, with up = (0,1,0), then renormalised for pitch.
-      const rx = -f2, rz = f0;
-      const rl = Math.hypot(rx, rz) || 1;
-      l.right[0] = rx / rl; l.right[1] = 0; l.right[2] = rz / rl;
+      // right = up x forward, which is the same basis `mat4.fpsView` builds:
+      // facing +Z, right is +X. Flattened to the horizon so looking up or down
+      // never swaps the ears.
+      const rx = f2, rz = -f0;
+      const rl = Math.hypot(rx, rz);
+      // Straight up or down has no horizontal heading; keep the last one rather
+      // than collapsing the stereo field to the centre.
+      if (rl > 1e-6) {
+        l.right[0] = rx / rl; l.right[1] = 0; l.right[2] = rz / rl;
+      }
     }
   }
 

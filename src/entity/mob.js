@@ -7,7 +7,7 @@ import { GoalSelector } from './ai.js';
 import { ItemEntity } from './itementity.js';
 import { ItemStack } from '../item/inventory.js';
 import { Random, hash3 } from '../core/rng.js';
-import { MOVE, KNOCKBACK, MOB_DEFAULTS } from '../core/constants.js';
+import { MOVE, MOB_DEFAULTS } from '../core/constants.js';
 import { ITEMS } from '../item/items.js';
 
 /** Players are duck-typed: entity/player.js sets `isPlayer`, and type is a backstop. */
@@ -204,10 +204,6 @@ export class Mob extends LivingEntity {
     e.vz = this.rng.float(-0.08, 0.08);
     this.world.addEntity(e);
     return e;
-  }
-
-  knockback(fromX, fromZ, strength = KNOCKBACK.BASE_STRENGTH) {
-    super.knockback(fromX, fromZ, strength);
   }
 
   playSound(name, opts = {}) {

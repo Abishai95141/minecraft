@@ -45,7 +45,7 @@ bio(Biome.FOREST, 'forest', 'Forest', {
   treeDensity: 0.66, treeTypes: [{ type: 'oak', weight: 8 }, { type: 'birch', weight: 2 }],
   grassDensity: 0.34, flowerDensity: 0.05,
   temperature: 0.7, downfall: 0.8,
-  minY: 62, maxY: 92, heightOffset: 72, heightScale: 6,
+  minY: 62, maxY: 92, heightOffset: 73, heightScale: 7,
   mobs: { passive: FARM, hostile: NIGHT },
 });
 
@@ -82,7 +82,7 @@ bio(Biome.TAIGA, 'taiga', 'Taiga', {
   treeDensity: 0.52, treeTypes: [{ type: 'spruce', weight: 1 }],
   grassDensity: 0.2, flowerDensity: 0.02,
   temperature: 0.25, downfall: 0.8,
-  minY: 62, maxY: 100, heightOffset: 75, heightScale: 8,
+  minY: 62, maxY: 100, heightOffset: 76, heightScale: 8,
   mobs: { passive: ['sheep', 'chicken', 'pig'], hostile: NIGHT },
 });
 
@@ -140,7 +140,7 @@ bio(Biome.STONY_PEAKS, 'stony_peaks', 'Stony Peaks', {
   treeDensity: 0.012, treeTypes: [{ type: 'spruce', weight: 1 }],
   grassDensity: 0.02, flowerDensity: 0,
   temperature: -0.3, downfall: 0.3,
-  minY: 70, maxY: 125, heightOffset: 88, heightScale: 14,
+  minY: 70, maxY: 125, heightOffset: 92, heightScale: 14,
   mobs: { passive: ['sheep'], hostile: NIGHT },
 });
 
@@ -168,8 +168,11 @@ function classify(x, z, seed) {
   const v = simplex2(x * 0.0055, z * 0.0055, seed + 4271) * 24;
   const wx = x + w, wz = z + v;
 
+  // Every threshold below is a measured percentile of its own field, chosen to
+  // land on a vanilla-ish mix: ~22% ocean, plains the largest land biome,
+  // forest close behind, and peaks rare enough to be an event.
   const cont = fbm2(wx * 0.00072, wz * 0.00072, seed + 8101, 3);
-  if (cont < -0.22) return Biome.OCEAN;
+  if (cont < -0.255) return Biome.OCEAN;
 
   // Rivers are the narrow band around the zero contour of a low-frequency field,
   // which naturally winds across every other biome.
@@ -177,15 +180,15 @@ function classify(x, z, seed) {
   if (river > -0.011 && river < 0.011) return Biome.RIVER;
 
   const erosion = fbm2(wx * 0.0017, wz * 0.0017, seed + 3319, 2);
-  if (cont > 0.44 && erosion > 0.02) return Biome.STONY_PEAKS;
+  if (cont > 0.48 && erosion > 0) return Biome.STONY_PEAKS;
 
   const temp = fbm2(wx * 0.00105, wz * 0.00105, seed + 4327, 2);
   const humid = fbm2(wx * 0.00135, wz * 0.00135, seed + 5501, 2);
 
-  if (temp < -0.32) return humid > -0.05 ? Biome.TAIGA : Biome.SNOWY_PLAINS;
-  if (temp > 0.34) return humid < -0.12 ? Biome.DESERT : Biome.SAVANNA;
+  if (temp < -0.28) return humid > -0.25 ? Biome.TAIGA : Biome.SNOWY_PLAINS;
+  if (temp > 0.37) return humid < 0.05 ? Biome.DESERT : Biome.SAVANNA;
   if (humid > 0.38 && erosion < -0.08) return Biome.SWAMP;
-  if (humid > 0.05) return temp < -0.12 ? Biome.BIRCH_FOREST : Biome.FOREST;
+  if (humid > 0.05) return temp < -0.05 ? Biome.BIRCH_FOREST : Biome.FOREST;
   return Biome.PLAINS;
 }
 

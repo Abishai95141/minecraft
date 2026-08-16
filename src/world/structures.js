@@ -805,9 +805,10 @@ export function generateVillage(world, cx, cz, rng) {
     const dims = HOUSE_KINDS[kind];
     let placed = null;
 
-    for (let attempt = 0; attempt < 8 && !placed; attempt++) {
-      const angle = (i / wanted) * Math.PI * 2 + layout.float(-0.28, 0.28);
-      const radius = layout.int(15, 20) + (kind === 'blacksmith' ? 2 : 0);
+    for (let attempt = 0; attempt < 12 && !placed; attempt++) {
+      const angle = (i / wanted) * Math.PI * 2 + layout.float(-0.3, 0.3);
+      // Later attempts push further out rather than giving up on the plot.
+      const radius = layout.int(16, 20) + attempt + (kind === 'blacksmith' ? 2 : 0);
       const bxc = ox + Math.round(Math.cos(angle) * radius);
       const bzc = oz + Math.round(Math.sin(angle) * radius);
       const dirX = bxc - ox, dirZ = bzc - oz;
@@ -841,7 +842,12 @@ export function generateVillage(world, cx, cz, rng) {
 
     if (!placed) continue;
     rects.push({ x0: placed.x0, z0: placed.z0, x1: placed.x1, z1: placed.z1 });
-    buildings.push(buildHouse(world, detail, placed));
+    const info = buildHouse(world, detail, placed);
+    // The forge yard is part of the plot: nothing else may be sited on it.
+    if (info.yard) {
+      rects.push({ x0: info.yard[0], z0: info.yard[1], x1: info.yard[2], z1: info.yard[3] });
+    }
+    buildings.push(info);
   }
 
   // --- paths --------------------------------------------------------------
@@ -862,15 +868,19 @@ export function generateVillage(world, cx, cz, rng) {
   // --- farm plots ---------------------------------------------------------
   const farms = [];
   for (let f = 0; f < 2; f++) {
-    for (let attempt = 0; attempt < 10; attempt++) {
-      const angle = layout.float(0, Math.PI * 2);
-      const radius = layout.int(22, 27);
+    // The two plots start half a turn apart so they never end up side by side.
+    const bias = f * Math.PI + layout.float(-0.5, 0.5);
+    for (let attempt = 0; attempt < 24; attempt++) {
+      const angle = bias + attempt * 0.42;
+      const radius = 24 + (attempt >> 2);
       const fx = ox + Math.round(Math.cos(angle) * radius);
       const fz = oz + Math.round(Math.sin(angle) * radius);
       const x0 = fx - 4, z0 = fz - 3, x1 = fx + 4, z1 = fz + 3;
+      // Later attempts settle for a tighter gap rather than dropping the plot.
+      const pad = attempt < 12 ? 4 : 2;
       let clash = false;
       for (const r of rects) {
-        if (x0 - 5 <= r.x1 && x1 + 5 >= r.x0 && z0 - 5 <= r.z1 && z1 + 5 >= r.z0) { clash = true; break; }
+        if (x0 - pad <= r.x1 && x1 + pad >= r.x0 && z0 - pad <= r.z1 && z1 + pad >= r.z0) { clash = true; break; }
       }
       if (clash) continue;
       const y = levelOf(world, x0 - 1, z0 - 1, x1 + 1, z1 + 1);
@@ -883,8 +893,8 @@ export function generateVillage(world, cx, cz, rng) {
     }
   }
 
-  // A cache by the well: the story's first bread and torches come from here.
-  placeChest(world, wellX - 2, baseY + 1, wellZ + 2,
+  // A cache beside the well: the story's first bread and torches come from here.
+  placeChest(world, wellX, baseY + 1, wellZ + 3,
     rollLoot(loot, [
       { item: 'bread', min: 2, max: 4, weight: 4 },
       { item: 'torch', min: 3, max: 8, weight: 4 },
@@ -1131,9 +1141,13 @@ export function generateDungeon(world, x, y, z, rng) {
     setSoft(world, px, floorY + 3, pz + (pz < z ? 1 : -1), B.WALL_TORCH, fz);
   }
 
-  // --- lava alcoves, one per wall ----------------------------------------
+  // --- lava alcoves ------------------------------------------------------
+  // Both side walls carry two, and the back wall one. The -Z wall is left
+  // alone: that is where the corridor comes in.
   const alcoves = [
-    [x, z0, 0, -1], [x, z1, 0, 1], [x0, z, -1, 0], [x1, z, 1, 0],
+    [x0, z - 4, -1, 0], [x0, z + 4, -1, 0],
+    [x1, z - 4, 1, 0], [x1, z + 4, 1, 0],
+    [x, z1, 0, 1],
   ];
   for (const [ax, az, dx, dz] of alcoves) {
     const px = (lateral, depth) => ax + (dx !== 0 ? dx * depth : lateral);
@@ -1220,23 +1234,24 @@ function buildEntranceShaft(world, rng, sx, sz, surfaceY, floorY) {
   const x0 = sx - 2, x1 = sx + 2, z0 = sz - 2, z1 = sz + 2;
   flattenArea(world, x0 - 2, z0 - 2, x1 + 2, z1 + 2, surfaceY, B.COARSE_DIRT, 8);
 
-  // Lining and newel.
-  for (let y = floorY - 1; y <= surfaceY + 2; y++) {
-    for (const [px, pz] of perimeter(x0, z0, x1, z1)) {
-      set(world, px, y, pz, y > surfaceY ? B.STONE_BRICKS : dungeonBlock(rng), 0);
+  // Lining: the shaft has to be watertight, because it cuts through caves.
+  const wall = perimeter(x0, z0, x1, z1);
+  for (let y = floorY - 1; y <= surfaceY; y++) {
+    for (const [px, pz] of wall) {
+      set(world, px, y, pz, y >= surfaceY - 1 ? B.STONE_BRICKS : dungeonBlock(rng), 0);
     }
-    set(world, sx, y, sz, B.COBBLESTONE, 0);
   }
-  fillBox(world, x0 + 1, floorY, z0 + 1, x1 - 1, surfaceY + 2, z1 - 1, B.AIR, 0);
-  set(world, sx, floorY, sz, B.STONE_BRICKS, 0);
+  fillBox(world, x0 + 1, floorY, z0 + 1, x1 - 1, surfaceY + 3, z1 - 1, B.AIR, 0);
   for (let pz = z0 + 1; pz <= z1 - 1; pz++) {
     for (let px = x0 + 1; px <= x1 - 1; px++) set(world, px, floorY, pz, B.STONE_BRICKS, 0);
   }
-  for (let y = floorY; y <= surfaceY; y++) set(world, sx, y, sz, B.COBBLESTONE, 0);
+  // Solid newel: without it the middle of the spiral is a shaft to the bottom.
+  for (let y = floorY + 1; y <= surfaceY; y++) set(world, sx, y, sz, B.COBBLESTONE, 0);
 
-  // Descending spiral: eight ring tiles per turn, one block down per tile.
+  // Descending spiral: eight ring tiles per turn, one block down per tile,
+  // starting on the tile the surface arch opens onto.
   const ring = perimeter(x0 + 1, z0 + 1, x1 - 1, z1 - 1);
-  const start = ring.findIndex(([px, pz]) => px === sx && pz === z0 + 1);
+  const start = ring.findIndex(([px, pz]) => px === sx && pz === z1 - 1);
   const drop = Math.max(1, surfaceY - floorY - 1);
   for (let i = 0; i <= drop; i++) {
     const a = ring[(start + i) % ring.length];
@@ -1254,9 +1269,11 @@ function buildEntranceShaft(world, rng, sx, sz, surfaceY, floorY) {
     }
   }
 
-  // Surface arch, opening toward the dungeon.
-  placeStructure(world, x0, surfaceY + 1, z0 + 1, TEMPLATES.ruin_arch, 0);
-  fillBox(world, sx - 1, surfaceY + 1, z1, sx + 1, surfaceY + 3, z1 + 1, B.AIR, 0);
+  // Surface arch, its gap opening toward the dungeon.
+  placeStructure(world, x0, surfaceY + 1, z0, TEMPLATES.ruin_arch, 0);
+  fillBox(world, sx - 1, surfaceY + 1, z1, sx + 1, surfaceY + 3, z1 + 2, B.AIR, 0);
+  set(world, x0 - 1, surfaceY + 1, z1 + 1, B.COBBLESTONE, 0);
+  set(world, x1 + 1, surfaceY + 1, z1 + 1, B.COBBLESTONE, 0);
   set(world, x0 - 1, surfaceY + 2, z1 + 1, B.TORCH, 0);
   set(world, x1 + 1, surfaceY + 2, z1 + 1, B.TORCH, 0);
 }

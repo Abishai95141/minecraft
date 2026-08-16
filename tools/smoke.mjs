@@ -715,15 +715,6 @@ section('gameplay: mine, collect, place', async () => {
   ok('the player did not fall out of the world', player.y > 0, `y=${round(player.y)}`);
   ok('the player took no spawn damage', player.health === 20, `${player.health}hp`);
 
-  // Walk forward for a second and check the distance covered matches a walk.
-  const x0 = player.x, z0 = player.z;
-  player.moveForward = 1;
-  for (let i = 0; i < 20; i++) player.tick();
-  const dist = Math.hypot(player.x - x0, player.z - z0);
-  ok('walking covers roughly 4.3 blocks per second', dist > 3.2 && dist < 4.6, `${round(dist)} blocks in 20 ticks`);
-  player.moveForward = 0;
-  for (let i = 0; i < 20; i++) player.tick();
-
   // Mine the block the player is standing on top of, by looking straight down.
   player.pitch = Math.PI / 2 - 0.01;
   player.updateTargets();
@@ -749,42 +740,127 @@ section('gameplay: mine, collect, place', async () => {
       `${beforeCount} -> ${afterCount} stacks`);
   }
 
-  // Place a block from the hotbar and confirm the world changed.
+  // Place a block, aiming down and forward so the target lands beside the player
+  // rather than inside them — placing into your own hitbox is correctly refused.
   player.inventory.set(0, new ItemStack('cobblestone', 8));
   player.selectSlot(0);
-  player.pitch = Math.PI / 2 - 0.01;
+  player.pitch = 0.8;
   player.updateTargets();
   const held = player.inventory.held.count;
   const placed = player.use();
-  ok('placing a block from the hotbar works', placed === true);
+  ok('placing a block from the hotbar works', placed === true,
+    player.lookingAt ? `aimed at ${player.lookingAt.x},${player.lookingAt.y},${player.lookingAt.z}` : 'no target');
   ok('placing consumes one item', player.inventory.held.count === held - 1,
     `${held} -> ${player.inventory.held.count}`);
 
-  // Falling far enough must hurt.
-  player.y += 30;
-  player.fallDistance = 0;
-  player.vy = 0;
-  for (let i = 0; i < 200 && player.health === 20; i++) player.tick();
-  ok('a long fall causes damage', player.health < 20, `${player.health}hp`);
+  // Placing a block into your own hitbox must be refused, not allowed.
+  player.placeCooldown = 0;
+  player.useCooldown = 0;
+  player.pitch = Math.PI / 2 - 0.01;
+  player.updateTargets();
+  const beforeSelf = player.inventory.held.count;
+  player.use();
+  ok('placing inside yourself is refused', player.inventory.held.count === beforeSelf,
+    `${beforeSelf} -> ${player.inventory.held.count}`);
+});
 
-  // Hunger must drain while sprinting rather than sitting at full forever.
-  player.health = 20;
+section('gameplay: survival rules', async () => {
+  const { Player } = await need('../src/entity/player.js');
+  const { ItemStack } = await need('../src/item/inventory.js');
+  const world = await flatWorld(3);
+
+  const stubGame = {
+    playSound() {}, chat() {}, toast() {}, openContainer() {},
+    particles: null, story: null, audio: null,
+    onPlayerHurt() {}, onPlayerDeath() {}, onHeldItemChanged() {},
+  };
+  const player = new Player(world, 0.5, 64, 0.5, stubGame);
+  world.addEntity(player);
+  for (let i = 0; i < 20; i++) world.tick(1);
+
+  // Walking from a standstill covers 4.06 blocks in 20 ticks: the 4.317 b/s
+  // steady state minus the acceleration transient.
+  const x0 = player.x, z0 = player.z;
+  player.moveForward = 1;
+  for (let i = 0; i < 20; i++) player.tick();
+  near('walk distance in 20 ticks', Math.hypot(player.x - x0, player.z - z0), 4.06, 0.1);
+  player.moveForward = 0;
+  for (let i = 0; i < 30; i++) player.tick();
+
+  // Sprinting is faster, and only while moving forward with food in the bar.
+  const x1 = player.x, z1 = player.z;
+  player.sprinting = true;
+  player.moveForward = 1;
+  for (let i = 0; i < 40; i++) player.tick();
+  const sprintPerTick = Math.hypot(player.x - x1, player.z - z1) / 40;
+  ok('sprinting is faster than walking', sprintPerTick > 0.24, `${round(sprintPerTick * 20)} blocks/s`);
+  player.sprinting = false;
+  player.moveForward = 0;
+  for (let i = 0; i < 30; i++) player.tick();
+
+  // A jump reaches the vanilla apex.
+  const groundY = player.y;
+  player.jumping = true;
+  let apex = groundY;
+  for (let i = 0; i < 30; i++) { player.tick(); apex = Math.max(apex, player.y); }
+  near('jump apex above the ground', apex - groundY, 1.2516, 0.02);
+  player.jumping = false;
+  for (let i = 0; i < 30; i++) player.tick();
+
+  // Sprinting burns hunger; standing still does not.
   player.exhaustion = 0;
   player.saturation = 0;
   player.food = 20;
   player.sprinting = true;
   player.moveForward = 1;
   for (let i = 0; i < 400; i++) player.tick();
-  ok('sprinting drains hunger', player.food < 20 || player.exhaustion > 0,
-    `food=${player.food} exhaustion=${round(player.exhaustion)}`);
+  ok('sprinting drains hunger', player.food < 20, `food=${player.food}`);
+  player.sprinting = false;
+  player.moveForward = 0;
+
+  // Fall damage gets fresh players: 400 ticks of sprinting carried the first one
+  // off the edge of the platform and into the void, which kills it.
+  const dropTest = (height) => {
+    const p = new Player(world, 4.5, 64 + height, 4.5, stubGame);
+    world.addEntity(p);
+    for (let i = 0; i < 300 && !p.onGround; i++) p.tick();
+    return p;
+  };
+
+  const longFall = dropTest(30);
+  ok('a dropped player lands on the platform', longFall.onGround, `y=${round(longFall.y)}`);
+  ok('a 30-block fall is lethal', longFall.health <= 0, `${longFall.health}hp`);
+
+  const shortFall = dropTest(2);
+  ok('a 2-block fall is harmless', shortFall.health === 20, `${shortFall.health}hp`);
+
+  const midFall = dropTest(8);
+  ok('an 8-block fall hurts but does not kill', midFall.health < 20 && midFall.health > 0,
+    `${midFall.health}hp`);
+
+  const p2 = new Player(world, 8.5, 64, 8.5, stubGame);
+  world.addEntity(p2);
+  for (let i = 0; i < 20; i++) p2.tick();
+
+  // Eating restores hunger.
+  p2.food = 10;
+  p2.saturation = 0;
+  p2.inventory.set(0, new ItemStack('bread', 2));
+  p2.selectSlot(0);
+  ok('eating starts', p2.startEating(0) === true);
+  for (let i = 0; i < 60 && p2.eatingTicks > 0; i++) p2.tick();
+  ok('eating restores hunger', p2.food > 10, `food=${p2.food}`);
+  ok('eating consumes the item', p2.inventory.countOf('bread') === 1, `${p2.inventory.countOf('bread')} left`);
 
   // Save and reload must round-trip.
-  const json = player.toJSON();
+  p2.inventory.set(1, new ItemStack('cobblestone', 12));
+  const json = p2.toJSON();
   const restored = new Player(world, 0, 100, 0, stubGame);
   restored.fromJSON(json);
   ok('player state round-trips through JSON',
-    Math.abs(restored.x - player.x) < 1e-6 && restored.food === player.food &&
-    restored.inventory.countOf('cobblestone') === player.inventory.countOf('cobblestone'));
+    Math.abs(restored.x - p2.x) < 1e-6 && restored.food === p2.food &&
+    restored.inventory.countOf('cobblestone') === 12,
+    `x=${round(restored.x)} food=${restored.food} cobble=${restored.inventory.countOf('cobblestone')}`);
 });
 
 section('hud renders', async () => {

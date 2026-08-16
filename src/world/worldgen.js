@@ -168,9 +168,9 @@ export class WorldGenerator {
     // Ridges only bite where the blended profile is already alpine, so plains
     // stay plains while peaks get real relief.
     if (off > 76) {
-      const alpine = Math.min(1, (off - 76) / 12);
+      const alpine = Math.min(1, (off - 76) / 14);
       const ridge = ridged2(x * 0.0031, z * 0.0031, seed + 1733, 4);
-      h += alpine * ridge * ridge * 30;
+      h += alpine * ridge * ridge * 34;
     }
 
     // Sampled at the column's own altitude, so cliffs get a 3D-looking wobble
@@ -270,7 +270,9 @@ export class WorldGenerator {
         const i = columnIndex(x, z);
         const wx = x0 + x, wz = z0 + z;
         const h = hs[i], b = bs[i], bd = BIOMES[b];
-        const top = this._surfaceTop(bd, b, h);
+        let top = this._surfaceTop(bd, b, h);
+        // Clay dots the shallows the way it does on vanilla lake and river beds.
+        if (top === B.SAND && h < SEA && hash3(wx >> 2, 0, wz >> 2, seed + 3701) % 12 === 0) top = B.CLAY;
         let filler = h > SEA || SEA - h > 3 ? bd.filler : B.SAND;
         if (top === B.SAND) filler = B.SAND;
         else if (top === B.SNOW_BLOCK) filler = B.STONE;
@@ -335,7 +337,8 @@ export class WorldGenerator {
         const lx = x >> 2, fx = (x & 3) * 0.25;
         const w00 = (1 - fx) * (1 - fz), w10 = fx * (1 - fz);
         const w01 = (1 - fx) * fz, w11 = fx * fz;
-        for (let li = 0; li < levels; li++) {
+        const used = Math.min(levels, (((colTop - CAVE_MIN_Y) / CAVE_Y_STRIDE) | 0) + 2);
+        for (let li = 0; li < used; li++) {
           const a = li * LAT_PLANE + lz * LAT_N + lx;
           const c = a + LAT_N;
           p1[li] = l1[a] * w00 + l1[a + 1] * w10 + l1[c] * w01 + l1[c + 1] * w11;
@@ -343,14 +346,15 @@ export class WorldGenerator {
           p3[li] = l3[a] * w00 + l3[a + 1] * w10 + l3[c] * w01 + l3[c + 1] * w11;
         }
 
+        // Everything from CAVE_MIN_Y to colTop is guaranteed solid, non-bedrock
+        // stone or soil: _fillColumns laid it down, the bedrock roughness stops
+        // below CAVE_MIN_Y, water only ever sits above the terrain, and ravines
+        // run after this pass. So the per-voxel block read is not needed.
         for (let y = CAVE_MIN_Y; y <= colTop; y++) {
-          const cur = chunk.getBlock(x, y, z);
-          if (cur === B.AIR || cur === B.BEDROCK || cur === B.WATER || cur === B.LAVA) continue;
-
           const t = (y - CAVE_MIN_Y) / CAVE_Y_STRIDE;
           const li = t | 0;
           const fy = t - li;
-          const lj = li + 1 < levels ? li + 1 : li;
+          const lj = li + 1 < used ? li + 1 : li;
 
           // Tunnels pinch shut as they approach daylight, so the surface stays
           // intact and surfaceHeight keeps telling the truth.

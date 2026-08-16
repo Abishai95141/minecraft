@@ -293,7 +293,8 @@ export class MeleeAttackGoal extends Goal {
     const d = Math.hypot(t.x - m.x, t.z - m.z);
     if (d > reach || !this.pauseInReach) stepToward(m, t.x, t.y, t.z, this.speed);
     else stopMoving(m);
-    if (d <= reach && Math.abs(t.y - m.y) < 2.5 && m.attackCooldown <= 0 && m.canSee(t)) {
+    if (m.attackDamage > 0 && d <= reach && Math.abs(t.y - m.y) < 2.5 &&
+        m.attackCooldown <= 0 && m.canSee(t)) {
       m.attackTarget(t);
     }
   }
