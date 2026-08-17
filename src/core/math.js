@@ -129,10 +129,14 @@ export const mat4 = {
   fpsView(o, pos, yaw, pitch) {
     const cp = Math.cos(pitch), sp = Math.sin(pitch);
     const cy = Math.cos(yaw), sy = Math.sin(yaw);
-    // Camera basis in world space.
+    // Camera basis in world space. `up` must be exactly forward x right, or the
+    // basis is not orthogonal and the vertical axis inverts as pitch grows:
+    // with up = (sy*sp, cp, -cy*sp) the dot with forward is -2*sin(p)*cos(p),
+    // which is zero only when looking level — so the world looked correct
+    // straight ahead and turned upside down the moment you looked up or down.
     const fx = -sy * cp, fy = -sp, fz = cy * cp;      // forward
     const rx = cy, ry = 0, rz = sy;                    // right
-    const ux = sy * sp, uy = cp, uz = -cy * sp;        // up
+    const ux = -sy * sp, uy = cp, uz = cy * sp;        // up = forward x right
     o[0] = rx; o[1] = ux; o[2] = -fx; o[3] = 0;
     o[4] = ry; o[5] = uy; o[6] = -fy; o[7] = 0;
     o[8] = rz; o[9] = uz; o[10] = -fz; o[11] = 0;

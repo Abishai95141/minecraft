@@ -116,13 +116,33 @@ export class Input {
     this.dx = this.dy = 0;
   }
 
+  /**
+   * Pointer lock is best-effort and every failure here is benign. Browsers
+   * refuse it for about a second after the user presses Escape, and refuse it
+   * outright without a user gesture — both reject the promise, and an
+   * unhandled rejection would otherwise surface as a crash screen. We retry
+   * once shortly after, then give up quietly; the next click re-arms it.
+   */
   requestLock() {
-    if (this.locked) return;
-    const p = this.canvas.requestPointerLock?.({ unadjustedMovement: true });
-    // Chrome returns a promise when passed options; older paths return undefined.
-    if (p && typeof p.catch === 'function') {
-      p.catch(() => { try { this.canvas.requestPointerLock(); } catch { /* ignore */ } });
-    }
+    if (this.locked || this._lockPending) return;
+    this._lockPending = true;
+    const attempt = (withOptions) => {
+      let p;
+      try {
+        p = withOptions
+          ? this.canvas.requestPointerLock?.({ unadjustedMovement: true })
+          : this.canvas.requestPointerLock?.();
+      } catch {
+        return Promise.reject();
+      }
+      return p && typeof p.then === 'function' ? p : Promise.resolve();
+    };
+    attempt(true)
+      // Older engines reject `unadjustedMovement`; retry without it.
+      .catch(() => attempt(false))
+      .catch(() => new Promise((r) => setTimeout(r, 250)).then(() => attempt(false)))
+      .catch(() => { /* the browser is not willing right now; the next click retries */ })
+      .finally(() => { this._lockPending = false; });
   }
 
   releaseLock() {

@@ -18,7 +18,7 @@ const PASS_COUNT = 3;
 /** 4096 blocks x 24 quads is the most geometry one section can ever emit. */
 const MAX_QUADS = 98304;
 /** Sections meshed and uploaded per frame. Streaming must never own a frame. */
-const MESH_BUDGET = 4;
+const MESH_BUDGET = 10;
 
 /** pos3 + uv2 + layer + overlay, all uint16. */
 const STRIDE_U16 = 14;

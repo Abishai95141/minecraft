@@ -157,19 +157,32 @@ tex('oak_planks', (p) => p.planks(0xb8945f, 0x96754a, 0xc9a672));
 tex('birch_planks', (p) => p.planks(0xc8b688, 0xa9986e, 0xd9c99b));
 tex('spruce_planks', (p) => p.planks(0x7a5a32, 0x5f4626, 0x8d6b3e));
 
-// Leaves are greyscale + alpha holes; tinted by biome foliage colour.
+// Leaves are greyscale + a few alpha holes; tinted by biome foliage colour.
+// The gaps have to be sparse and clustered: scattering 10-14% of every tile as
+// individual transparent pixels turned a whole forest into a haze of sky specks
+// when seen from any distance.
 const leaves = (density, holes) => (p) => {
   p.noise([0xb4b4b4, 0xc8c8c8, 0xa0a0a0, 0xd8d8d8, 0x909090]);
   p.speckle(0xe4e4e4, density);
   p.speckle(0x787878, density);
-  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (p.chance(holes)) p.set(x, y, 0, 0);
+  // A handful of small bites out of the edges, rather than uniform static.
+  for (let i = 0; i < holes; i++) {
+    const x = p.randInt(0, 15), y = p.randInt(0, 15);
+    p.set(x, y, 0, 0);
+    if (p.chance(0.5)) p.set((x + 1) & 15, y, 0, 0);
+    if (p.chance(0.3)) p.set(x, (y + 1) & 15, 0, 0);
+  }
 };
-tex('oak_leaves', leaves(0.14, 0.10));
-tex('birch_leaves', leaves(0.16, 0.12));
+tex('oak_leaves', leaves(0.14, 5));
+tex('birch_leaves', leaves(0.16, 6));
 tex('spruce_leaves', (p) => {
   p.noise([0x8c8c8c, 0x9c9c9c, 0x7c7c7c, 0xacacac]);
   p.speckle(0xbcbcbc, 0.12);
-  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (p.chance(0.14)) p.set(x, y, 0, 0);
+  for (let i = 0; i < 5; i++) {
+    const x = p.randInt(0, 15), y = p.randInt(0, 15);
+    p.set(x, y, 0, 0);
+    if (p.chance(0.4)) p.set((x + 1) & 15, y, 0, 0);
+  }
 });
 
 // ================================================================== ores
@@ -204,13 +217,20 @@ tex('deepslate_lapis_ore', oreTex('deepslate', LAPIS));
 
 // ================================================================== building
 
+// Glass is drawn in the alpha-tested pass, which does not blend: a
+// half-transparent wash would either vanish under the cutoff or come out as a
+// solid tile. Vanilla's answer is the only one that works here — leave the
+// middle genuinely empty and carry the whole read on an opaque frame.
 tex('glass', (p) => {
-  p.fill(0xd6ecf5, 40);
-  p.outline(0, 0, 16, 16, 0xe8f6ff, 130);
-  // A couple of highlight streaks so glass reads as glass at a glance.
-  p.line(2, 12, 6, 8, 0xffffff, 150);
-  p.line(9, 6, 12, 3, 0xffffff, 110);
-  p.set(13, 2, 0xffffff, 190);
+  p.clear();
+  p.outline(0, 0, 16, 16, 0xd7ecf5);
+  p.outline(1, 1, 14, 14, 0xbcd9e6);
+  // A corner glint and one diagonal streak, so a pane catches the eye.
+  p.line(3, 12, 7, 8, 0xffffff);
+  p.line(4, 12, 8, 8, 0xeaf7ff);
+  p.line(10, 6, 12, 4, 0xffffff);
+  p.set(12, 3, 0xffffff);
+  p.set(13, 3, 0xeaf7ff);
 });
 tex('bricks', (p) => {
   p.bricks(0xa8a099, [0x9e5e4a, 0x96563f, 0xa76854, 0x8e5040], 4, true);

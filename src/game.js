@@ -2,7 +2,7 @@
 // interpolated render loop, streams chunks around the player, and drives the
 // screen stack. Everything else reaches the rest of the game through here.
 
-import { MS_PER_TICK, CAMERA } from './core/constants.js';
+import { MS_PER_TICK, CAMERA, WORLD } from './core/constants.js';
 import { mat4, vec3, extractFrustum, clamp, hexToRgb } from './core/math.js';
 import { settings } from './core/settings.js';
 import { Input } from './core/input.js';
@@ -10,7 +10,7 @@ import * as storage from './core/storage.js';
 import { Random } from './core/rng.js';
 
 import { World } from './world/world.js';
-import { B, BLOCKS, RenderType } from './world/blocks.js';
+import { B, BLOCKS, RenderType, IS_FLUID } from './world/blocks.js';
 import { CHUNK_SIZE } from './world/chunk.js';
 import { WorldGenerator } from './world/worldgen.js';
 import { LightEngine } from './world/lighting.js';
@@ -44,12 +44,16 @@ import { StoryMode } from './story/story.js';
 import { DialogueBox } from './story/dialogue.js';
 
 /** Chunk work budgets per frame. Small enough that streaming never hitches. */
+// Per-tick streaming budgets (20 ticks/second). These are what the world can
+// catch up at once the loading screen has handed over — walking into fresh
+// terrain. `light: 1` meant one chunk lit every 50ms, so a render distance of
+// 8 took a quarter of a minute to finish revealing itself.
 const BUDGET = {
-  generate: 2,
-  populate: 2,
-  light: 1,
-  lightMs: 3,
-  meshMarks: 24,
+  generate: 4,
+  populate: 4,
+  light: 6,
+  lightMs: 6,
+  meshMarks: 64,
 };
 
 export class Game {
@@ -695,41 +699,128 @@ export class Game {
     const scx = spawn.x >> 4;
     const scz = spawn.z >> 4;
 
-    // Generate the spawn area up front so the player never falls through it.
-    const spawnR = 3;
-    const total = (spawnR * 2 + 1) ** 2;
-    let done = 0;
-    for (let dz = -spawnR; dz <= spawnR; dz++) {
-      for (let dx = -spawnR; dx <= spawnR; dx++) {
-        const chunk = this.world.getOrCreateChunk(scx + dx, scz + dz);
-        if (!chunk.generated) { this.generator.generateChunk(chunk); chunk.generated = true; }
-        done++;
-        if (done % 8 === 0) {
-          loading.setProgress(0.1 + (done / total) * 0.35, 'Shaping the land');
-          await nextFrame();
-        }
-      }
+    // Build the whole visible world on the loading screen, not after the player
+    // is already standing in it. Streaming only 7x7 chunks here and leaving the
+    // other ~280 to trickle in at one lit chunk per tick meant you spawned into
+    // a half-drawn world full of holes for the better part of a minute.
+    // Generation needs a one-chunk apron so populate always has its neighbours.
+    const viewR = Math.max(4, settings.get('renderDistance'));
+    const genR = viewR + 1;
+    const rings = [];
+    for (let dz = -genR; dz <= genR; dz++) {
+      for (let dx = -genR; dx <= genR; dx++) rings.push([dx, dz, Math.max(Math.abs(dx), Math.abs(dz))]);
     }
-    for (let dz = -spawnR + 1; dz <= spawnR - 1; dz++) {
-      for (let dx = -spawnR + 1; dx <= spawnR - 1; dx++) {
-        const chunk = this.world.getChunk(scx + dx, scz + dz);
-        if (chunk && !chunk.populated) {
-          this.generator.populateChunk(chunk);
-          chunk.populated = true;
-          chunk.recomputeHeightMap();
-        }
+    // Nearest first, so if anything is ever cut short it is the far edge.
+    rings.sort((a, b) => a[2] - b[2]);
+
+    let done = 0;
+    for (const [dx, dz] of rings) {
+      const chunk = this.world.getOrCreateChunk(scx + dx, scz + dz);
+      if (!chunk.generated) { this.generator.generateChunk(chunk); chunk.generated = true; }
+      if (++done % 24 === 0) {
+        loading.setProgress(0.05 + (done / rings.length) * 0.35, 'Shaping the land');
+        await nextFrame();
       }
     }
 
-    loading.setProgress(0.5, 'Letting the light in');
+    loading.setProgress(0.4, 'Growing the world');
     await nextFrame();
-    for (const chunk of this.world.chunks.values()) {
-      if (chunk.populated && !chunk.lit) { this.lighting.initialLight(chunk); chunk.lit = true; }
+    done = 0;
+    for (const [dx, dz] of rings) {
+      if (Math.max(Math.abs(dx), Math.abs(dz)) > viewR) continue;
+      const chunk = this.world.getChunk(scx + dx, scz + dz);
+      if (chunk && !chunk.populated) {
+        this.generator.populateChunk(chunk);
+        chunk.populated = true;
+        chunk.recomputeHeightMap();
+      }
+      if (++done % 24 === 0) {
+        loading.setProgress(0.4 + (done / rings.length) * 0.2, 'Growing the world');
+        await nextFrame();
+      }
+    }
+
+    // findSpawnPoint runs on pure noise, before a single tree exists, so it can
+    // happily pick a spot that populate then buries under a canopy — you spawn
+    // nose-first into leaves with no ground in sight. Now that the terrain is
+    // real, nudge the spawn to somewhere with sky overhead and room to stand.
+    if (!opts.data?.player) {
+      // The *walkable* ground, ignoring anything that grew on it. getHeight()
+      // counts leaves, so measuring from it would only tell us the sky is clear
+      // above the treetops — which it always is.
+      const groundOf = (x, z) => {
+        for (let y = this.world.getHeight(x, z); y > WORLD.SEA_LEVEL - 8; y--) {
+          const id = this.world.getBlock(x, y - 1, z);
+          if (id === B.AIR) continue;
+          const def = BLOCKS[id];
+          if (def.render !== RenderType.CUBE) continue;                // plants, slabs
+          if (def.name.endsWith('_leaves') || def.name.endsWith('_log')) continue;
+          return { y, solid: !IS_FLUID[id], name: def.name };
+        }
+        return null;
+      };
+      // A column is open when nothing hangs over the ground you would stand on.
+      const openColumn = (x, z, need = 8) => {
+        const g0 = groundOf(x, z);
+        if (!g0 || !g0.solid || g0.y <= WORLD.SEA_LEVEL) return null;
+        for (let dy = 0; dy < need; dy++) {
+          if (this.world.getBlock(x, g0.y + dy, z) !== B.AIR) return null;
+        }
+        return g0;
+      };
+      // Sky overhead is not enough: a beach at the foot of a cliff scores full
+      // marks on that alone, and you spawn with your nose against a dirt wall.
+      // Neighbours must also sit at roughly the same height, i.e. be somewhere
+      // you could actually walk.
+      const openness = (x, z) => {
+        const here = openColumn(x, z);
+        if (!here) return -1;
+        let score = 0;
+        for (let dz = -2; dz <= 2; dz++) {
+          for (let dx = -2; dx <= 2; dx++) {
+            const n = openColumn(x + dx, z + dz, 5);
+            if (n && Math.abs(n.y - here.y) <= 2) score++;
+          }
+        }
+        return score;                                        // out of 25
+      };
+      let best = { x: this.spawnX, z: this.spawnZ, score: openness(this.spawnX, this.spawnZ) };
+      for (let r = 2; r <= 96 && best.score < 23; r += 2) {
+        const steps = Math.max(10, Math.round(r * 1.4));
+        for (let i = 0; i < steps; i++) {
+          const a = (i / steps) * Math.PI * 2;
+          const x = this.spawnX + Math.round(Math.cos(a) * r);
+          const z = this.spawnZ + Math.round(Math.sin(a) * r);
+          const s = openness(x, z);
+          if (s > best.score) best = { x, z, score: s };
+        }
+      }
+      if (best.score > 0) { this.spawnX = best.x; this.spawnZ = best.z; }
+      // Take the standing height from the SAME survey. Deriving it from
+      // generator.surfaceHeight() instead reads the raw noise, which disagrees
+      // with the blocks actually placed wherever a cave, a beach or the
+      // sea-level flattening moved the surface — and that buried the player
+      // inside the hillside, looking out at the underside of the world.
+      const g0 = openColumn(this.spawnX, this.spawnZ) || groundOf(this.spawnX, this.spawnZ);
+      this.spawnY = g0 ? g0.y : null;
+    }
+
+    loading.setProgress(0.6, 'Letting the light in');
+    await nextFrame();
+    done = 0;
+    const toLight = [...this.world.chunks.values()].filter((c) => c.populated && !c.lit);
+    for (const chunk of toLight) {
+      this.lighting.initialLight(chunk);
+      chunk.lit = true;
+      if (++done % 16 === 0) {
+        loading.setProgress(0.6 + (done / Math.max(1, toLight.length)) * 0.15, 'Letting the light in');
+        await nextFrame();
+      }
     }
     let guard = 0;
-    while (this.lighting.pending > 0 && guard++ < 400) {
+    while (this.lighting.pending > 0 && guard++ < 4000) {
       this.lighting.process(8);
-      if (guard % 20 === 0) { loading.setProgress(0.5 + Math.min(0.2, guard / 400), 'Letting the light in'); await nextFrame(); }
+      if (guard % 20 === 0) { loading.setProgress(0.75, 'Letting the light in'); await nextFrame(); }
     }
 
     loading.setProgress(0.75, 'Waking up');
@@ -742,7 +833,7 @@ export class Game {
     // top of it. Searching down from the sky instead would land the player on a
     // canopy, so start from the ground and clear the sapling-height pocket the
     // player occupies — otherwise you spawn standing on leaves or inside a trunk.
-    const groundY = this.generator.surfaceHeight(this.spawnX, this.spawnZ) + 1;
+    const groundY = this.spawnY ?? (this.generator.surfaceHeight(this.spawnX, this.spawnZ) + 1);
     for (let dy = 0; dy < 2; dy++) {
       for (let dz = -1; dz <= 1; dz++) {
         for (let dx = -1; dx <= 1; dx++) {
@@ -784,10 +875,23 @@ export class Game {
       this.player.inventory.addToHotbarFirst(new ItemStack('bread', 3));
     }
 
-    loading.setProgress(0.95, 'Meshing the world');
+    // Mesh everything that is going to be visible before handing over. The old
+    // 24 update() calls covered under 100 sections of the ~2000 in view, so the
+    // player was dropped into a world that was still assembling itself.
+    loading.setProgress(0.9, 'Meshing the world');
     await nextFrame();
-    this.streamChunks();
-    for (let i = 0; i < 24; i++) { this.renderer.update(this.camera, 0.016); }
+    this.updateCamera();
+    for (let pass = 0; pass < 600; pass++) {
+      this.streamChunks();
+      this.renderer.update(this.camera, 0.016);
+      const left = this.renderer.stats.pending;
+      const dirty = left + (this.lighting.pending > 0 ? 1 : 0);
+      if (pass > 4 && dirty === 0) break;
+      if (pass % 25 === 0) {
+        loading.setProgress(0.9 + Math.min(0.09, pass / 600 * 0.09), 'Meshing the world');
+        await nextFrame();
+      }
+    }
 
     this.inGame = true;
     this.paused = false;

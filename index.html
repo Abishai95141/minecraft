@@ -86,11 +86,26 @@
     if (boot) boot.style.display = 'none';
     msg.textContent = (err && (err.stack || err.message)) || String(err);
   };
+  // Only failures that stop the game from starting deserve the crash screen.
+  // Once it is running, a stray rejection must not replace a working game with
+  // a wall of red text — pointer lock in particular rejects routinely (the
+  // browser refuses it for about a second after Escape) and is harmless.
+  window.__sowmiBooted = false;
+  function isBenign(reason) {
+    var msg = (reason && (reason.message || reason.name)) || String(reason || '');
+    return /pointer\s*lock|user activation|user gesture|AbortError|NotAllowedError|play\(\) request|The operation was aborted/i.test(msg);
+  }
   window.addEventListener('error', function (e) {
     if (e.message && /Script error/i.test(e.message) && !e.filename) return;
+    if (isBenign(e.error || e.message)) return;
+    if (window.__sowmiBooted) { console.error('[sowmicraft]', e.error || e.message); return; }
     window.__sowmiFatal(e.error || e.message);
   });
-  window.addEventListener('unhandledrejection', function (e) { window.__sowmiFatal(e.reason); });
+  window.addEventListener('unhandledrejection', function (e) {
+    if (isBenign(e.reason)) { e.preventDefault(); return; }
+    if (window.__sowmiBooted) { console.error('[sowmicraft]', e.reason); return; }
+    window.__sowmiFatal(e.reason);
+  });
 </script>
 <script type="module" src="./src/main.js"></script>
 </body>

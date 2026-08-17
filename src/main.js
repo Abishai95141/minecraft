@@ -28,6 +28,10 @@ async function main() {
   game.openScreen(new MainMenuScreen(game));
   game.start();
 
+  // From here on a stray error is logged, not turned into a crash screen over
+  // a game that is otherwise running fine.
+  window.__sowmiBooted = true;
+
   requestAnimationFrame(() => {
     boot?.classList.add('hidden');
     setTimeout(() => { if (boot) boot.style.display = 'none'; }, 300);
