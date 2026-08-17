@@ -157,9 +157,12 @@ export class LightEngine {
             if (y < spreadBelow) this._skyAdd.push(wx, y, wz, MAX_LIGHT);
             continue;
           }
-          // Past the first obstruction the column is ordinary decay, and the
-          // BFS takes over for anything that leaks in from the side.
-          level -= op > 1 ? op : 1;
+          // Past the first obstruction, sky light pays only for what it passes
+          // THROUGH. Charging a flat 1 per block made air cost light too, so a
+          // canopy at y=80 left the forest floor fourteen steps later at zero —
+          // pitch black under every tree. Leaves (opacity 1) dim by one each,
+          // air is free, and a solid block ends the column.
+          level -= op;
           if (level <= 0) break;
           this._setSky(chunk, lx, y, lz, level);
           this._skyAdd.push(wx, y, wz, level);
