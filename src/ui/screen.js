@@ -16,6 +16,8 @@ export class Screen {
     this.parent = null;
     this.pausesGame = false;
     this.blursBackground = true;
+    /** Screens draw their own chrome; the game HUD stays hidden behind them. */
+    this.drawsHud = false;
     this.closeOnEscape = true;
 
     /** @type {import('./widgets.js').Widget[]} */

@@ -414,7 +414,10 @@ export class Game {
     const mx = Math.floor(this.input.mouseX / this.guiScale);
     const my = Math.floor(this.input.mouseY / this.guiScale);
 
-    if (this.inGame && !this.hideHud) {
+    // A full screen replaces the HUD rather than layering over it: otherwise
+    // the chat log and objective tracker bleed through the options menu, and
+    // the inventory ends up with two hotbars — its own and the HUD's.
+    if (this.inGame && !this.hideHud && (!this.screen || this.screen.drawsHud)) {
       this.hud.render(ctx, this, this.width, this.height, dt);
     }
     if (this.dialogue?.active) {
