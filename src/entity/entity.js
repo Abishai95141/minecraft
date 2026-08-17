@@ -417,6 +417,11 @@ export class LivingEntity extends Entity {
     super.tick();
     this.updateLimbSwing();
     this.updateHazards();
+    // Safety net: anything that reaches 0 health without going through
+    // actuallyHurt would otherwise stand around alive-but-not-alive forever,
+    // since damage() refuses to act on it. Run the death sequence once so the
+    // kill is still reported.
+    if (this.health <= 0 && this.deathTime === 0 && !this.dead) this.onDeath(this.killedBy ?? null);
     if (this.deathTime > 0) {
       this.deathTime++;
       if (this.deathTime > 20) this.remove();
@@ -573,10 +578,14 @@ export class LivingEntity extends Entity {
 
   dropLoot(_source) {}
 
-  kill() {
-    if (!this.isAlive) { this.remove(); return; }
+  kill(source = 'kill') {
+    if (this.dead) return;
+    // Health may already be 0 if something zeroed it outside actuallyHurt.
+    // Removing the entity here without running the death sequence loses the
+    // loot, the XP and — because 'mobKilled' is emitted from onDeath — any
+    // quest credit for the kill, which can stall an objective for good.
     this.health = 0;
-    this.onDeath('kill');
+    this.onDeath(source);
   }
 
   // ------------------------------------------------------------ hazards

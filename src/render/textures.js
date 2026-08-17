@@ -1275,7 +1275,8 @@ tex('wardens_bane', (p) => {
 
 // ================================================================== particles / misc
 
-tex('destroy_stage', (p) => { p.clear(); });   // placeholder; stages built below
+// Ten crack overlays, drawn black-on-transparent and composited over the block
+// being mined. Stage 0 is a single hairline; stage 9 is nearly shattered.
 for (let s = 0; s < 10; s++) {
   tex(`destroy_stage_${s}`, (p) => {
     p.clear();

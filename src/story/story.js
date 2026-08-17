@@ -662,8 +662,19 @@ export class StoryMode {
   advance(questId) {
     const i = questId ? questIndexById(questId) : this.index + 1;
     if (i < 0 || i >= this.quests.length) { this._finish(); return null; }
+
+    // Advancing to the quest already running must not restart it. Scripted
+    // triggers and dialogue end-actions both name their quest defensively, and
+    // _begin resets every objective — so without this guard, walking into the
+    // Deep Hollow fired its arrival dialogue, whose end-action re-advanced to
+    // deep_hollow, wiping the progress that got you there. The chain then
+    // could never complete.
+    if (i === this.index) return this.quests[i];
+    // Never go backwards either; a stale trigger should not rewind the story.
+    if (i < this.index) return this.quests[this.index];
+
     const cur = this.quests[this.index];
-    if (cur && i > this.index) cur.done = true;
+    if (cur) cur.done = true;
     this._begin(i);
     return this.quests[i];
   }
